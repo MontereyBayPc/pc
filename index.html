@@ -1,214 +1,89 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Gaming PCs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="navbar">
+    <div class="logo">MYPC</div>
+    <nav>
+      <a href="#products">Products</a>
+      <a href="#whyus">Why Us</a>
+      <a href="#support">Support</a>
+    </nav>
+    <a class="btn" href="#products">Shop Now</a>
+  </header>
 
-// Apex-Inspired single-file React component
-// Tailwind CSS utility classes used (no import required in this file)
-// Exports a default component you can drop into a Next.js / CRA app
-
-export default function ApexLanding() {
-  const [selected, setSelected] = useState('Streamer')
-  const [showCustomize, setShowCustomize] = useState(false)
-
-  const models = []
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-slate-800 text-slate-100 antialiased">
-      <header className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-400 flex items-center justify-center text-black font-bold">APX</div>
-          <div>
-            <h1 className="text-lg font-semibold">Apex Gaming</h1>
-            <p className="text-xs text-slate-400 -mt-0.5">Custom-built performance</p>
-          </div>
-        </div>
-        <nav className="flex items-center gap-4">
-          <a className="text-sm hover:underline cursor-pointer">Products</a>
-          <a className="text-sm hover:underline cursor-pointer">Why Apex</a>
-          <a className="text-sm hover:underline cursor-pointer">Support</a>
-          <button className="ml-3 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 px-4 py-2 text-black font-semibold">Shop Now</button>
-        </nav>
-      </header>
-
-      {/* HERO */}
-      <section className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center py-12">
-        <div>
-          <motion.h2 initial={{ y: 18, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.45 }} className="text-4xl lg:text-5xl font-extrabold leading-tight">
-            Gaming PCs <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">Custom-Built</span> for You
-          </motion.h2>
-
-          <p className="mt-4 text-slate-300 max-w-xl">
-            Designed and tested for peak performance — pick a base, customize parts, and get a fully tested machine shipped with Windows configured for gaming. Fast shipping, warranty, and financing options available.
-          </p>
-
-          <div className="mt-6 flex gap-3 items-center">
-            <button onClick={() => setShowCustomize(true)} className="rounded-lg px-5 py-3 bg-gradient-to-r from-pink-500 to-violet-600 font-semibold text-black shadow-lg">Customize Your PC</button>
-            <a className="text-sm text-slate-300 pl-3 border-l border-slate-700">See Models</a>
-          </div>
-
-          <div className="mt-8 grid grid-cols-3 gap-3 max-w-md">
-            <Stat label="Testing" value="Full 24-hour burn" />
-            <Stat label="Warranty" value="1+ year available" />
-            <Stat label="Shipping" value="Free (US)" />
-          </div>
-        </div>
-
-        <div>
-          <div className="rounded-2xl bg-gradient-to-b from-slate-900/60 to-slate-900/40 p-6 shadow-2xl border border-slate-700">
-            <div className="relative overflow-hidden rounded-xl">
-              <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&s=')] bg-cover bg-center mix-blend-overlay"></div>
-
-              <div className="relative z-10 p-6 flex flex-col gap-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="text-2xl font-semibold">Apex Streamer</h3>
-                    <p className="text-xs text-slate-400">1080p high + entry streaming</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-slate-400">from</div>
-                    <div className="text-2xl font-bold">$1,739.95</div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Badge>Intel i7</Badge>
-                  <Badge>RTX 4070</Badge>
-                  <Badge>32GB DDR4</Badge>
-                </div>
-
-                <div className="mt-2 flex items-center justify-between">
-                  <div className="text-xs text-slate-300 max-w-xs">Optimized with XMP enabled, Windows Game Mode, and preinstalled drivers — ready to game out of the box.</div>
-                  <button onClick={() => setShowCustomize(true)} className="rounded-md px-3 py-2 bg-slate-700/60 text-sm">Customize</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MODELS */}
-      <section className="max-w-6xl mx-auto px-6 py-8">
-        <h3 className="text-xl font-semibold">Popular Builds</h3>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {models.map((m) => (
-            <motion.article key={m.id} whileHover={{ y: -6 }} className={`rounded-2xl p-5 bg-gradient-to-br from-slate-900/40 to-slate-900/20 border border-slate-700`}>
-              <div className="flex items-start justify-between">
-                <div>
-                  <h4 className="font-bold text-lg">{m.title}</h4>
-                  <p className="text-sm text-slate-400 mt-1">{m.desc}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-slate-400">{m.tag}</div>
-                  <div className="text-lg font-semibold mt-1">{m.price}</div>
-                </div>
-              </div>
-
-              <div className="mt-4 flex gap-2">
-                <button onClick={() => { setSelected(m.id); setShowCustomize(true); }} className="rounded-md px-3 py-2 bg-slate-700/60 text-sm">Customize</button>
-                <button className="rounded-md px-3 py-2 border border-slate-700 text-sm">View</button>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="mt-12 border-t border-slate-700/40 bg-slate-900/30">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-start gap-6">
-          <div>
-            <h5 className="font-bold">Apex Gaming</h5>
-            <p className="text-sm text-slate-400 mt-2">Custom gaming PCs assembled, tested, and shipped with care.</p>
-          </div>
-
-          <div className="flex gap-8 text-sm text-slate-400">
-            <div>
-              <div className="font-semibold text-slate-200">Support</div>
-              <div className="mt-2">Warranty</div>
-              <div>Returns</div>
-            </div>
-            <div>
-              <div className="font-semibold text-slate-200">Company</div>
-              <div className="mt-2">About</div>
-              <div>Careers</div>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {/* Customize Modal */}
-      {showCustomize && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div onClick={() => setShowCustomize(false)} className="absolute inset-0 bg-black/70" />
-          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative z-20 w-full max-w-3xl bg-slate-900/80 border border-slate-700 rounded-2xl p-6 backdrop-blur-md">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h3 className="text-2xl font-bold">Customize — {selected}</h3>
-                <p className="text-sm text-slate-400 mt-1">Tailor CPU, GPU, RAM, storage and cooling. Prices update in real-time.</p>
-              </div>
-              <button onClick={() => setShowCustomize(false)} className="text-slate-300">Close</button>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-3">
-                <label className="block text-sm text-slate-300">CPU</label>
-                <select className="w-full rounded-md p-2 bg-slate-800 border border-slate-700">
-                  <option>Intel Core i5-13600K</option>
-                  <option>Intel Core i7-13700K</option>
-                  <option>AMD Ryzen 7 5800X</option>
-                </select>
-
-                <label className="block text-sm text-slate-300">GPU</label>
-                <select className="w-full rounded-md p-2 bg-slate-800 border border-slate-700">
-                  <option>NVIDIA RTX 4060</option>
-                  <option>NVIDIA RTX 4070</option>
-                  <option>AMD RX 7800</option>
-                </select>
-
-                <label className="block text-sm text-slate-300">RAM</label>
-                <select className="w-full rounded-md p-2 bg-slate-800 border border-slate-700">
-                  <option>16GB DDR4 (3200MHz)</option>
-                  <option>32GB DDR4 (3600MHz)</option>
-                  <option>64GB DDR5 (5200MHz)</option>
-                </select>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-sm text-slate-300">Storage</label>
-                <select className="w-full rounded-md p-2 bg-slate-800 border border-slate-700">
-                  <option>500GB NVMe</option>
-                  <option>1TB NVMe</option>
-                  <option>2TB NVMe</option>
-                </select>
-
-                <label className="block text-sm text-slate-300">Cooling</label>
-                <select className="w-full rounded-md p-2 bg-slate-800 border border-slate-700">
-                  <option>Air Cooler</option>
-                  <option>240mm AIO Liquid</option>
-                  <option>360mm AIO Liquid</option>
-                </select>
-
-                <div className="mt-4 flex gap-3">
-                  <button className="rounded-md px-4 py-2 bg-gradient-to-r from-pink-500 to-indigo-600 font-semibold text-black">Add to Cart</button>
-                  <button onClick={() => setShowCustomize(false)} className="rounded-md px-4 py-2 border border-slate-700">Cancel</button>
-                </div>
-              </div>
-            </div>
-
-          </motion.div>
-        </div>
-      )}
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Gaming PCs <span>Custom-Built</span> For You</h1>
+      <p>
+        High-performance PCs tailored for gaming, streaming, and content creation.
+        Choose your setup, customize, and start gaming instantly.
+      </p>
+      <div class="hero-buttons">
+        <a href="#products" class="btn">Browse PCs</a>
+        <a href="#customize" class="btn-outline">Customize</a>
+      </div>
     </div>
-  )
-}
-
-function Stat({ label, value }) {
-  return (
-    <div className="rounded-lg bg-slate-800/40 p-3 text-center">
-      <div className="text-xs text-slate-400">{label}</div>
-      <div className="font-semibold">{value}</div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800" alt="Gaming PC" />
     </div>
-  )
-}
+  </section>
 
-function Badge({ children }) {
-  return <div className="text-xs px-2 py-1 rounded-md bg-slate-700/60 text-slate-100 font-medium">{children}</div>
-}
+  <!-- PRODUCTS -->
+  <section id="products" class="products">
+    <h2>Popular Builds</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Starter PC</h3>
+        <p>Perfect for 1080p gaming at a budget-friendly price.</p>
+        <span class="price">$999</span>
+        <a href="#customize" class="btn-small">Customize</a>
+      </div>
+      <div class="card">
+        <h3>Streamer PC</h3>
+        <p>Balanced build for gaming + live streaming.</p>
+        <span class="price">$1,499</span>
+        <a href="#customize" class="btn-small">Customize</a>
+      </div>
+      <div class="card">
+        <h3>Pro Creator</h3>
+        <p>1440p and 4K gaming, editing, and creative work.</p>
+        <span class="price">$2,299</span>
+        <a href="#customize" class="btn-small">Customize</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="whyus" class="features">
+    <h2>Why Choose Us?</h2>
+    <div class="grid">
+      <div class="feature">
+        <h4>Expert Build</h4>
+        <p>All PCs are hand-assembled and stress-tested before shipping.</p>
+      </div>
+      <div class="feature">
+        <h4>Fast Shipping</h4>
+        <p>Get your system delivered quickly with free U.S. shipping.</p>
+      </div>
+      <div class="feature">
+        <h4>Warranty</h4>
+        <p>1-year warranty included, with extended options available.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; 2025 MyPC — Custom Gaming PCs</p>
+  </footer>
+</body>
+</html>
