@@ -1,89 +1,134 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Custom Gaming PCs</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Gaming PCs</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f0f1a; color: #f0f0f5; margin:0; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#111; position:sticky; top:0; z-index:1000; }
+    header .logo { font-weight:bold; font-size:1.5rem; color:#ff4ecd; }
+    nav a { margin:0 1rem; text-decoration:none; color:#ddd; }
+    nav a:hover { color:#ff4ecd; }
+    .btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.7rem 1.2rem; border-radius:5px; text-decoration:none; font-weight:bold; }
+    .btn-outline { border:2px solid #6c5ce7; padding:.7rem 1.2rem; border-radius:5px; color:#fff; text-decoration:none; margin-left:.5rem; }
+    .btn-outline:hover { background:#6c5ce7; }
+    .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
+    .hero-text { flex:1 1 400px; max-width:500px; }
+    .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
+    .hero-text span { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero-img { flex:1 1 400px; display:flex; justify-content:center; }
+    .hero-img img { max-width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
+    .products, .features { padding:4rem 2rem; }
+    .products h2, .features h2 { text-align:center; margin-bottom:2rem; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; }
+    .card, .feature { background:#2a2a40; padding:2rem; border-radius:10px; text-align:center; }
+    .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
+    .btn-small { padding:.5rem 1rem; font-size:.9rem; }
+    footer { text-align:center; padding:1.5rem; background:#111122; font-size:.9rem; color:#aaa; }
+    /* Modal */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:500px; width:90%; }
+    .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.2rem; }
+    select { width:100%; padding:.5rem; margin:1rem 0; border-radius:5px; border:none; }
+  </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="navbar">
-    <div class="logo">MYPC</div>
+  <header>
+    <div class="logo">Apex</div>
     <nav>
       <a href="#products">Products</a>
-      <a href="#whyus">Why Us</a>
+      <a href="#features">Features</a>
       <a href="#support">Support</a>
     </nav>
     <a class="btn" href="#products">Shop Now</a>
   </header>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
       <h1>Gaming PCs <span>Custom-Built</span> For You</h1>
-      <p>
-        High-performance PCs tailored for gaming, streaming, and content creation.
-        Choose your setup, customize, and start gaming instantly.
-      </p>
+      <p>High-performance PCs designed and tested for gaming, streaming, and content creation. Pick a base, customize parts, and get a fully tested machine shipped with Windows.</p>
       <div class="hero-buttons">
         <a href="#products" class="btn">Browse PCs</a>
-        <a href="#customize" class="btn-outline">Customize</a>
+        <a href="#customize" class="btn-outline" id="openModal">Customize</a>
       </div>
     </div>
     <div class="hero-img">
-      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800" alt="Gaming PC" />
+      <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800" alt="Gaming PC">
     </div>
   </section>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="products">
+  <section class="products" id="products">
     <h2>Popular Builds</h2>
     <div class="grid">
       <div class="card">
         <h3>Starter PC</h3>
-        <p>Perfect for 1080p gaming at a budget-friendly price.</p>
-        <span class="price">$999</span>
-        <a href="#customize" class="btn-small">Customize</a>
+        <p>1080p gaming with solid performance for budget-focused gamers.</p>
+        <span class="price">$1,143.95</span>
+        <a class="btn-small" id="openModal2">Customize</a>
       </div>
       <div class="card">
         <h3>Streamer PC</h3>
-        <p>Balanced build for gaming + live streaming.</p>
-        <span class="price">$1,499</span>
-        <a href="#customize" class="btn-small">Customize</a>
+        <p>Balanced build for 1080p high + light streaming.</p>
+        <span class="price">$1,739.95</span>
+        <a class="btn-small" id="openModal3">Customize</a>
       </div>
       <div class="card">
         <h3>Pro Creator</h3>
-        <p>1440p and 4K gaming, editing, and creative work.</p>
-        <span class="price">$2,299</span>
-        <a href="#customize" class="btn-small">Customize</a>
+        <p>Powerful 1440p / content creation ready workstation.</p>
+        <span class="price">$2,429.95</span>
+        <a class="btn-small" id="openModal4">Customize</a>
       </div>
     </div>
   </section>
 
-  <!-- WHY US -->
-  <section id="whyus" class="features">
+  <section class="features" id="features">
     <h2>Why Choose Us?</h2>
     <div class="grid">
       <div class="feature">
         <h4>Expert Build</h4>
-        <p>All PCs are hand-assembled and stress-tested before shipping.</p>
+        <p>Hand-assembled PCs with full stress testing before shipping.</p>
       </div>
       <div class="feature">
         <h4>Fast Shipping</h4>
-        <p>Get your system delivered quickly with free U.S. shipping.</p>
+        <p>Get your system quickly with free U.S. shipping.</p>
       </div>
       <div class="feature">
         <h4>Warranty</h4>
-        <p>1-year warranty included, with extended options available.</p>
+        <p>1-year standard warranty, extended options available.</p>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>&copy; 2025 MyPC — Custom Gaming PCs</p>
+  <footer>
+    &copy; 2025 Apex Gaming PCs
   </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Customize Your PC</h3>
+      <label>CPU:</label>
+      <select><option>Intel i5</option><option>Intel i7</option><option>AMD Ryzen 5</option><option>AMD Ryzen 7</option></select>
+      <label>GPU:</label>
+      <select><option>NVIDIA RTX 3060</option><option>NVIDIA RTX 3070</option><option>AMD RX 6700 XT</option></select>
+      <label>RAM:</label>
+      <select><option>16GB</option><option>32GB</option></select>
+      <label>Storage:</label>
+      <select><option>512GB SSD</option><option>1TB SSD</option></select>
+      <a href="#" class="btn">Add to Cart</a>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const openButtons = ['openModal','openModal2','openModal3','openModal4'];
+    const closeBtn = document.getElementById('closeModal');
+    openButtons.forEach(id => document.getElementById(id).addEventListener('click', ()=>{ modal.style.display='flex'; }));
+    closeBtn.onclick = ()=>{ modal.style.display='none'; };
+    window.onclick = e=>{ if(e.target==modal) modal.style.display='none'; };
+  </script>
 </body>
 </html>
