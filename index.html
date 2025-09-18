@@ -18,7 +18,7 @@
     .hero-text { flex:1 1 400px; max-width:500px; }
     .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
     .hero-text span { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .hero-subtext { font-size:1rem; line-height:1.6; } /* 👈 added this */
+    .hero-subtext { font-size:1.3rem; line-height:1.6; }
     .hero-img { flex:1 1 400px; display:flex; justify-content:center; }
     .hero-img img { max-width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
     .products, .features { padding:4rem 2rem; }
@@ -28,11 +28,6 @@
     .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
     .btn-small { padding:.5rem 1rem; font-size:.9rem; }
     footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:#aaa; }
-    /* Modal */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
-    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:500px; width:90%; }
-    .close { float:right; cursor:pointer; color:#ff4ecd; font-size:2rem; }
-    select { width:100%; padding:.5rem; margin:1rem 0; border-radius:5px; border:none; }
   </style>
 </head>
 <body>
@@ -52,7 +47,6 @@
       <p class="hero-subtext">High-performance PCs designed and tested for gaming, streaming, and content creation. Pick a base, customize parts, and get a fully tested machine shipped with Windows.</p>
       <div class="hero-buttons">
         <a href="#products" class="btn">Browse PCs</a>
-        <a href="#customize" class="btn-outline" id="openModal">Customize</a>
       </div>
     </div>
     <div class="hero-img">
@@ -67,19 +61,16 @@
         <h3>1080p - Starter/budget Pc </h3>
         <p>1080p gaming with solid performance for budget-focused gamers</p>
         <span class="price">$600.00</span>
-        <a class="btn-small" id="openModal2">Customize</a>
       </div>
       <div class="card">
         <h3>1440p - Midrange pc</h3>
         <p>Balanced build for 1440p amazing for video editing or streaming</p>
         <span class="price">$1300.00</span>
-        <a class="btn-small" id="openModal3">Customize</a>
       </div>
       <div class="card">
         <h3>4k - High-end</h3>
         <p>Push all the way to 4k with this pc</p>
         <span class="price">$2,000.00</span>
-        <a class="btn-small" id="openModal4">Customize</a>
       </div>
     </div>
   </section>
@@ -105,34 +96,5 @@
   <footer>
     &copy; Contact: montereybaypc@gmail.com
   </footer>
-
-  <!-- Modal -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h3>Customize Your PC</h3>
-      <label>CPU:</label>
-      <select><option>Intel i5</option><option>Intel i7</option><option>AMD Ryzen 5</option><option>AMD Ryzen 7</option></select>
-      <label>GPU:</label>
-      <select><option>NVIDIA RTX 3060</option><option>NVIDIA RTX 3070</option><option>AMD RX 6700 XT</option></select>
-      <label>RAM:</label>
-      <select><option>16GB</option><option>32GB</option></select>
-      <label>Storage:</label>
-      <select><option>512GB SSD</option><option>1TB SSD</option></select>
-      <a href="#" class="btn">Add to Cart</a>
-    </div>
-  </div>
-
-  <script>
-    const modal = document.getElementById('modal');
-    const openButtons = ['openModal','openModal2','openModal3','openModal4'];
-    const closeBtn = document.getElementById('closeModal');
-    openButtons.forEach(id => {
-      const btn = document.getElementById(id);
-      if (btn) btn.addEventListener('click', ()=>{ modal.style.display='flex'; });
-    });
-    closeBtn.onclick = ()=>{ modal.style.display='none'; };
-    window.onclick = e=>{ if(e.target==modal) modal.style.display='none'; };
-  </script>
 </body>
 </html>
