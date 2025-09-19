@@ -6,13 +6,46 @@
   <title>Monterey Bay PCs</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body { font-family: Arial, sans-serif; background: #0f0f1a; color: #f0f0f5; margin:0; }
-    header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#111; position:sticky; top:0; z-index:1000; }
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #0f0f1a; 
+      color: #f0f0f5; 
+      margin:0; 
+      transition: background 0.3s, color 0.3s; 
+    }
+    header { 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      padding:1rem 2rem; 
+      background:#111; 
+      position:sticky; 
+      top:0; 
+      z-index:1000; 
+    }
     header .logo { font-weight:bold; font-size:1.5rem; color:#ff4ecd; }
-    nav a { margin:0 1rem; text-decoration:none; color:#ddd; }
+    nav a { margin:0 1rem; text-decoration:none; color:#ddd; transition: color 0.3s; }
     nav a:hover { color:#ff4ecd; }
-    .btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.7rem 1.2rem; border-radius:5px; text-decoration:none; font-weight:bold; }
-    .btn-outline { border:2px solid #6c5ce7; padding:.7rem 1.2rem; border-radius:5px; color:#fff; text-decoration:none; margin-left:.5rem; }
+    .btn { 
+      background:linear-gradient(90deg, #ff4ecd, #6c5ce7); 
+      color:#fff; padding:.7rem 1.2rem; 
+      border-radius:5px; 
+      text-decoration:none; 
+      font-weight:bold; 
+      transition: box-shadow 0.3s ease-in-out; 
+      box-shadow: 0 0 10px rgba(255, 78, 205, 0.7); 
+    }
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(255, 78, 205, 1);
+    }
+    .btn-outline { 
+      border:2px solid #6c5ce7; 
+      padding:.7rem 1.2rem; 
+      border-radius:5px; 
+      color:#fff; 
+      text-decoration:none; 
+      margin-left:.5rem; 
+    }
     .btn-outline:hover { background:#6c5ce7; }
     .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
     .hero-text { flex:1 1 400px; max-width:500px; }
@@ -24,8 +57,22 @@
     .products, .features { padding:4rem 2rem; }
     .products h2, .features h2 { text-align:center; margin-bottom:2rem; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; }
-    .card, .feature { background:#2a2a40; padding:2rem; border-radius:10px; text-align:center; cursor:pointer; transition:transform 0.2s; }
-    .card:hover { transform:scale(1.02); }
+    
+    /* Cards with hover animations and RGB glow */
+    .card, .feature { 
+      background:#2a2a40; 
+      padding:2rem; 
+      border-radius:10px; 
+      text-align:center; 
+      cursor:pointer; 
+      transition:transform 0.3s, box-shadow 0.3s; 
+      border: 2px solid transparent;
+    }
+    .card:hover { 
+      transform:scale(1.05) rotate(-1deg); 
+      box-shadow:0 0 20px rgba(108, 92, 231, 0.8); 
+      border-image: linear-gradient(90deg, #ff4ecd, #6c5ce7) 1; 
+    }
     .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
     .btn-small { padding:.5rem 1rem; font-size:.9rem; }
     footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:#aaa; }
@@ -35,6 +82,26 @@
     .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; }
     .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
     .copy-btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
+
+    /* Light mode */
+    body.light-mode {
+      background:#fdfdfd;
+      color:#111;
+    }
+    body.light-mode header { background:#eee; }
+    body.light-mode .card, body.light-mode .feature { background:#fff; color:#000; }
+
+    /* RGB mode (animated background) */
+    body.rgb-mode {
+      animation: rgbBackground 10s infinite alternate;
+    }
+    @keyframes rgbBackground {
+      0% { background:#ff4ecd; }
+      25% { background:#6c5ce7; }
+      50% { background:#00f2ff; }
+      75% { background:#00ff99; }
+      100% { background:#ff4ecd; }
+    }
   </style>
 </head>
 <body>
@@ -45,7 +112,11 @@
       <a href="#features">Features</a>
       <a href="#support">Support</a>
     </nav>
-    <a class="btn" href="#products">Shop Now</a>
+    <div>
+      <a class="btn" href="#products">Shop Now</a>
+      <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
+      <button class="btn-outline" id="rgbToggle">🌈 RGB Mode</button>
+    </div>
   </header>
 
   <section class="hero">
@@ -97,7 +168,7 @@
         <p>Get your system quickly and efficiently</p>
       </div>
       <div class="feature">
-        <h4>Discout</h4>
+        <h4>Discount</h4>
         <p>Save money when you return an old part and swap it for a new one</p>
       </div>
     </div>
@@ -123,6 +194,8 @@
     const closeModal = document.getElementById('closeModal');
     const copyBtn = document.getElementById('copyBtn');
     const emailAddress = document.getElementById('emailAddress');
+    const themeToggle = document.getElementById('themeToggle');
+    const rgbToggle = document.getElementById('rgbToggle');
 
     // Make all cards clickable
     document.querySelectorAll('.card').forEach(card => {
@@ -140,6 +213,16 @@
       navigator.clipboard.writeText(emailAddress.value);
       copyBtn.textContent = "Copied!";
       setTimeout(() => copyBtn.textContent = "Copy Email", 2000);
+    });
+
+    // Theme toggle
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+    });
+
+    // RGB mode toggle
+    rgbToggle.addEventListener('click', () => {
+      document.body.classList.toggle('rgb-mode');
     });
   </script>
 </body>
