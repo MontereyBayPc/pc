@@ -30,27 +30,23 @@ nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s;
 nav a:hover { color:#ff4ecd; }
 
 /* Buttons */
-.btn {
+.btn, .btn-outline {
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7);
   color:#fff;
   padding:.7rem 1.2rem;
   border-radius:5px;
   text-decoration:none;
   font-weight:bold;
-  transition: box-shadow 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
-}
-.btn:hover { box-shadow:0 0 20px rgba(255,78,205,1); }
-
-.btn-outline {
-  border:2px solid #6c5ce7;
-  padding:.7rem 1.2rem;
-  border-radius:5px;
-  color:#fff;
-  text-decoration:none;
+  border:none;
   margin-left:.5rem;
+  cursor:pointer;
 }
-.btn-outline:hover { background:#6c5ce7; color:#fff; }
+.btn:hover, .btn-outline:hover {
+  box-shadow:0 0 20px rgba(255,78,205,1);
+  transform:scale(1.05);
+}
 
 /* Hero */
 .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
