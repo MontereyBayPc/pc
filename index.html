@@ -24,10 +24,17 @@
     .products, .features { padding:4rem 2rem; }
     .products h2, .features h2 { text-align:center; margin-bottom:2rem; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; }
-    .card, .feature { background:#2a2a40; padding:2rem; border-radius:10px; text-align:center; }
+    .card, .feature { background:#2a2a40; padding:2rem; border-radius:10px; text-align:center; cursor:pointer; transition:transform 0.2s; }
+    .card:hover { transform:scale(1.02); }
     .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
     .btn-small { padding:.5rem 1rem; font-size:.9rem; }
     footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:#aaa; }
+
+    /* Modal styles */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; }
+    .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
+    .copy-btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -60,17 +67,20 @@
       <div class="card">
         <h3>1080p - Starter/budget PC </h3>
         <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
-        <span class="price">$600.00 +</span>
+        <span class="price">$600.00</span>
+        <img src="https://images.unsplash.com/photo-1610484826967-09c6a590893f" alt="1080p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
       </div>
       <div class="card">
         <h3>1440p - Midrange PC</h3>
         <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
-        <span class="price">$1,300.00 +</span>
+        <span class="price">$1,300.00</span>
+        <img src="https://images.unsplash.com/photo-1616627986780-226fa46e1a2d" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
       </div>
       <div class="card">
         <h3>4k - High-end PC</h3>
         <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
-        <span class="price">$2,000.00 +</span>
+        <span class="price">$2,000.00</span>
+        <img src="https://images.unsplash.com/photo-1618681720983-c5d94b9bbd05" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
       </div>
     </div>
   </section>
@@ -96,5 +106,41 @@
   <footer>
     Contact: ✉ MontereyBayPC@gmail.com
   </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="emailModal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Contact Us</h3>
+      <p>Copy our email address below:</p>
+      <input type="text" id="emailAddress" value="MontereyBayPC@gmail.com" readonly style="width:100%; padding:.5rem; border:none; border-radius:5px; margin-top:1rem; text-align:center;">
+      <button class="copy-btn" id="copyBtn">Copy Email</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('emailModal');
+    const closeModal = document.getElementById('closeModal');
+    const copyBtn = document.getElementById('copyBtn');
+    const emailAddress = document.getElementById('emailAddress');
+
+    // Make all cards clickable
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        modal.style.display = 'flex';
+      });
+    });
+
+    closeModal.onclick = () => { modal.style.display = 'none'; };
+    window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; };
+
+    copyBtn.addEventListener('click', () => {
+      emailAddress.select();
+      emailAddress.setSelectionRange(0, 99999); // for mobile
+      navigator.clipboard.writeText(emailAddress.value);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => copyBtn.textContent = "Copy Email", 2000);
+    });
+  </script>
 </body>
 </html>
