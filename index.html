@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png"
+<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monterey Bay PCs</title>
@@ -11,7 +11,7 @@ body {
   margin: 0;
   transition: background 0.3s, color 0.3s;
   background: #0f0f1a;
-  color: #fff; /* default outside card text */
+  color: #fff;
 }
 
 /* Header */
@@ -72,8 +72,8 @@ nav a:hover { color:#ff4ecd; }
   cursor:pointer;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
   border:2px solid transparent;
-  background:#000; /* always black cards */
-  color:#fff;      /* always white text inside cards */
+  background:#000;
+  color:#fff;
 }
 /* Price */
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
@@ -84,13 +84,7 @@ nav a:hover { color:#ff4ecd; }
 /* Footer */
 footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
 
-/* Modal */
-.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
-.modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; color:inherit; }
-.close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
-.copy-btn { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
-
-/* Dark Mode / Light Mode only affects background outside cards */
+/* Dark / Light Mode outside cards only */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
 
@@ -137,19 +131,21 @@ body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
 <section class="products" id="products">
 <h2>Popular Builds</h2>
 <div class="grid">
-  <div class="card">
+  <div class="card" onclick="window.location.href='mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in your%201080p%20PC.%20Please%20send%20more%20information.'">
     <h3>1080p - Starter/budget PC</h3>
     <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
     <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <div class="card">
+
+  <div class="card" onclick="window.location.href='mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in your%201440p%20PC.%20Please%20send%20more%20information.'">
     <h3>1440p - Midrange PC</h3>
     <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
     <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <div class="card">
+
+  <div class="card" onclick="window.location.href='mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in your%204K%20PC.%20Please%20send%20more%20information.'">
     <h3>4k - High-end PC</h3>
     <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
@@ -178,37 +174,9 @@ body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
 
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
-<!-- Modal -->
-<div class="modal" id="emailModal">
-<div class="modal-content">
-  <span class="close" id="closeModal">&times;</span>
-  <h3>Contact Us</h3>
-  <p>Copy our email address below:</p>
-  <input type="text" id="emailAddress" value="MontereyBayPC@gmail.com" readonly style="width:100%; padding:.5rem; border:none; border-radius:5px; margin-top:1rem; text-align:center;">
-  <button class="copy-btn" id="copyBtn">Copy Email</button>
-</div>
-</div>
-
 <script>
-const modal=document.getElementById('emailModal');
-const closeModal=document.getElementById('closeModal');
-const copyBtn=document.getElementById('copyBtn');
-const emailAddress=document.getElementById('emailAddress');
 const themeToggle=document.getElementById('themeToggle');
 const rgbToggle=document.getElementById('rgbToggle');
-
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('click',()=>{modal.style.display='flex';});
-});
-closeModal.onclick=()=>{modal.style.display='none';};
-window.onclick=e=>{if(e.target==modal)modal.style.display='none';};
-copyBtn.addEventListener('click',()=>{
-  emailAddress.select();
-  emailAddress.setSelectionRange(0,99999);
-  navigator.clipboard.writeText(emailAddress.value);
-  copyBtn.textContent="Copied!";
-  setTimeout(()=>copyBtn.textContent="Copy Email",2000);
-});
 
 themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
@@ -224,5 +192,6 @@ rgbToggle.addEventListener('click',()=>{
   body.classList.toggle('rgb-mode');
 });
 </script>
+
 </body>
 </html>
