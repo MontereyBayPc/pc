@@ -10,36 +10,36 @@ body {
   margin: 0;
   transition: background 0.3s, color 0.3s;
   background: #0f0f1a;
-  color: #fff; /* Default text outside cards */
+  color: #fff; /* default outside card text */
 }
 
 /* Header */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #111;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem 2rem;
+  background:#111;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-header .logo { font-weight:bold; font-size:1.5rem; color:#ff4ecd; }
+header .logo { font-weight:bold; font-size:1.5rem; color:inherit; }
 nav a { margin:0 1rem; text-decoration:none; color:inherit; transition: color 0.3s; }
 nav a:hover { color:#ff4ecd; }
 
 /* Buttons */
 .btn {
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7);
-  color: #fff;
-  padding: 0.7rem 1.2rem;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
+  color:#fff;
+  padding:.7rem 1.2rem;
+  border-radius:5px;
+  text-decoration:none;
+  font-weight:bold;
   transition: box-shadow 0.3s ease-in-out;
-  box-shadow: 0 0 10px rgba(255, 78, 205, 0.7);
+  box-shadow: 0 0 10px rgba(255,78,205,0.7);
 }
-.btn:hover { box-shadow: 0 0 20px rgba(255, 78, 205, 1); }
+.btn:hover { box-shadow:0 0 20px rgba(255,78,205,1); }
 
 .btn-outline {
   border:2px solid #6c5ce7;
@@ -74,11 +74,11 @@ nav a:hover { color:#ff4ecd; }
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
   border:2px solid transparent;
 }
-/* Price remains same */
+/* Price */
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 
 /* Hover */
-.card:hover { transform: scale(1.05) rotate(-1deg); box-shadow:0 0 20px rgba(108, 92, 231,0.8); border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1; }
+.card:hover { transform:scale(1.05) rotate(-1deg); box-shadow:0 0 20px rgba(108,92,231,0.8); border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1; }
 
 /* Footer */
 footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; }
@@ -90,16 +90,42 @@ footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; 
 .copy-btn { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
 
 /* Dark Mode */
-body.dark-mode { background:#0f0f1a; color:#fff; }
-body.dark-mode header, body.dark-mode footer, body.dark-mode nav a { color:#fff; }
-body.dark-mode .card, body.dark-mode .feature { background:#fff; color:#000; }
-body.dark-mode .card .price, body.dark-mode .feature .price { color:#ff4ecd; }
+body.dark-mode {
+  background:#0f0f1a;
+  color:#fff; /* outside card text */
+}
+body.dark-mode header,
+body.dark-mode header .logo,
+body.dark-mode nav a,
+body.dark-mode footer {
+  color:#fff;
+}
+body.dark-mode .card, body.dark-mode .feature {
+  background:#000; /* black cards */
+  color:#fff;   /* white text inside cards */
+}
+body.dark-mode .card .price, body.dark-mode .feature .price {
+  color:#ff4ecd; /* gradient price stays */
+}
 
 /* Light Mode */
-body.light-mode { background:#fdfdfd; color:#000; }
-body.light-mode header, body.light-mode footer, body.light-mode nav a { color:#000; }
-body.light-mode .card, body.light-mode .feature { background:#000; color:#fff; }
-body.light-mode .card .price, body.light-mode .feature .price { color:#ff4ecd; }
+body.light-mode {
+  background:#fdfdfd;
+  color:#000; /* outside card text */
+}
+body.light-mode header,
+body.light-mode header .logo,
+body.light-mode nav a,
+body.light-mode footer {
+  color:#000;
+}
+body.light-mode .card, body.light-mode .feature {
+  background:#000; /* black cards */
+  color:#fff;      /* white text inside cards */
+}
+body.light-mode .card .price, body.light-mode .feature .price {
+  color:#ff4ecd; /* gradient price stays */
+}
 
 /* RGB mode */
 body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
@@ -130,7 +156,7 @@ body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
 
 <section class="hero">
   <div class="hero-text">
-    <h1> PCs <span>Custom-Built</span> For You</h1>
+    <h1>PCs <span>Custom-Built</span> For You</h1>
     <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
     <div class="hero-buttons">
       <a href="#products" class="btn">Browse PCs</a>
@@ -205,29 +231,25 @@ const themeToggle = document.getElementById('themeToggle');
 const rgbToggle = document.getElementById('rgbToggle');
 
 document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', () => {
-    modal.style.display = 'flex';
-  });
+  card.addEventListener('click', ()=>{ modal.style.display='flex'; });
 });
-
-closeModal.onclick = () => { modal.style.display = 'none'; };
-window.onclick = e => { if(e.target == modal) modal.style.display='none'; };
-
-copyBtn.addEventListener('click', () => {
+closeModal.onclick = ()=>{ modal.style.display='none'; };
+window.onclick = e=>{ if(e.target==modal) modal.style.display='none'; };
+copyBtn.addEventListener('click', ()=>{
   emailAddress.select();
   emailAddress.setSelectionRange(0,99999);
   navigator.clipboard.writeText(emailAddress.value);
-  copyBtn.textContent = "Copied!";
+  copyBtn.textContent="Copied!";
   setTimeout(()=>copyBtn.textContent="Copy Email",2000);
 });
 
-themeToggle.addEventListener('click', () => {
+themeToggle.addEventListener('click', ()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
 });
 
-rgbToggle.addEventListener('click', () => {
-  const body = document.body;
+rgbToggle.addEventListener('click', ()=>{
+  const body=document.body;
   if(body.classList.contains('light-mode')){
     alert("RGB mode only works in dark mode!");
     return;
@@ -235,6 +257,5 @@ rgbToggle.addEventListener('click', () => {
   body.classList.toggle('rgb-mode');
 });
 </script>
-
 </body>
 </html>
