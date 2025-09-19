@@ -12,6 +12,7 @@ body {
   transition: background 0.3s, color 0.3s;
   background: #0f0f1a;
   color: #fff;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -31,7 +32,9 @@ nav a:hover { color:#ff4ecd; }
 
 /* Buttons */
 .btn, .btn-outline {
-  background: linear-gradient(90deg, #ff4ecd, #6c5ce7);
+  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
   color:#fff;
   padding:.7rem 1.2rem;
   border-radius:5px;
@@ -47,13 +50,36 @@ nav a:hover { color:#ff4ecd; }
   box-shadow:0 0 20px rgba(255,78,205,1);
   transform:scale(1.05);
 }
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 /* Hero */
 .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
 .hero-text { flex:1 1 400px; max-width:500px; }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
-.hero-text span { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero-text span {
+  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
+  background-size: 300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation: textGradient 6s ease infinite;
+}
+@keyframes textGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 .hero-subtext { font-size:1rem; line-height:1.6; }
+.hero-img img {
+  transition: transform 0.3s;
+  border-radius:10px;
+}
+.hero-img img:hover {
+  transform: translateY(-10px) scale(1.02);
+}
 
 /* Sections */
 .products, .features { padding:4rem 2rem; }
@@ -71,11 +97,12 @@ nav a:hover { color:#ff4ecd; }
   background:#000;
   color:#fff;
 }
-/* Price */
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
-
-/* Hover */
-.card:hover { transform:scale(1.05) rotate(-1deg); box-shadow:0 0 20px rgba(108,92,231,0.8); border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1; }
+.card:hover {
+  transform: scale(1.06) rotate(-1deg);
+  box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5);
+  border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1;
+}
 
 /* Footer */
 footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
@@ -84,8 +111,11 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
 
-/* RGB mode */
-body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
+/* RGB mode with subtle floating glow */
+body.rgb-mode {
+  animation: rgbBackground 10s infinite alternate;
+  position: relative;
+}
 @keyframes rgbBackground {
   0% { background:#ff4ecd; }
   25% { background:#6c5ce7; }
