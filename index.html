@@ -65,7 +65,7 @@
       border-radius:10px; 
       text-align:center; 
       cursor:pointer; 
-      transition:transform 0.3s, box-shadow 0.3s, color 0.3s; 
+      transition:transform 0.3s, box-shadow 0.3s, color 0.3s, background 0.3s; 
       border: 2px solid transparent;
       color: inherit;
     }
@@ -91,6 +91,14 @@
     }
     body.light-mode header { background:#eee; }
     body.light-mode .card, body.light-mode .feature { background:#fff; color:#000; }
+
+    /* Dark mode cards override */
+    body.dark-mode .card, 
+    body.dark-mode .feature {
+      background:#fff;  /* cards white */
+      color:#000;       /* card text black */
+      border-color:#6c5ce7;
+    }
 
     /* RGB mode (animated background) */
     body.rgb-mode {
@@ -219,14 +227,15 @@
     // Theme toggle
     themeToggle.addEventListener('click', () => {
       const body = document.body;
-      body.classList.toggle('light-mode');
 
-      // If switching to light mode, turn off RGB
+      body.classList.toggle('light-mode');
+      body.classList.toggle('dark-mode'); // toggle dark mode for cards
+
       if(body.classList.contains('light-mode')){
         body.classList.remove('rgb-mode');
-        body.style.color = '#000'; // black text
+        body.style.color = '#000'; // body text black
       } else {
-        body.style.color = '#fff'; // white text
+        body.style.color = '#fff'; // body text white
       }
     });
 
@@ -241,7 +250,7 @@
       }
 
       body.classList.toggle('rgb-mode');
-      body.style.color = body.classList.contains('rgb-mode') ? '#fff' : '#fff';
+      body.style.color = '#fff'; // ensure readability in RGB
     });
   </script>
 </body>
