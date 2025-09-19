@@ -1,249 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monterey Bay PCs</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      background: #0f0f1a; 
-      color: #fff; 
-      margin:0; 
-      transition: background 0.3s, color 0.3s; 
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monterey Bay PCs</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
+  background: #0f0f1a;
+  color: #fff; /* Default text outside cards */
+}
 
-    header { 
-      display:flex; 
-      justify-content:space-between; 
-      align-items:center; 
-      padding:1rem 2rem; 
-      background:#111; 
-      position:sticky; 
-      top:0; 
-      z-index:1000; 
-    }
-    header .logo { font-weight:bold; font-size:1.5rem; color:#ff4ecd; }
-    nav a { margin:0 1rem; text-decoration:none; color:#ddd; transition: color 0.3s; }
-    nav a:hover { color:#ff4ecd; }
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #111;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+header .logo { font-weight:bold; font-size:1.5rem; color:#ff4ecd; }
+nav a { margin:0 1rem; text-decoration:none; color:inherit; transition: color 0.3s; }
+nav a:hover { color:#ff4ecd; }
 
-    .btn { 
-      background:linear-gradient(90deg, #ff4ecd, #6c5ce7); 
-      color:#fff; padding:.7rem 1.2rem; 
-      border-radius:5px; 
-      text-decoration:none; 
-      font-weight:bold; 
-      transition: box-shadow 0.3s ease-in-out; 
-      box-shadow: 0 0 10px rgba(255, 78, 205, 0.7); 
-    }
-    .btn:hover { box-shadow: 0 0 20px rgba(255, 78, 205, 1); }
+/* Buttons */
+.btn {
+  background: linear-gradient(90deg, #ff4ecd, #6c5ce7);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(255, 78, 205, 0.7);
+}
+.btn:hover { box-shadow: 0 0 20px rgba(255, 78, 205, 1); }
 
-    .btn-outline { 
-      border:2px solid #6c5ce7; 
-      padding:.7rem 1.2rem; 
-      border-radius:5px; 
-      color:#fff; 
-      text-decoration:none; 
-      margin-left:.5rem; 
-    }
-    .btn-outline:hover { background:#6c5ce7; }
+.btn-outline {
+  border:2px solid #6c5ce7;
+  padding:.7rem 1.2rem;
+  border-radius:5px;
+  color:inherit;
+  text-decoration:none;
+  margin-left:.5rem;
+}
+.btn-outline:hover { background:#6c5ce7; color:#fff; }
 
-    .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
-    .hero-text { flex:1 1 400px; max-width:500px; }
-    .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
-    .hero-text span { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .hero-subtext { font-size:1rem; line-height:1.6; }
-    .hero-img { flex:1 1 400px; display:flex; justify-content:center; }
-    .hero-img img { max-width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
+/* Hero */
+.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
+.hero-text { flex:1 1 400px; max-width:500px; }
+.hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
+.hero-text span { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero-subtext { font-size:1rem; line-height:1.6; }
+.hero-img { flex:1 1 400px; display:flex; justify-content:center; }
+.hero-img img { max-width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
 
-    .products, .features { padding:4rem 2rem; }
-    .products h2, .features h2 { text-align:center; margin-bottom:2rem; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:1.5rem; }
+/* Sections */
+.products, .features { padding:4rem 2rem; }
+.products h2, .features h2 { text-align:center; margin-bottom:2rem; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
 
-    .card, .feature { 
-      background:#000; /* default black for light mode */
-      padding:2rem; 
-      border-radius:10px; 
-      text-align:center; 
-      cursor:pointer; 
-      transition: transform 0.3s, box-shadow 0.3s, color 0.3s, background 0.3s; 
-      border: 2px solid transparent;
-      color:#000; /* default black text for light mode */
-    }
+/* Cards */
+.card, .feature {
+  padding:2rem;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+  border:2px solid transparent;
+}
+/* Price remains same */
+.price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 
-    .card:hover { 
-      transform:scale(1.05) rotate(-1deg); 
-      box-shadow:0 0 20px rgba(108, 92, 231, 0.8); 
-      border-image: linear-gradient(90deg, #ff4ecd, #6c5ce7) 1; 
-    }
+/* Hover */
+.card:hover { transform: scale(1.05) rotate(-1deg); box-shadow:0 0 20px rgba(108, 92, 231,0.8); border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1; }
 
-    .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
-    .btn-small { padding:.5rem 1rem; font-size:.9rem; }
-    footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:inherit; }
+/* Footer */
+footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; }
 
-    /* Modal */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
-    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; color:inherit; }
-    .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
-    .copy-btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
+/* Modal */
+.modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+.modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; color:inherit; }
+.close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
+.copy-btn { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
 
-    /* Dark mode */
-    body.dark-mode { background:#0f0f1a; color:#fff; }
-    body.dark-mode header { background:#111; }
-    body.dark-mode .card, body.dark-mode .feature { background:#fff !important; color:#fff !important; border-color:#6c5ce7 !important; }
+/* Dark Mode */
+body.dark-mode { background:#0f0f1a; color:#fff; }
+body.dark-mode header, body.dark-mode footer, body.dark-mode nav a { color:#fff; }
+body.dark-mode .card, body.dark-mode .feature { background:#fff; color:#000; }
+body.dark-mode .card .price, body.dark-mode .feature .price { color:#ff4ecd; }
 
-    /* Light mode */
-    body.light-mode { background:#fdfdfd; color:#000; }
-    body.light-mode header { background:#eee; }
-    body.light-mode .card, body.light-mode .feature { background:#000 !important; color:#000 !important; border-color:#6c5ce7 !important; }
+/* Light Mode */
+body.light-mode { background:#fdfdfd; color:#000; }
+body.light-mode header, body.light-mode footer, body.light-mode nav a { color:#000; }
+body.light-mode .card, body.light-mode .feature { background:#000; color:#fff; }
+body.light-mode .card .price, body.light-mode .feature .price { color:#ff4ecd; }
 
-    /* RGB animation */
-    body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
-    @keyframes rgbBackground {
-      0% { background:#ff4ecd; }
-      25% { background:#6c5ce7; }
-      50% { background:#00f2ff; }
-      75% { background:#00ff99; }
-      100% { background:#ff4ecd; }
-    }
-
-  </style>
+/* RGB mode */
+body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
+@keyframes rgbBackground {
+  0% { background:#ff4ecd; }
+  25% { background:#6c5ce7; }
+  50% { background:#00f2ff; }
+  75% { background:#00ff99; }
+  100% { background:#ff4ecd; }
+}
+</style>
 </head>
 <body class="dark-mode">
-  <header>
-    <div class="logo">Monterey Bay PCs</div>
-    <nav>
-      <a href="#products">Products</a>
-      <a href="#features">Features</a>
-      <a href="#support">Support</a>
-    </nav>
-    <div>
-      <a class="btn" href="#products">Shop Now</a>
-      <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
-      <button class="btn-outline" id="rgbToggle">🌈 RGB Mode</button>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="hero-text">
-      <h1> PCs <span>Custom-Built</span> For You</h1>
-      <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
-      <div class="hero-buttons">
-        <a href="#products" class="btn">Browse PCs</a>
-      </div>
-    </div>
-    <div class="hero-img">
-      <img src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
-    </div>
-  </section>
+<header>
+  <div class="logo">Monterey Bay PCs</div>
+  <nav>
+    <a href="#products">Products</a>
+    <a href="#features">Features</a>
+    <a href="#support">Support</a>
+  </nav>
+  <div>
+    <a class="btn" href="#products">Shop Now</a>
+    <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
+    <button class="btn-outline" id="rgbToggle">🌈 RGB Mode</button>
+  </div>
+</header>
 
-  <section class="products" id="products">
-    <h2>Popular Builds</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>1080p - Starter/budget PC </h3>
-        <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
-        <span class="price">$600.00+</span>
-        <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
-      </div>
-      <div class="card">
-        <h3>1440p - Midrange PC</h3>
-        <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
-        <span class="price">$1,300.00+</span>
-        <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
-      </div>
-      <div class="card">
-        <h3>4k - High-end PC</h3>
-        <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
-        <span class="price">$2,000.00+</span>
-        <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
-      </div>
-    </div>
-  </section>
-
-  <section class="features" id="features">
-    <h2>Why Choose Us?</h2>
-    <div class="grid">
-      <div class="feature">
-        <h4>Expert Craftmanship</h4>
-        <p>Hand-assembled PCs with full stress testing before shipping.</p>
-      </div>
-      <div class="feature">
-        <h4>Fast Delivery</h4>
-        <p>Get your system quickly and efficiently</p>
-      </div>
-      <div class="feature">
-        <h4>Discount</h4>
-        <p>Save money when you return an old part and swap it for a new one</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    Contact: ✉ MontereyBayPC@gmail.com
-  </footer>
-
-  <!-- Modal -->
-  <div class="modal" id="emailModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h3>Contact Us</h3>
-      <p>Copy our email address below:</p>
-      <input type="text" id="emailAddress" value="MontereyBayPC@gmail.com" readonly style="width:100%; padding:.5rem; border:none; border-radius:5px; margin-top:1rem; text-align:center;">
-      <button class="copy-btn" id="copyBtn">Copy Email</button>
+<section class="hero">
+  <div class="hero-text">
+    <h1> PCs <span>Custom-Built</span> For You</h1>
+    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn">Browse PCs</a>
     </div>
   </div>
+  <div class="hero-img">
+    <img src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
+  </div>
+</section>
 
-  <script>
-    const modal = document.getElementById('emailModal');
-    const closeModal = document.getElementById('closeModal');
-    const copyBtn = document.getElementById('copyBtn');
-    const emailAddress = document.getElementById('emailAddress');
-    const themeToggle = document.getElementById('themeToggle');
-    const rgbToggle = document.getElementById('rgbToggle');
+<section class="products" id="products">
+<h2>Popular Builds</h2>
+<div class="grid">
+  <div class="card">
+    <h3>1080p - Starter/budget PC</h3>
+    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
+    <span class="price">$600.00+</span>
+    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
+  </div>
+  <div class="card">
+    <h3>1440p - Midrange PC</h3>
+    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
+    <span class="price">$1,300.00+</span>
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
+  </div>
+  <div class="card">
+    <h3>4k - High-end PC</h3>
+    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
+    <span class="price">$2,000.00+</span>
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
+  </div>
+</div>
+</section>
 
-    // Make all cards clickable
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', () => {
-        modal.style.display = 'flex';
-      });
-    });
+<section class="features" id="features">
+<h2>Why Choose Us?</h2>
+<div class="grid">
+  <div class="feature">
+    <h4>Expert Craftmanship</h4>
+    <p>Hand-assembled PCs with full stress testing before shipping.</p>
+  </div>
+  <div class="feature">
+    <h4>Fast Delivery</h4>
+    <p>Get your system quickly and efficiently</p>
+  </div>
+  <div class="feature">
+    <h4>Discount</h4>
+    <p>Save money when you return an old part and swap it for a new one</p>
+  </div>
+</div>
+</section>
 
-    closeModal.onclick = () => { modal.style.display = 'none'; };
-    window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; };
+<footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
-    copyBtn.addEventListener('click', () => {
-      emailAddress.select();
-      emailAddress.setSelectionRange(0, 99999); 
-      navigator.clipboard.writeText(emailAddress.value);
-      copyBtn.textContent = "Copied!";
-      setTimeout(() => copyBtn.textContent = "Copy Email", 2000);
-    });
+<!-- Modal -->
+<div class="modal" id="emailModal">
+<div class="modal-content">
+  <span class="close" id="closeModal">&times;</span>
+  <h3>Contact Us</h3>
+  <p>Copy our email address below:</p>
+  <input type="text" id="emailAddress" value="MontereyBayPC@gmail.com" readonly style="width:100%; padding:.5rem; border:none; border-radius:5px; margin-top:1rem; text-align:center;">
+  <button class="copy-btn" id="copyBtn">Copy Email</button>
+</div>
+</div>
 
-    // Theme toggle
-    themeToggle.addEventListener('click', () => {
-      const body = document.body;
-      body.classList.toggle('light-mode');
-      body.classList.toggle('dark-mode');
+<script>
+const modal = document.getElementById('emailModal');
+const closeModal = document.getElementById('closeModal');
+const copyBtn = document.getElementById('copyBtn');
+const emailAddress = document.getElementById('emailAddress');
+const themeToggle = document.getElementById('themeToggle');
+const rgbToggle = document.getElementById('rgbToggle');
 
-      if(body.classList.contains('light-mode')){
-        body.style.color = '#000';
-      } else {
-        body.style.color = '#fff';
-      }
-    });
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+});
 
-    // RGB toggle
-    rgbToggle.addEventListener('click', () => {
-      const body = document.body;
-      if(body.classList.contains('light-mode')){
-        alert("RGB mode only works in dark mode!");
-        return;
-      }
-      body.classList.toggle('rgb-mode');
-      body.style.color = '#fff';
-    });
-  </script>
+closeModal.onclick = () => { modal.style.display = 'none'; };
+window.onclick = e => { if(e.target == modal) modal.style.display='none'; };
+
+copyBtn.addEventListener('click', () => {
+  emailAddress.select();
+  emailAddress.setSelectionRange(0,99999);
+  navigator.clipboard.writeText(emailAddress.value);
+  copyBtn.textContent = "Copied!";
+  setTimeout(()=>copyBtn.textContent="Copy Email",2000);
+});
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle('dark-mode');
+});
+
+rgbToggle.addEventListener('click', () => {
+  const body = document.body;
+  if(body.classList.contains('light-mode')){
+    alert("RGB mode only works in dark mode!");
+    return;
+  }
+  body.classList.toggle('rgb-mode');
+});
+</script>
+
 </body>
 </html>
