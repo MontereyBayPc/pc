@@ -24,8 +24,8 @@ header {
   top:0;
   z-index:1000;
 }
-header .logo { font-weight:bold; font-size:1.5rem; color:inherit; }
-nav a { margin:0 1rem; text-decoration:none; color:inherit; transition: color 0.3s; }
+header .logo { font-weight:bold; font-size:1.5rem; color:#fff; }
+nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
 nav a:hover { color:#ff4ecd; }
 
 /* Buttons */
@@ -45,7 +45,7 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid #6c5ce7;
   padding:.7rem 1.2rem;
   border-radius:5px;
-  color:inherit;
+  color:#fff;
   text-decoration:none;
   margin-left:.5rem;
 }
@@ -57,8 +57,6 @@ nav a:hover { color:#ff4ecd; }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
 .hero-text span { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .hero-subtext { font-size:1rem; line-height:1.6; }
-.hero-img { flex:1 1 400px; display:flex; justify-content:center; }
-.hero-img img { max-width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.5); }
 
 /* Sections */
 .products, .features { padding:4rem 2rem; }
@@ -73,6 +71,8 @@ nav a:hover { color:#ff4ecd; }
   cursor:pointer;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
   border:2px solid transparent;
+  background:#000; /* always black cards */
+  color:#fff;      /* always white text inside cards */
 }
 /* Price */
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
@@ -81,7 +81,7 @@ nav a:hover { color:#ff4ecd; }
 .card:hover { transform:scale(1.05) rotate(-1deg); box-shadow:0 0 20px rgba(108,92,231,0.8); border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1; }
 
 /* Footer */
-footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; }
+footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
 
 /* Modal */
 .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
@@ -89,43 +89,9 @@ footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; 
 .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
 .copy-btn { background:linear-gradient(90deg,#ff4ecd,#6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
 
-/* Dark Mode */
-body.dark-mode {
-  background:#0f0f1a;
-  color:#fff; /* outside card text */
-}
-body.dark-mode header,
-body.dark-mode header .logo,
-body.dark-mode nav a,
-body.dark-mode footer {
-  color:#fff;
-}
-body.dark-mode .card, body.dark-mode .feature {
-  background:#000; /* black cards */
-  color:#fff;   /* white text inside cards */
-}
-body.dark-mode .card .price, body.dark-mode .feature .price {
-  color:#ff4ecd; /* gradient price stays */
-}
-
-/* Light Mode */
-body.light-mode {
-  background:#fdfdfd;
-  color:#000; /* outside card text */
-}
-body.light-mode header,
-body.light-mode header .logo,
-body.light-mode nav a,
-body.light-mode footer {
-  color:#000;
-}
-body.light-mode .card, body.light-mode .feature {
-  background:#000; /* black cards */
-  color:#fff;      /* white text inside cards */
-}
-body.light-mode .card .price, body.light-mode .feature .price {
-  color:#ff4ecd; /* gradient price stays */
-}
+/* Dark Mode / Light Mode only affects background outside cards */
+body.dark-mode { background:#0f0f1a; color:#fff; }
+body.light-mode { background:#fdfdfd; color:#000; }
 
 /* RGB mode */
 body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
@@ -223,19 +189,19 @@ body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
 </div>
 
 <script>
-const modal = document.getElementById('emailModal');
-const closeModal = document.getElementById('closeModal');
-const copyBtn = document.getElementById('copyBtn');
-const emailAddress = document.getElementById('emailAddress');
-const themeToggle = document.getElementById('themeToggle');
-const rgbToggle = document.getElementById('rgbToggle');
+const modal=document.getElementById('emailModal');
+const closeModal=document.getElementById('closeModal');
+const copyBtn=document.getElementById('copyBtn');
+const emailAddress=document.getElementById('emailAddress');
+const themeToggle=document.getElementById('themeToggle');
+const rgbToggle=document.getElementById('rgbToggle');
 
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', ()=>{ modal.style.display='flex'; });
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('click',()=>{modal.style.display='flex';});
 });
-closeModal.onclick = ()=>{ modal.style.display='none'; };
-window.onclick = e=>{ if(e.target==modal) modal.style.display='none'; };
-copyBtn.addEventListener('click', ()=>{
+closeModal.onclick=()=>{modal.style.display='none';};
+window.onclick=e=>{if(e.target==modal)modal.style.display='none';};
+copyBtn.addEventListener('click',()=>{
   emailAddress.select();
   emailAddress.setSelectionRange(0,99999);
   navigator.clipboard.writeText(emailAddress.value);
@@ -243,12 +209,12 @@ copyBtn.addEventListener('click', ()=>{
   setTimeout(()=>copyBtn.textContent="Copy Email",2000);
 });
 
-themeToggle.addEventListener('click', ()=>{
+themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
 });
 
-rgbToggle.addEventListener('click', ()=>{
+rgbToggle.addEventListener('click',()=>{
   const body=document.body;
   if(body.classList.contains('light-mode')){
     alert("RGB mode only works in dark mode!");
