@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monterey Bay PCs</title>
+<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <style>
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
+  margin:0;
+  background:#0f0f1a;
+  color:#fff;
+  overflow-x:hidden;
+  perspective:1000px;
   transition: background 0.3s, color 0.3s;
-  background: #0f0f1a;
-  color: #fff;
-  overflow-x: hidden;
-  perspective: 1000px;
 }
 
 /* Header */
@@ -52,13 +52,13 @@ nav a:hover { color:#ff4ecd; }
   transform:scale(1.05);
 }
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
 }
 
 /* Hero */
-.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; position:relative; overflow:hidden; }
+.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; position:relative; overflow:hidden; height:600px; }
 .hero-text { flex:1 1 400px; max-width:500px; z-index:2; position:relative; }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
 .hero-text span {
@@ -69,22 +69,20 @@ nav a:hover { color:#ff4ecd; }
   animation: textGradient 6s ease infinite;
 }
 @keyframes textGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
 }
 .hero-subtext { font-size:1rem; line-height:1.6; }
+.hero-img { position:relative; }
 .hero-img img {
   transition: transform 0.3s;
   border-radius:10px;
-  z-index:2;
-  position:relative;
+  cursor:pointer;
 }
-.hero-img img:hover {
-  transform: translateY(-10px) scale(1.02);
-}
+.hero-img img:hover { transform: translateY(-10px) scale(1.02); }
 
-/* Floating RGB particles behind hero */
+/* Floating RGB particles */
 .particle {
   position:absolute;
   width:4px;
@@ -95,9 +93,9 @@ nav a:hover { color:#ff4ecd; }
   animation: float 6s linear infinite;
 }
 @keyframes float {
-  0% { transform: translateY(0) translateX(0); opacity:0; }
+  0% { transform:translateY(0) translateX(0); opacity:0; }
   10% { opacity:1; }
-  100% { transform: translateY(-800px) translateX(200px); opacity:0; }
+  100% { transform:translateY(-800px) translateX(200px); opacity:0; }
 }
 
 /* Sections */
@@ -118,24 +116,24 @@ nav a:hover { color:#ff4ecd; }
   transform-style: preserve-3d;
 }
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
-.card:hover {
-  transform: scale(1.06) rotate(-1deg);
-  box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5);
-  border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1;
-}
+.card:hover { box-shadow:0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5); }
 
-/* Footer */
-footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
+/* Scroll-trigger animation */
+.fade-in { opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
 
-/* Dark / Light Mode outside cards only */
+/* Achievements */
+#achievements { text-align:center; }
+.achievement { margin:1rem; padding:1rem; border:2px dashed #6c5ce7; border-radius:10px; color:#fff; animation: glow 1s ease infinite alternate; display:inline-block; }
+@keyframes glow { 0% { box-shadow:0 0 5px #6c5ce7 } 100% { box-shadow:0 0 20px #ff4ecd } }
+
+/* Shooter Canvas */
+#gameCanvas { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+
+/* Dark / Light Mode */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
-
-/* RGB mode */
-body.rgb-mode {
-  animation: rgbBackground 10s infinite alternate;
-  position: relative;
-}
+body.rgb-mode { animation: rgbBackground 10s infinite alternate; }
 @keyframes rgbBackground {
   0% { background:#ff4ecd; }
   25% { background:#6c5ce7; }
@@ -143,21 +141,6 @@ body.rgb-mode {
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
 }
-
-/* Scroll-trigger animation */
-.fade-in {
-  opacity:0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
-}
-.fade-in.visible {
-  opacity:1;
-  transform: translateY(0);
-}
-
-/* Achievements Section */
-#achievements { text-align:center; }
-.achievement { margin:1rem; padding:1rem; border:2px dashed #6c5ce7; border-radius:10px; color:#fff; }
 </style>
 </head>
 <body class="dark-mode">
@@ -177,6 +160,7 @@ body.rgb-mode {
 </header>
 
 <section class="hero">
+  <canvas id="gameCanvas"></canvas>
   <div class="hero-text">
     <h1>PCs <span>Custom-Built</span> For You</h1>
     <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs...</p>
@@ -189,18 +173,9 @@ body.rgb-mode {
 <section class="products" id="products">
 <h2>Popular Builds</h2>
 <div class="grid fade-in">
-  <div class="card" data-name="1080p">
-    <h3>1080p - Starter/budget PC</h3>
-    <span class="price">$600.00+</span>
-  </div>
-  <div class="card" data-name="1440p">
-    <h3>1440p - Midrange PC</h3>
-    <span class="price">$1,300.00+</span>
-  </div>
-  <div class="card" data-name="4K">
-    <h3>4K - High-end PC</h3>
-    <span class="price">$2,000.00+</span>
-  </div>
+  <div class="card" data-name="1080p"><h3>1080p - Starter PC</h3><span class="price">$600.00+</span></div>
+  <div class="card" data-name="1440p"><h3>1440p - Midrange PC</h3><span class="price">$1,300.00+</span></div>
+  <div class="card" data-name="4K"><h3>4K - High-end PC</h3><span class="price">$2,000.00+</span></div>
 </div>
 </section>
 
@@ -212,95 +187,80 @@ body.rgb-mode {
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
 <script>
-// Theme & RGB toggles
+// Theme & RGB
 const themeToggle=document.getElementById('themeToggle');
 const rgbToggle=document.getElementById('rgbToggle');
-themeToggle.addEventListener('click',()=>{
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
-});
-rgbToggle.addEventListener('click',()=>{
-  const body=document.body;
-  if(body.classList.contains('light-mode')){
-    alert("RGB mode only works in dark mode!");
-    return;
-  }
-  body.classList.toggle('rgb-mode');
-});
+themeToggle.addEventListener('click',()=>{document.body.classList.toggle('light-mode');document.body.classList.toggle('dark-mode');});
+rgbToggle.addEventListener('click',()=>{if(document.body.classList.contains('light-mode')){alert("RGB mode only works in dark mode!");return;}document.body.classList.toggle('rgb-mode');unlockAchievement('RGB Enthusiast: Enabled RGB Mode');});
 
-// Floating particles behind hero
-for(let i=0;i<50;i++){
-  const p=document.createElement('div');
-  p.classList.add('particle');
-  p.style.left=Math.random()*window.innerWidth+'px';
-  p.style.top=Math.random()*window.innerHeight+'px';
-  p.style.animationDuration=(Math.random()*4+3)+'s';
-  document.querySelector('.hero').appendChild(p);
-}
+// Floating particles
+for(let i=0;i<50;i++){const p=document.createElement('div');p.classList.add('particle');p.style.left=Math.random()*window.innerWidth+'px';p.style.top=Math.random()*window.innerHeight+'px';p.style.animationDuration=(Math.random()*4+3)+'s';document.querySelector('.hero').appendChild(p);}
 
-// 3D tilt for cards
+// 3D tilt cards
 document.querySelectorAll('.card').forEach(card=>{
   card.addEventListener('mousemove', e=>{
-    const rect=card.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-    const cx=rect.width/2;
-    const cy=rect.height/2;
-    const dx=(x-cx)/20;
-    const dy=(y-cy)/20;
-    card.style.transform=`rotateY(${dx}deg) rotateX(${-dy}deg) scale(1.05)`;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+    card.style.transform = `rotateY(${x/15}deg) rotateX(${-y/15}deg)`;
   });
-  card.addEventListener('mouseleave',()=>{ card.style.transform='rotateY(0) rotateX(0) scale(1)'; });
+  card.addEventListener('mouseleave',()=>{card.style.transform='rotateY(0deg) rotateX(0deg)';});
 });
 
-// Scroll-triggered fade-in
+// Scroll fade-in
 const faders=document.querySelectorAll('.fade-in');
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-    }
-  });
-},{threshold:0.3});
-faders.forEach(fader=>observer.observe(fader));
-
-// Mini confetti on hero click
-document.getElementById('heroPC').addEventListener('click',()=>{
-  for(let i=0;i<50;i++){
-    const c=document.createElement('div');
-    c.classList.add('particle');
-    c.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
-    c.style.left=(Math.random()*window.innerWidth)+'px';
-    c.style.top=(Math.random()*window.innerHeight)+'px';
-    c.style.width='6px';
-    c.style.height='6px';
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1000);
-  }
-});
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');}})}, {threshold:0.1});
+faders.forEach(f=>observer.observe(f));
 
 // Achievements
-const achievements=['First Click!','Explorer: Viewed Products','RGB Enthusiast: Enabled RGB Mode'];
-function unlockAchievement(name){
-  if(!document.getElementById(name)){
-    const el=document.createElement('div');
-    el.classList.add('achievement');
-    el.id=name;
-    el.textContent=name;
-    document.getElementById('achievementsList').appendChild(el);
-  }
-}
+const achievements=['First Click!','Explorer: Viewed Products','RGB Enthusiast: Enabled RGB Mode','Ultra RGB Mode'];
+function unlockAchievement(name){if(!document.getElementById(name)){const el=document.createElement('div');el.classList.add('achievement');el.id=name;el.textContent=name;document.getElementById('achievementsList').appendChild(el);}}
 
-// Shop Now achievement
+// Shop button
 document.getElementById('shopBtn').addEventListener('click',()=>unlockAchievement('First Click!'));
+// Product cards
+document.querySelectorAll('.card').forEach(card=>card.addEventListener('click',()=>unlockAchievement('Explorer: Viewed Products')));
 
-// Product click achievements
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('click',()=>unlockAchievement('Explorer: Viewed Products'));
+// Hover sparks
+const heroPC=document.getElementById('heroPC');
+heroPC.addEventListener('mousemove',e=>{
+  for(let i=0;i<2;i++){
+    const s=document.createElement('div');
+    s.classList.add('particle');
+    s.style.left=(e.pageX+Math.random()*20-10)+'px';
+    s.style.top=(e.pageY+Math.random()*20-10)+'px';
+    s.style.width='3px'; s.style.height='3px';
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+  }
 });
 
-// RGB mode achievement
-rgbToggle.addEventListener('click',()=>unlockAchievement('RGB Enthusiast: Enabled RGB Mode'));
+// Konami Code
+let konami=[];const code=[38,38,40,40,37,39,37,39,66,65];window.addEventListener('keydown',e=>{konami.push(e.keyCode);if(konami.slice(-code.length).toString()===code.toString()){document.body.classList.add('rgb-mode');unlockAchievement('Ultra RGB Mode');}});
+
+// Hidden clickable object
+const hidden=document.createElement('div');
+hidden.style.position='absolute'; hidden.style.width='30px'; hidden.style.height='30px';
+hidden.style.background='transparent'; hidden.style.top='50%'; hidden.style.left='90%';
+hidden.addEventListener('click',()=>alert("You found a secret!"));
+document.body.appendChild(hidden);
+
+// --- Tiny Arcade Shooter ---
+const canvas=document.getElementById('gameCanvas');const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=600;
+let player={x:canvas.width/2-30,y:canvas.height-80,width:60,height:60};
+let bullets=[];let enemies=[];let score=0;
+function drawPlayer(){ctx.fillStyle='#00f2ff';ctx.fillRect(player.x,player.y,player.width,player.height);}
+function drawBullets(){ctx.fillStyle='rgb(255,78,205)';bullets.forEach(b=>ctx.fillRect(b.x,b.y,b.width,b.height));}
+function drawEnemies(){ctx.fillStyle='rgb(255,255,0)';enemies.forEach(e=>ctx.fillRect(e.x,e.y,e.width,e.height));}
+function drawScore(){ctx.fillStyle='#fff';ctx.font='20px Arial';ctx.fillText('Score: '+score,canvas.width-120,30);}
+function update(){ctx.clearRect(0,0,canvas.width,canvas.height);drawPlayer();drawBullets();drawEnemies();drawScore();
+  bullets.forEach((b,i)=>{b.y-=6;if(b.y<0) bullets.splice(i,1);});
+  enemies.forEach((e,ei)=>{e.y+=2;if(e.y>canvas.height){enemies.splice(ei,1);}
+    bullets.forEach((b,bi)=>{if(b.x<b.x+e.width && b.x>e.x && b.y>e.y && b.y<e.y+e.height){score+=1;bullets.splice(bi,1);enemies.splice(ei,1);}});});requestAnimationFrame(update);}
+function spawnEnemies(){const x=Math.random()*(canvas.width-30);enemies.push({x:x,y:-30,width:30,height:30});}
+setInterval(spawnEnemies,1000);update();
+window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){player.x-=20;}else if(e.key==='ArrowRight'){player.x+=20;}else if(e.key===' '){bullets.push({x:player.x+player.width/2-3,y:player.y,width:6,height:12});}});
+
 </script>
 </body>
 </html>
