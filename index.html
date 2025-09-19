@@ -13,7 +13,6 @@ body {
   background: #0f0f1a;
   color: #fff;
   overflow-x: hidden;
-  perspective: 1000px;
 }
 
 /* Header */
@@ -58,8 +57,8 @@ nav a:hover { color:#ff4ecd; }
 }
 
 /* Hero */
-.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; position:relative; overflow:hidden; }
-.hero-text { flex:1 1 400px; max-width:500px; z-index:2; position:relative; }
+.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
+.hero-text { flex:1 1 400px; max-width:500px; }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
 .hero-text span {
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
@@ -77,32 +76,14 @@ nav a:hover { color:#ff4ecd; }
 .hero-img img {
   transition: transform 0.3s;
   border-radius:10px;
-  z-index:2;
-  position:relative;
 }
 .hero-img img:hover {
   transform: translateY(-10px) scale(1.02);
 }
 
-/* Floating RGB particles behind hero */
-.particle {
-  position:absolute;
-  width:4px;
-  height:4px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.3);
-  pointer-events:none;
-  animation: float 6s linear infinite;
-}
-@keyframes float {
-  0% { transform: translateY(0) translateX(0); opacity:0; }
-  10% { opacity:1; }
-  100% { transform: translateY(-800px) translateX(200px); opacity:0; }
-}
-
 /* Sections */
-.products, .features, #achievements { padding:4rem 2rem; }
-.products h2, .features h2, #achievements h2 { text-align:center; margin-bottom:2rem; }
+.products, .features { padding:4rem 2rem; }
+.products h2, .features h2 { text-align:center; margin-bottom:2rem; }
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
 
 /* Cards */
@@ -115,7 +96,6 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  transform-style: preserve-3d;
 }
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 .card:hover {
@@ -131,7 +111,7 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
 
-/* RGB mode */
+/* RGB mode with subtle floating glow */
 body.rgb-mode {
   animation: rgbBackground 10s infinite alternate;
   position: relative;
@@ -144,20 +124,36 @@ body.rgb-mode {
   100% { background:#ff4ecd; }
 }
 
-/* Scroll-trigger animation */
-.fade-in {
-  opacity:0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
+/* Click sparks */
+.spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ff4ecd;
+  pointer-events: none;
+  animation: sparkAnim 0.6s linear forwards;
 }
-.fade-in.visible {
-  opacity:1;
-  transform: translateY(0);
+@keyframes sparkAnim {
+  0% { transform: translate(0,0) scale(1); opacity:1; }
+  100% { transform: translate(calc(var(--dx) * 50px), calc(var(--dy) * 50px)) scale(0); opacity:0; }
 }
 
-/* Achievements Section */
-#achievements { text-align:center; }
-.achievement { margin:1rem; padding:1rem; border:2px dashed #6c5ce7; border-radius:10px; color:#fff; }
+/* Floating lights in RGB mode */
+.floating-light {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  pointer-events: none;
+  animation: floatUp 5s linear infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) translateX(0); opacity:0; }
+  10% { opacity:0.6; }
+  100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
+}
 </style>
 </head>
 <body class="dark-mode">
@@ -167,10 +163,10 @@ body.rgb-mode {
   <nav>
     <a href="#products">Products</a>
     <a href="#features">Features</a>
-    <a href="#achievements">Achievements</a>
+    <a href="#support">Support</a>
   </nav>
   <div>
-    <a class="btn" id="shopBtn">Shop Now</a>
+    <a class="btn" href="#products">Shop Now</a>
     <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
     <button class="btn-outline" id="rgbToggle">🌈 RGB Mode</button>
   </div>
@@ -179,34 +175,59 @@ body.rgb-mode {
 <section class="hero">
   <div class="hero-text">
     <h1>PCs <span>Custom-Built</span> For You</h1>
-    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs...</p>
+    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn">Browse PCs</a>
+    </div>
   </div>
   <div class="hero-img">
-    <img id="heroPC" src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg" alt="Gaming PC">
+    <img id="heroPC" src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
   </div>
 </section>
 
 <section class="products" id="products">
 <h2>Popular Builds</h2>
-<div class="grid fade-in">
-  <div class="card" data-name="1080p">
+<div class="grid">
+  <!-- 1080p -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201080p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1080p - Starter/budget PC</h3>
+    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
+    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <div class="card" data-name="1440p">
+  <!-- 1440p -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1440p - Midrange PC</h3>
+    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <div class="card" data-name="4K">
-    <h3>4K - High-end PC</h3>
+  <!-- 4K -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
+    <h3>4k - High-end PC</h3>
+    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
 </div>
 </section>
 
-<section id="achievements">
-<h2>Achievements</h2>
-<div id="achievementsList"></div>
+<section class="features" id="features">
+<h2>Why Choose Us?</h2>
+<div class="grid">
+  <div class="feature">
+    <h4>Expert Craftmanship</h4>
+    <p>Hand-assembled PCs with full stress testing before shipping.</p>
+  </div>
+  <div class="feature">
+    <h4>Fast Delivery</h4>
+    <p>Get your system quickly and efficiently</p>
+  </div>
+  <div class="feature">
+    <h4>Discount</h4>
+    <p>Save money when you return an old part and swap it for a new one</p>
+  </div>
+</div>
 </section>
 
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
@@ -228,79 +249,52 @@ rgbToggle.addEventListener('click',()=>{
   body.classList.toggle('rgb-mode');
 });
 
-// Floating particles behind hero
-for(let i=0;i<50;i++){
-  const p=document.createElement('div');
-  p.classList.add('particle');
-  p.style.left=Math.random()*window.innerWidth+'px';
-  p.style.top=Math.random()*window.innerHeight+'px';
-  p.style.animationDuration=(Math.random()*4+3)+'s';
-  document.querySelector('.hero').appendChild(p);
+// Floating lights in RGB mode
+function spawnFloatingLight(){
+  if(!document.body.classList.contains('rgb-mode')) return;
+  const light=document.createElement('div');
+  light.classList.add('floating-light');
+  light.style.left=Math.random()*window.innerWidth+'px';
+  document.body.appendChild(light);
+  setTimeout(()=>light.remove(),5000);
 }
+setInterval(spawnFloatingLight,500);
 
-// 3D tilt for cards
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('mousemove', e=>{
-    const rect=card.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-    const cx=rect.width/2;
-    const cy=rect.height/2;
-    const dx=(x-cx)/20;
-    const dy=(y-cy)/20;
-    card.style.transform=`rotateY(${dx}deg) rotateX(${-dy}deg) scale(1.05)`;
-  });
-  card.addEventListener('mouseleave',()=>{ card.style.transform='rotateY(0) rotateX(0) scale(1)'; });
+// Click sparks
+function createSpark(x,y){
+  const spark=document.createElement('div');
+  spark.classList.add('spark');
+  spark.style.left=x+'px';
+  spark.style.top=y+'px';
+  spark.style.setProperty('--dx', (Math.random()*2-1).toFixed(2));
+  spark.style.setProperty('--dy', (Math.random()*2-1).toFixed(2));
+  document.body.appendChild(spark);
+  setTimeout(()=>spark.remove(),600);
+}
+document.addEventListener('click', e=>{
+  createSpark(e.clientX,e.clientY);
 });
 
-// Scroll-triggered fade-in
-const faders=document.querySelectorAll('.fade-in');
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-    }
-  });
-},{threshold:0.3});
-faders.forEach(fader=>observer.observe(fader));
+// Hover sound
+const hoverSound=new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
+document.querySelectorAll('.btn,.btn-outline,.card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>hoverSound.play());
+});
 
-// Mini confetti on hero click
+// Mini Easter egg: confetti on hero image click
 document.getElementById('heroPC').addEventListener('click',()=>{
   for(let i=0;i<50;i++){
     const c=document.createElement('div');
-    c.classList.add('particle');
+    c.classList.add('spark');
     c.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
     c.style.left=(Math.random()*window.innerWidth)+'px';
     c.style.top=(Math.random()*window.innerHeight)+'px';
-    c.style.width='6px';
-    c.style.height='6px';
+    c.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
+    c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
     document.body.appendChild(c);
     setTimeout(()=>c.remove(),1000);
   }
 });
-
-// Achievements
-const achievements=['First Click!','Explorer: Viewed Products','RGB Enthusiast: Enabled RGB Mode'];
-function unlockAchievement(name){
-  if(!document.getElementById(name)){
-    const el=document.createElement('div');
-    el.classList.add('achievement');
-    el.id=name;
-    el.textContent=name;
-    document.getElementById('achievementsList').appendChild(el);
-  }
-}
-
-// Shop Now achievement
-document.getElementById('shopBtn').addEventListener('click',()=>unlockAchievement('First Click!'));
-
-// Product click achievements
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('click',()=>unlockAchievement('Explorer: Viewed Products'));
-});
-
-// RGB mode achievement
-rgbToggle.addEventListener('click',()=>unlockAchievement('RGB Enthusiast: Enabled RGB Mode'));
 </script>
 </body>
 </html>
