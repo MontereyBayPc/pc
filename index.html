@@ -9,7 +9,7 @@
     body { 
       font-family: Arial, sans-serif; 
       background: #0f0f1a; 
-      color: #f0f0f5; 
+      color: #fff; 
       margin:0; 
       transition: background 0.3s, color 0.3s; 
     }
@@ -65,8 +65,9 @@
       border-radius:10px; 
       text-align:center; 
       cursor:pointer; 
-      transition:transform 0.3s, box-shadow 0.3s; 
+      transition:transform 0.3s, box-shadow 0.3s, color 0.3s; 
       border: 2px solid transparent;
+      color: inherit;
     }
     .card:hover { 
       transform:scale(1.05) rotate(-1deg); 
@@ -75,18 +76,18 @@
     }
     .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
     .btn-small { padding:.5rem 1rem; font-size:.9rem; }
-    footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:#aaa; }
+    footer { text-align:center; padding:1.5rem; background:#111122; font-size:2rem; color:inherit; }
 
     /* Modal styles */
     .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
-    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; }
+    .modal-content { background:#1a1a2e; padding:2rem; border-radius:10px; max-width:400px; width:90%; text-align:center; color:inherit; }
     .close { float:right; cursor:pointer; color:#ff4ecd; font-size:1.5rem; }
     .copy-btn { background:linear-gradient(90deg, #ff4ecd, #6c5ce7); color:#fff; padding:.5rem 1rem; border:none; border-radius:5px; margin-top:1rem; cursor:pointer; }
 
     /* Light mode */
     body.light-mode {
       background:#fdfdfd;
-      color:#111;
+      color:#000;
     }
     body.light-mode header { background:#eee; }
     body.light-mode .card, body.light-mode .feature { background:#fff; color:#000; }
@@ -217,12 +218,30 @@
 
     // Theme toggle
     themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light-mode');
+      const body = document.body;
+      body.classList.toggle('light-mode');
+
+      // If switching to light mode, turn off RGB
+      if(body.classList.contains('light-mode')){
+        body.classList.remove('rgb-mode');
+        body.style.color = '#000'; // black text
+      } else {
+        body.style.color = '#fff'; // white text
+      }
     });
 
     // RGB mode toggle
     rgbToggle.addEventListener('click', () => {
-      document.body.classList.toggle('rgb-mode');
+      const body = document.body;
+
+      if(body.classList.contains('light-mode')){
+        body.classList.remove('rgb-mode'); // RGB off in light mode
+        alert("RGB mode only works in dark mode!");
+        return;
+      }
+
+      body.classList.toggle('rgb-mode');
+      body.style.color = body.classList.contains('rgb-mode') ? '#fff' : '#fff';
     });
   </script>
 </body>
