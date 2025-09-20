@@ -86,7 +86,7 @@ nav a:hover { color:#ff4ecd; }
 .products h2, .features h2 { text-align:center; margin-bottom:2rem; }
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
 
-/* Cards with 3D tilt (#1) */
+/* Cards */
 .card, .feature {
   padding:2rem;
   border-radius:10px;
@@ -96,14 +96,13 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  transform-style: preserve-3d;
 }
-.price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 .card:hover {
-  transform: scale(1.06) rotateY(10deg) rotateX(5deg);
+  transform: scale(1.06) rotate(-1deg);
   box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5);
   border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1;
 }
+.price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 
 /* Footer */
 footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
@@ -112,7 +111,7 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
 
-/* RGB mode with subtle floating glow (#4) */
+/* RGB mode with subtle floating glow */
 body.rgb-mode {
   animation: rgbBackground 10s infinite alternate;
   position: relative;
@@ -123,20 +122,6 @@ body.rgb-mode {
   50% { background:#00f2ff; }
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
-}
-.floating-light {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  pointer-events: none;
-  animation: floatUp 5s linear infinite;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0) translateX(0); opacity:0; }
-  10% { opacity:0.6; }
-  100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
 }
 
 /* Click sparks */
@@ -154,74 +139,85 @@ body.rgb-mode {
   100% { transform: translate(calc(var(--dx) * 50px), calc(var(--dy) * 50px)) scale(0); opacity:0; }
 }
 
-/* Scroll-triggered animations (#3) */
-.scroll-fade {
-  opacity:0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+/* Floating lights in RGB mode */
+.floating-light {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  pointer-events: none;
+  animation: floatUp 5s linear infinite;
 }
-.scroll-fade.visible {
-  opacity:1;
+@keyframes floatUp {
+  0% { transform: translateY(0) translateX(0); opacity:0; }
+  10% { opacity:0.6; }
+  100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
+}
+
+/* 3D tilt effect */
+.card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.card-inner {
+  transition: transform 0.2s;
+}
+.card:hover .card-inner {
+  transform: rotateY(10deg) rotateX(5deg);
+}
+
+/* Scroll fade-ins */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible {
+  opacity: 1;
   transform: translateY(0);
 }
 
-/* Shooter game overlay (#5) */
-#shooterOverlay {
-  display:none;
-  position:fixed;
+/* Game overlay */
+#gameOverlay {
+  position: fixed;
   top:0;
   left:0;
-  width:100vw;
-  height:100vh;
-  background: rgba(0,0,0,0.9);
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
   z-index:2000;
-  overflow:hidden;
 }
-#player {
-  position:absolute;
-  width:40px;
-  height:40px;
-  bottom:20px;
-  left:50%;
-  margin-left:-20px;
-  background:#ff4ecd;
-  border-radius:5px;
+#gameCanvas {
+  background:#111;
+  display:block;
+  margin:auto;
+  margin-top:50px;
 }
-.bullet {
+#gameOverScreen {
   position:absolute;
-  width:6px;
-  height:12px;
-  background:#00f2ff;
-  border-radius:3px;
-}
-.enemy {
-  position:absolute;
-  width:40px;
-  height:40px;
-  background:#6c5ce7;
-  border-radius:5px;
-}
-
-/* Hidden objects for Konami code (#6) */
-.hidden-object {
-  position:absolute;
-  width:50px;
-  height:50px;
-  background: #00ff99;
-  border-radius:50%;
   top:50%;
   left:50%;
-  margin-left:-25px;
-  margin-top:-25px;
+  transform:translate(-50%,-50%);
+  color:#fff;
+  text-align:center;
   display:none;
-  z-index: 1500;
+}
+#gameOverScreen button {
+  margin-top:1rem;
+  padding:.7rem 1.2rem;
+  font-weight:bold;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
 }
 </style>
 </head>
 <body class="dark-mode">
 
 <header>
-  <div class="logo" id="logo">Monterey Bay PCs</div>
+  <div class="logo" id="gameTrigger">Monterey Bay PCs</div>
   <nav>
     <a href="#products">Products</a>
     <a href="#features">Features</a>
@@ -234,10 +230,10 @@ body.rgb-mode {
   </div>
 </header>
 
-<section class="hero scroll-fade">
+<section class="hero fade-in">
   <div class="hero-text">
     <h1>PCs <span>Custom-Built</span> For You</h1>
-    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance.</p>
+    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
     <div class="hero-buttons">
       <a href="#products" class="btn">Browse PCs</a>
     </div>
@@ -247,31 +243,31 @@ body.rgb-mode {
   </div>
 </section>
 
-<section class="products scroll-fade" id="products">
+<section class="products fade-in" id="products">
 <h2>Popular Builds</h2>
 <div class="grid">
-  <div class="card">
+  <div class="card"><div class="card-inner">
     <h3>1080p - Starter/budget PC</h3>
-    <p>A 1080p PC is great for gaming and light editing. Smooth and reliable.</p>
+    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
     <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
-  </div>
-  <div class="card">
+  </div></div>
+  <div class="card"><div class="card-inner">
     <h3>1440p - Midrange PC</h3>
-    <p>Sharper visuals with high frame rates. Great for creators and gamers.</p>
+    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
-    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" style="width:100%; border-radius:8px; margin-top:1rem;">
-  </div>
-  <div class="card">
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
+  </div></div>
+  <div class="card"><div class="card-inner">
     <h3>4k - High-end PC</h3>
-    <p>Ultra-high-definition visuals and top-tier performance for AAA gaming and 4K editing.</p>
+    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
-    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" style="width:100%; border-radius:8px; margin-top:1rem;">
-  </div>
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
+  </div></div>
 </div>
 </section>
 
-<section class="features scroll-fade" id="features">
+<section class="features fade-in" id="features">
 <h2>Why Choose Us?</h2>
 <div class="grid">
   <div class="feature">
@@ -289,15 +285,16 @@ body.rgb-mode {
 </div>
 </section>
 
-<footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
+<footer class="fade-in">Contact: ✉ MontereyBayPC@gmail.com</footer>
 
-<!-- Shooter Overlay -->
-<div id="shooterOverlay">
-  <div id="player"></div>
+<!-- Game Overlay -->
+<div id="gameOverlay">
+  <canvas id="gameCanvas" width="600" height="800"></canvas>
+  <div id="gameOverScreen">
+    <h1>Game Over</h1>
+    <button onclick="exitGame()">Return to Website</button>
+  </div>
 </div>
-
-<!-- Hidden object for Konami -->
-<div class="hidden-object" id="konamiObj"></div>
 
 <script>
 // Theme & RGB toggles
@@ -348,105 +345,147 @@ document.querySelectorAll('.btn,.btn-outline,.card').forEach(el=>{
   el.addEventListener('mouseenter',()=>hoverSound.play());
 });
 
-// Scroll fade-in (#3)
-const faders = document.querySelectorAll('.scroll-fade');
-const appearOptions = { threshold:0.1, rootMargin:"0px 0px -50px 0px" };
-const appearOnScroll = new IntersectionObserver(function(entries,observer){
+// Scroll fade-in observer
+const observer = new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
-    if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target);}
+    if(entry.isIntersecting) entry.target.classList.add('visible');
   });
-}, appearOptions);
-faders.forEach(fader => { appearOnScroll.observe(fader); });
+},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
 
-// Shooter game overlay (#5)
-const shooterOverlay = document.getElementById('shooterOverlay');
-const player = document.getElementById('player');
-let shooterActive = false;
-let bullets = [];
-let enemies = [];
-let keys = {};
-let playerX = window.innerWidth/2 - 20;
-let playerY = window.innerHeight - 60;
-
-// Activate shooter only when clicking the logo
-document.getElementById('logo').addEventListener('click',()=>{
-  shooterActive = !shooterActive;
-  shooterOverlay.style.display = shooterActive ? 'block' : 'none';
-  bullets.forEach(b=>b.remove());
-  enemies.forEach(e=>e.remove());
-  bullets=[]; enemies=[];
+// Mini Easter egg: confetti on hero image click
+document.getElementById('heroPC').addEventListener('click',()=>{
+  for(let i=0;i<50;i++){
+    const c=document.createElement('div');
+    c.classList.add('spark');
+    c.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
+    c.style.left=(Math.random()*window.innerWidth)+'px';
+    c.style.top=(Math.random()*window.innerHeight)+'px';
+    c.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
+    c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
 });
 
-document.addEventListener('keydown', e=>{ keys[e.key.toLowerCase()] = true; });
-document.addEventListener('keyup', e=>{ keys[e.key.toLowerCase()] = false; });
+// Konami code easter egg
+const konamiSequence=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiIndex=0;
+document.addEventListener('keydown', e=>{
+  if(e.key===konamiSequence[konamiIndex]) konamiIndex++;
+  else konamiIndex=0;
+  if(konamiIndex===konamiSequence.length){
+    konamiIndex=0;
+    showKonamiPopup();
+  }
+});
+function showKonamiPopup(){
+  const popup=document.createElement('div');
+  popup.style.position='fixed';
+  popup.style.top='50%';
+  popup.style.left='50%';
+  popup.style.transform='translate(-50%,-50%)';
+  popup.style.background='#000';
+  popup.style.color='#0f0';
+  popup.style.padding='2rem';
+  popup.style.zIndex='3000';
+  popup.style.fontSize='2rem';
+  popup.style.border='2px solid #0f0';
+  popup.innerText='🌟 Konami Activated! Enjoy some confetti! 🌟';
+  document.body.appendChild(popup);
+  for(let i=0;i<50;i++){
+    const c=document.createElement('div');
+    c.classList.add('spark');
+    c.style.background=['#0f0','#0ff','#ff0','#f0f'][Math.floor(Math.random()*4)];
+    c.style.left=(Math.random()*window.innerWidth)+'px';
+    c.style.top=(Math.random()*window.innerHeight)+'px';
+    c.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
+    c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+  setTimeout(()=>popup.remove(),4000);
+}
 
-function shoot(){
-  const b = document.createElement('div');
-  b.classList.add('bullet');
-  b.style.left = (playerX + 17) + 'px';
-  b.style.top = playerY + 'px';
-  shooterOverlay.appendChild(b);
-  bullets.push(b);
+// Tiny arcade shooter game
+const gameTrigger=document.getElementById('gameTrigger');
+const gameOverlay=document.getElementById('gameOverlay');
+const gameCanvas=document.getElementById('gameCanvas');
+const ctx=gameCanvas.getContext('2d');
+let gameInterval;
+let player, bullets, enemies, gameOver;
+
+gameTrigger.addEventListener('click',()=>startGame());
+
+function startGame(){
+  gameOverlay.style.display='block';
+  player={x:300,y:750,width:40,height:40};
+  bullets=[];
+  enemies=[];
+  gameOver=false;
+  spawnEnemy();
+  gameInterval=setInterval(gameLoop,16);
 }
+
+function exitGame(){
+  gameOverlay.style.display='none';
+  clearInterval(gameInterval);
+}
+
 function spawnEnemy(){
-  if(!shooterActive) return;
-  const e = document.createElement('div');
-  e.classList.add('enemy');
-  e.style.top = '0px';
-  e.style.left = Math.random()*(window.innerWidth-40)+'px';
-  shooterOverlay.appendChild(e);
-  enemies.push(e);
+  const enemy={x:Math.random()*560,y:-40,width:40,height:40};
+  enemies.push(enemy);
+  if(!gameOver)setTimeout(spawnEnemy,1000);
 }
-setInterval(spawnEnemy,1500);
 
 function gameLoop(){
-  if(!shooterActive){ requestAnimationFrame(gameLoop); return; }
-  if(keys['arrowleft']||keys['a']) playerX -=8;
-  if(keys['arrowright']||keys['d']) playerX +=8;
-  if(keys['arrowup']||keys['w']) playerY -=8;
-  if(keys['arrowdown']||keys['s']) playerY +=8;
-  playerX = Math.max(0, Math.min(window.innerWidth-40, playerX));
-  playerY = Math.max(0, Math.min(window.innerHeight-40, playerY));
-  player.style.left = playerX+'px';
-  player.style.top = playerY+'px';
-  if(keys[' ']){ if(!player.lastShot || Date.now()-player.lastShot>300){ shoot(); player.lastShot=Date.now(); } }
-  bullets.forEach((b,i)=>{
-    let y = parseInt(b.style.top);
-    b.style.top = (y-10)+'px';
-    if(y<0){ b.remove(); bullets.splice(i,1); }
+  if(gameOver)return;
+  ctx.clearRect(0,0,600,800);
+  // Draw player
+  ctx.fillStyle='#0ff';
+  ctx.fillRect(player.x,player.y,player.width,player.height);
+  // Draw bullets
+  ctx.fillStyle='#ff0';
+  bullets.forEach(b=>{
+    b.y-=5;
+    ctx.fillRect(b.x,b.y,b.width,b.height);
   });
+  bullets=bullets.filter(b=>b.y>0);
+  // Draw enemies
+  ctx.fillStyle='#f00';
   enemies.forEach((e,i)=>{
-    let y = parseInt(e.style.top);
-    e.style.top = (y+3)+'px';
-    if(y>window.innerHeight){ e.remove(); enemies.splice(i,1); }
-    bullets.forEach((b,j)=>{
-      const bx=parseInt(b.style.left), by=parseInt(b.style.top);
-      const ex=parseInt(e.style.left), ey=parseInt(e.style.top);
-      if(bx<ex+40 && bx+6>ex && by<ey+40 && by+12>ey){
-        b.remove(); e.remove();
+    e.y+=2;
+    ctx.fillRect(e.x,e.y,e.width,e.height);
+    // Collision with player
+    if(collide(player,e)||e.y+e.height>=gameCanvas.height){
+      triggerGameOver();
+    }
+  });
+  // Remove bullets hitting enemies
+  bullets.forEach((b,j)=>{
+    enemies.forEach((e,k)=>{
+      if(collide(b,e)){
+        enemies.splice(k,1);
         bullets.splice(j,1);
-        enemies.splice(i,1);
       }
     });
   });
-  requestAnimationFrame(gameLoop);
 }
-gameLoop();
 
-// Konami Code + hidden object (#6)
-const konami = [ 'ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a' ];
-let konamiIndex = 0;
-const hiddenObj = document.getElementById('konamiObj');
 document.addEventListener('keydown', e=>{
-  if(e.key === konami[konamiIndex]){
-    konamiIndex++;
-    if(konamiIndex===konami.length){
-      hiddenObj.style.display = 'block';
-      setTimeout(()=>{ hiddenObj.style.display='none'; },3000);
-      konamiIndex = 0;
-    }
-  } else konamiIndex=0;
+  if(e.key==='ArrowLeft') player.x=Math.max(0,player.x-10);
+  if(e.key==='ArrowRight') player.x=Math.min(560,player.x+10);
+  if(e.key===' ') bullets.push({x:player.x+15,y:player.y,width:10,height:20});
 });
+
+function collide(a,b){
+  return a.x<a.x+a.width && a.x+b.width>a.x && a.y<b.y+b.height && a.y+b.height>a.y;
+}
+
+function triggerGameOver(){
+  gameOver=true;
+  document.getElementById('gameOverScreen').style.display='block';
+}
 </script>
 </body>
 </html>
