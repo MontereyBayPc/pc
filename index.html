@@ -26,7 +26,7 @@ header {
   top:0;
   z-index:1000;
 }
-header .logo { font-weight:bold; font-size:1.5rem; color:#fff; }
+header .logo { font-weight:bold; font-size:1.5rem; color:#fff; cursor:pointer; }
 nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
 nav a:hover { color:#ff4ecd; }
 
@@ -221,7 +221,7 @@ body.rgb-mode {
 <body class="dark-mode">
 
 <header>
-  <div class="logo">Monterey Bay PCs</div>
+  <div class="logo" id="logo">Monterey Bay PCs</div>
   <nav>
     <a href="#products">Products</a>
     <a href="#features">Features</a>
@@ -250,21 +250,18 @@ body.rgb-mode {
 <section class="products scroll-fade" id="products">
 <h2>Popular Builds</h2>
 <div class="grid">
-  <!-- 1080p -->
   <div class="card">
     <h3>1080p - Starter/budget PC</h3>
     <p>A 1080p PC is great for gaming and light editing. Smooth and reliable.</p>
     <span class="price">$600.00+</span>
     <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <!-- 1440p -->
   <div class="card">
     <h3>1440p - Midrange PC</h3>
     <p>Sharper visuals with high frame rates. Great for creators and gamers.</p>
     <span class="price">$1,300.00+</span>
     <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
-  <!-- 4K -->
   <div class="card">
     <h3>4k - High-end PC</h3>
     <p>Ultra-high-definition visuals and top-tier performance for AAA gaming and 4K editing.</p>
@@ -361,7 +358,7 @@ const appearOnScroll = new IntersectionObserver(function(entries,observer){
 }, appearOptions);
 faders.forEach(fader => { appearOnScroll.observe(fader); });
 
-// Tiny Shooter (#5)
+// Shooter game overlay (#5)
 const shooterOverlay = document.getElementById('shooterOverlay');
 const player = document.getElementById('player');
 let shooterActive = false;
@@ -370,16 +367,17 @@ let enemies = [];
 let keys = {};
 let playerX = window.innerWidth/2 - 20;
 let playerY = window.innerHeight - 60;
-document.addEventListener('keydown', e=>{
-  if(e.key.toLowerCase() === 's'){
-    shooterActive = !shooterActive;
-    shooterOverlay.style.display = shooterActive ? 'block' : 'none';
-    bullets = [];
-    enemies.forEach(enemy=>enemy.remove());
-    enemies = [];
-  }
-  keys[e.key.toLowerCase()] = true;
+
+// Activate shooter only when clicking the logo
+document.getElementById('logo').addEventListener('click',()=>{
+  shooterActive = !shooterActive;
+  shooterOverlay.style.display = shooterActive ? 'block' : 'none';
+  bullets.forEach(b=>b.remove());
+  enemies.forEach(e=>e.remove());
+  bullets=[]; enemies=[];
 });
+
+document.addEventListener('keydown', e=>{ keys[e.key.toLowerCase()] = true; });
 document.addEventListener('keyup', e=>{ keys[e.key.toLowerCase()] = false; });
 
 function shoot(){
