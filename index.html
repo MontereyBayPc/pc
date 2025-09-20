@@ -45,6 +45,7 @@ nav a:hover { color:#ff4ecd; }
   border:none;
   margin-left:.5rem;
   cursor:pointer;
+  position: relative;
 }
 .btn:hover, .btn-outline:hover {
   box-shadow:0 0 20px rgba(255,78,205,1);
@@ -54,6 +55,16 @@ nav a:hover { color:#ff4ecd; }
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Lock icon for RGB button */
+#rgbToggle.locked .lock-icon {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  pointer-events: none;
 }
 
 /* Hero */
@@ -96,14 +107,6 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  white-space: normal; /* allow full text display */
-  overflow: visible;   /* prevent truncation */
-}
-.card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 1rem;
 }
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 .card:hover {
@@ -130,21 +133,6 @@ body.rgb-mode {
   50% { background:#00f2ff; }
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
-}
-
-/* Locked RGB icon */
-#rgbToggle.locked {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.6;
-}
-#rgbToggle.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
 }
 
 /* Click sparks */
@@ -231,7 +219,10 @@ body.rgb-mode {
   <div>
     <a class="btn" href="#products">Shop Now</a>
     <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
-    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode</button>
+    <button class="btn-outline locked" id="rgbToggle">
+      🌈 RGB Mode
+      <span class="lock-icon">🔒</span>
+    </button>
   </div>
 </header>
 
@@ -254,23 +245,23 @@ body.rgb-mode {
   <!-- 1080p -->
   <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201080p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1080p - Starter/budget PC</h3>
-    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
+    <p style="white-space:normal;">A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
-    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
+    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
   <!-- 1440p -->
   <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1440p - Midrange PC</h3>
-    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
+    <p style="white-space:normal;">A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
-    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
   <!-- 4K -->
   <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>4k - High-end PC</h3>
-    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
+    <p style="white-space:normal;">A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
-    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC">
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
 </div>
 </section>
@@ -308,6 +299,18 @@ const rgbToggle=document.getElementById('rgbToggle');
 themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
+});
+rgbToggle.addEventListener('click',()=>{
+  if(rgbToggle.classList.contains('locked')){
+    alert("Unlock RGB mode with the Konami Code!");
+    return;
+  }
+  const body=document.body;
+  if(body.classList.contains('light-mode')){
+    alert("RGB mode only works in dark mode!");
+    return;
+  }
+  body.classList.toggle('rgb-mode');
 });
 
 // Floating lights in RGB mode
@@ -357,13 +360,12 @@ document.getElementById('heroPC').addEventListener('click',()=>{
   }
 });
 
-// Shooter Game Variables (Original version)
+// Shooter Game Variables
 const logo = document.getElementById('logo');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let gameActive = false;
 let player, bullets, enemies, enemySpawnTimer, keys = {};
-const gameOverScreen = document.getElementById('gameOverScreen');
 
 // Start game on logo click
 logo.addEventListener('click', ()=>{ if(!gameActive) startGame(); });
@@ -392,12 +394,13 @@ document.addEventListener('keydown', e=>{ keys[e.key] = true; });
 document.addEventListener('keyup', e=>{ keys[e.key] = false; });
 
 // Game Over
+const gameOverScreen = document.getElementById('gameOverScreen');
 function triggerGameOver() {
   gameActive = false;
   gameOverScreen.style.display = 'flex';
 }
 
-// Game Loop (Original)
+// Game Loop
 function gameLoop(){
   if(!gameActive) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -460,7 +463,7 @@ function gameLoop(){
   if(gameActive) requestAnimationFrame(gameLoop);
 }
 
-// Konami code to unlock RGB
+// Konami code unlocks RGB
 const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 let konamiIndex = 0;
 document.addEventListener('keydown', e=>{
@@ -468,29 +471,14 @@ document.addEventListener('keydown', e=>{
     konamiIndex++;
     if(konamiIndex === konamiCode.length){
       konamiIndex = 0;
-      alert('RGB Mode Unlocked! 🎉');
+      // Unlock RGB
       rgbToggle.classList.remove('locked');
-      rgbToggle.disabled = false;
+      const lockIcon = rgbToggle.querySelector('.lock-icon');
+      if(lockIcon) lockIcon.remove();
+      alert('Konami Code Activated! RGB Mode unlocked 🎉');
     }
   } else {
     konamiIndex = 0;
-  }
-});
-
-// RGB toggle click
-rgbToggle.addEventListener('click', ()=>{
-  if(rgbToggle.classList.contains('locked')){
-    alert('Enter the Konami Code to unlock RGB Mode!');
-    return;
-  }
-  document.body.classList.toggle('rgb-mode');
-});
-
-// Prevent RGB in light mode
-rgbToggle.addEventListener('click', ()=>{
-  if(document.body.classList.contains('light-mode')){
-    alert("RGB mode only works in dark mode!");
-    return;
   }
 });
 </script>
