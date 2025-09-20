@@ -92,17 +92,10 @@ nav a:hover { color:#ff4ecd; }
   border-radius:10px;
   text-align:center;
   cursor:pointer;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s, opacity 0.6s;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  opacity: 0; /* start invisible for scroll animation */
-  transform: translateY(20px); /* start slightly down */
-}
-.card.visible, .feature.visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 .card:hover {
@@ -160,6 +153,24 @@ body.rgb-mode {
   0% { transform: translateY(0) translateX(0); opacity:0; }
   10% { opacity:0.6; }
   100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
+}
+
+/* #4 RGB hover particles for cards */
+.card:hover::after {
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0; left:0;
+  pointer-events:none;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(255,255,255,0.2),0 0 20px rgba(255,255,255,0.1);
+  animation: hoverGlow 1s infinite alternate;
+}
+@keyframes hoverGlow {
+  0% { box-shadow:0 0 10px rgba(255,78,205,0.5),0 0 20px rgba(108,92,231,0.3);}
+  50% { box-shadow:0 0 20px rgba(255,78,205,0.7),0 0 40px rgba(108,92,231,0.5);}
+  100% { box-shadow:0 0 10px rgba(255,78,205,0.5),0 0 20px rgba(108,92,231,0.3);}
 }
 </style>
 </head>
@@ -302,22 +313,6 @@ document.getElementById('heroPC').addEventListener('click',()=>{
     setTimeout(()=>c.remove(),1000);
   }
 });
-
-// Scroll-triggered animations (#3)
-const scrollElements=document.querySelectorAll('.card, .feature');
-const elementInView = (el, offset = 0) => {
-  const elementTop=el.getBoundingClientRect().top;
-  return elementTop <= ((window.innerHeight || document.documentElement.clientHeight) - offset);
-};
-const displayScrollElement = (el) => { el.classList.add('visible'); };
-const hideScrollElement = (el) => { el.classList.remove('visible'); };
-const handleScrollAnimation = () => {
-  scrollElements.forEach(el=>{
-    if(elementInView(el,100)){ displayScrollElement(el); } else { hideScrollElement(el); }
-  });
-};
-window.addEventListener('scroll', ()=>{ handleScrollAnimation(); });
-handleScrollAnimation(); // initial check
 </script>
 </body>
 </html>
