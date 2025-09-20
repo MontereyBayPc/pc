@@ -73,25 +73,21 @@ nav a:hover { color:#ff4ecd; }
   100% { background-position: 0% 50%; }
 }
 .hero-subtext { font-size:1rem; line-height:1.6; }
-.hero-img {
-  perspective: 1000px; /* 3D perspective for tilt effect */
-}
 .hero-img img {
   transition: transform 0.3s;
   border-radius:10px;
-  transform-style: preserve-3d;
 }
 .hero-img img:hover {
   transform: translateY(-10px) scale(1.02);
 }
 
 /* Sections */
-.products, .features { padding:4rem 2rem; }
-.products h2, .features h2 { text-align:center; margin-bottom:2rem; }
+.products, .features, .achievements { padding:4rem 2rem; }
+.products h2, .features h2, .achievements h2 { text-align:center; margin-bottom:2rem; }
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
 
 /* Cards */
-.card, .feature {
+.card, .feature, .achievement {
   padding:2rem;
   border-radius:10px;
   text-align:center;
@@ -106,6 +102,12 @@ nav a:hover { color:#ff4ecd; }
   transform: scale(1.06) rotate(-1deg);
   box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5);
   border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1;
+}
+
+/* Achievements specific hover */
+.achievement:hover {
+  transform: scale(1.05);
+  box-shadow:0 0 20px rgba(255,78,205,0.8);
 }
 
 /* Footer */
@@ -234,6 +236,25 @@ body.rgb-mode {
 </div>
 </section>
 
+<!-- Achievements Section -->
+<section class="achievements" id="achievements">
+  <h2>Our Achievements</h2>
+  <div class="grid">
+    <div class="achievement" onclick="spawnConfetti(this)">
+      <h4>500+ PCs Built</h4>
+      <p>Hand-assembled, tested, and delivered worldwide.</p>
+    </div>
+    <div class="achievement" onclick="spawnConfetti(this)">
+      <h4>Top Gaming Ratings</h4>
+      <p>Recognized for high performance and reliability.</p>
+    </div>
+    <div class="achievement" onclick="spawnConfetti(this)">
+      <h4>Fastest Delivery</h4>
+      <p>From order to setup in record time.</p>
+    </div>
+  </div>
+</section>
+
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
 <script>
@@ -300,17 +321,22 @@ document.getElementById('heroPC').addEventListener('click',()=>{
   }
 });
 
-// 3D tilt on hero image (#1-3)
-const heroImg=document.getElementById('heroPC');
-heroImg.addEventListener('mousemove',(e)=>{
-  const rect=heroImg.getBoundingClientRect();
-  const x=e.clientX-rect.left-(rect.width/2);
-  const y=e.clientY-rect.top-(rect.height/2);
-  const rotateX = (y/rect.height)*15;
-  const rotateY = (x/rect.width)*-15;
-  heroImg.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-});
-heroImg.addEventListener('mouseleave',()=>{ heroImg.style.transform='translateY(-10px) scale(1.02)'; });
+// Achievements confetti
+function spawnConfetti(el){
+  for(let i=0;i<30;i++){
+    const c=document.createElement('div');
+    c.classList.add('spark');
+    c.style.width = c.style.height = Math.random()*6+4+'px';
+    c.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
+    const rect = el.getBoundingClientRect();
+    c.style.left = (rect.left + rect.width/2)+'px';
+    c.style.top = (rect.top + rect.height/2)+'px';
+    c.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
+    c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
 </script>
 </body>
 </html>
