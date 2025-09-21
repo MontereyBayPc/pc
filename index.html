@@ -32,6 +32,7 @@ nav a:hover { color:#ff4ecd; }
 
 /* Buttons */
 .btn, .btn-outline {
+  position: relative;
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
   background-size: 200% 200%;
   animation: gradientShift 5s ease infinite;
@@ -54,6 +55,23 @@ nav a:hover { color:#ff4ecd; }
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Lock icon for RGB button */
+#rgbToggle.locked .lock-icon {
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  transform: translateY(-50%) rotate(0deg);
+  font-size: 1.5rem;
+  pointer-events: none;
+  animation: swing 2s infinite ease-in-out;
+  transform-origin: top center;
+}
+@keyframes swing {
+  0%   { transform: translateY(-50%) rotate(10deg); }
+  50%  { transform: translateY(-50%) rotate(-10deg); }
+  100% { transform: translateY(-50%) rotate(10deg); }
 }
 
 /* Hero */
@@ -96,14 +114,12 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  white-space: normal; /* allow full text display */
-  overflow: visible;   /* prevent truncation */
 }
-.card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 1rem;
+.card p {
+  display:block;
+  overflow:visible;
+  text-overflow:unset;
+  white-space:normal;
 }
 .price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
 .card:hover {
@@ -130,21 +146,6 @@ body.rgb-mode {
   50% { background:#00f2ff; }
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
-}
-
-/* Locked RGB icon */
-#rgbToggle.locked {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.6;
-}
-#rgbToggle.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
 }
 
 /* Click sparks */
@@ -231,7 +232,7 @@ body.rgb-mode {
   <div>
     <a class="btn" href="#products">Shop Now</a>
     <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
-    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode</button>
+    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode <span class="lock-icon">🔒</span></button>
   </div>
 </header>
 
@@ -256,21 +257,21 @@ body.rgb-mode {
     <h3>1080p - Starter/budget PC</h3>
     <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
-    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
+    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
   <!-- 1440p -->
   <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1440p - Midrange PC</h3>
     <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
-    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
   <!-- 4K -->
   <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>4k - High-end PC</h3>
     <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
-    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC">
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC" style="width:100%; border-radius:8px; margin-top:1rem;">
   </div>
 </div>
 </section>
@@ -305,9 +306,25 @@ body.rgb-mode {
 // Theme & RGB toggles
 const themeToggle=document.getElementById('themeToggle');
 const rgbToggle=document.getElementById('rgbToggle');
+const lockIcon=rgbToggle.querySelector('.lock-icon');
+let rgbUnlocked=false;
+
 themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
+});
+
+rgbToggle.addEventListener('click',()=>{
+  if(!rgbUnlocked){
+    alert("RGB Mode is locked! Try the Konami Code 😉");
+    return;
+  }
+  const body=document.body;
+  if(body.classList.contains('light-mode')){
+    alert("RGB mode only works in dark mode!");
+    return;
+  }
+  body.classList.toggle('rgb-mode');
 });
 
 // Floating lights in RGB mode
@@ -357,13 +374,12 @@ document.getElementById('heroPC').addEventListener('click',()=>{
   }
 });
 
-// Shooter Game Variables (Original version)
+// Shooter Game Variables
 const logo = document.getElementById('logo');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let gameActive = false;
 let player, bullets, enemies, enemySpawnTimer, keys = {};
-const gameOverScreen = document.getElementById('gameOverScreen');
 
 // Start game on logo click
 logo.addEventListener('click', ()=>{ if(!gameActive) startGame(); });
@@ -391,107 +407,83 @@ function endGame() {
 document.addEventListener('keydown', e=>{ keys[e.key] = true; });
 document.addEventListener('keyup', e=>{ keys[e.key] = false; });
 
-// Game Over
-function triggerGameOver() {
-  gameActive = false;
-  gameOverScreen.style.display = 'flex';
+// Fire bullets
+function fireBullet() {
+  bullets.push({ x: player.x+player.width/2-5, y: player.y, width:10, height:20, speed:10 });
 }
+setInterval(()=>{ if(keys[' '] && gameActive) fireBullet(); },200);
 
-// Game Loop (Original)
-function gameLoop(){
-  if(!gameActive) return;
+// Game loop
+function gameLoop() {
+  if (!gameActive) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // Move Player
-  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
-  if(keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
-
-  // Draw Player
-  ctx.fillStyle = '#0ff';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
+  // Player
+  ctx.fillStyle='cyan';
+  if(keys['ArrowLeft'] && player.x>0) player.x-=player.speed;
+  if(keys['ArrowRight'] && player.x<canvas.width-player.width) player.x+=player.speed;
+  ctx.fillRect(player.x,player.y,player.width,player.height);
 
   // Bullets
-  bullets.forEach((b, i)=>{
-    b.y -= 10;
-    ctx.fillStyle = '#ff0';
-    ctx.fillRect(b.x, b.y, b.width, b.height);
+  ctx.fillStyle='yellow';
+  bullets.forEach((b,i)=>{
+    b.y-=b.speed;
+    ctx.fillRect(b.x,b.y,b.width,b.height);
     if(b.y<0) bullets.splice(i,1);
   });
 
-  // Fire bullets
-  if(keys[' ']) bullets.push({ x: player.x + player.width/2 -2.5, y: player.y, width:5, height:10 });
-
   // Enemies
-  enemySpawnTimer++;
-  if(enemySpawnTimer>50){
-    enemies.push({ x: Math.random()*(canvas.width-40), y:-40, width:40, height:40, speed:3 });
-    enemySpawnTimer = 0;
-  }
-  enemies.forEach((e,i)=>{
-    e.y += e.speed;
-    ctx.fillStyle = '#f00';
-    ctx.fillRect(e.x, e.y, e.width, e.height);
+  ctx.fillStyle='red';
+  if(enemySpawnTimer<=0){
+    enemies.push({ x:Math.random()*(canvas.width-40), y:-40, width:40, height:40, speed:3 });
+    enemySpawnTimer=60;
+  } else enemySpawnTimer--;
+  enemies.forEach((en,i)=>{
+    en.y+=en.speed;
+    ctx.fillRect(en.x,en.y,en.width,en.height);
 
     // Collision with player
-    if(player.x < e.x + e.width &&
-       player.x + player.width > e.x &&
-       player.y < e.y + e.height &&
-       player.y + player.height > e.y){
-         triggerGameOver();
+    if(player.x<en.x+en.width && player.x+player.width>en.x && player.y<en.y+en.height && player.y+player.height>en.y){
+      showGameOver();
     }
 
-    // Enemy reaches bottom
-    if(e.y + e.height > canvas.height){
-      triggerGameOver();
+    // If enemy passes player
+    if(en.y>canvas.height){
+      showGameOver();
     }
 
     // Bullet collision
-    bullets.forEach((b,j)=>{
-      if(b.x < e.x + e.width &&
-         b.x + b.width > e.x &&
-         b.y < e.y + e.height &&
-         b.y + b.height > e.y){
-           enemies.splice(i,1);
-           bullets.splice(j,1);
+    bullets.forEach((b,bi)=>{
+      if(b.x<b.x+b.width && b.x+b.width>en.x && b.y<en.y+en.height && b.y+b.height>en.y){
+        enemies.splice(i,1);
+        bullets.splice(bi,1);
       }
     });
   });
 
-  if(gameActive) requestAnimationFrame(gameLoop);
+  requestAnimationFrame(gameLoop);
 }
 
-// Konami code to unlock RGB
-const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let konamiIndex = 0;
+function showGameOver(){
+  gameActive=false;
+  canvas.style.display='none';
+  gameOverScreen.style.display='flex';
+}
+
+// Konami Code
+const konami=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiPosition=0;
 document.addEventListener('keydown', e=>{
-  if(e.key === konamiCode[konamiIndex]){
-    konamiIndex++;
-    if(konamiIndex === konamiCode.length){
-      konamiIndex = 0;
-      alert('RGB Mode Unlocked! 🎉');
+  if(e.key===konami[konamiPosition]){
+    konamiPosition++;
+    if(konamiPosition===konami.length){
+      rgbUnlocked=true;
       rgbToggle.classList.remove('locked');
-      rgbToggle.disabled = false;
+      lockIcon.style.display='none';
+      alert('🎉 RGB Mode Unlocked! 🌈');
+      konamiPosition=0;
     }
-  } else {
-    konamiIndex = 0;
-  }
-});
-
-// RGB toggle click
-rgbToggle.addEventListener('click', ()=>{
-  if(rgbToggle.classList.contains('locked')){
-    alert('You need to do something to unlock this!');
-    return;
-  }
-  document.body.classList.toggle('rgb-mode');
-});
-
-// Prevent RGB in light mode
-rgbToggle.addEventListener('click', ()=>{
-  if(document.body.classList.contains('light-mode')){
-    alert("RGB mode only works in dark mode!");
-    return;
-  }
+  } else konamiPosition=0;
 });
 </script>
 </body>
