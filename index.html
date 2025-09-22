@@ -293,6 +293,75 @@ body.rgb-mode {
 </div>
 </section>
 
+<!-- 🔹 New Sections Start Here -->
+
+<!-- Comparison Table -->
+<section id="comparison" style="padding:4rem 2rem;">
+  <h2 style="text-align:center; margin-bottom:2rem;">Build Comparison</h2>
+  <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
+    <tr style="background:#111;">
+      <th style="padding:12px;">Feature</th>
+      <th>1080p</th>
+      <th>1440p</th>
+      <th>4K</th>
+    </tr>
+    <tr>
+      <td style="padding:12px;">Performance</td>
+      <td>High FPS, eSports Ready</td>
+      <td>Balanced, High Quality</td>
+      <td>Ultra Settings, 4K Gaming</td>
+    </tr>
+    <tr>
+      <td style="padding:12px;">Best For</td>
+      <td>Competitive Gaming</td>
+      <td>Streaming & Gaming</td>
+      <td>High-End Enthusiasts</td>
+    </tr>
+    <tr>
+      <td style="padding:12px;">Estimated Price</td>
+      <td>$600+</td>
+      <td>$1,300+</td>
+      <td>$2,000+</td>
+    </tr>
+  </table>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" style="padding:4rem 2rem;">
+  <h2 style="text-align:center; margin-bottom:2rem;">What Our Customers Say</h2>
+  <div style="max-width:900px; margin:0 auto;">
+    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – Alex M.
+    </div>
+    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my eSports needs. Smooth performance." – Jordan R.
+    </div>
+    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Taylor L.
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding:4rem 2rem;">
+  <h2 style="text-align:center; margin-bottom:2rem;">Frequently Asked Questions</h2>
+  <div style="max-width:900px; margin:0 auto;">
+    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
+      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do your builds come with Windows pre-installed?</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Yes, all builds include a licensed copy of Windows 11.</div>
+    </div>
+    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
+      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Can I customize a build?</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Absolutely! We can swap out parts based on your preferences and budget.</div>
+    </div>
+    <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
+      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do you offer warranties?</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Yes, each build comes with a 1-year limited warranty.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 🔹 Shooter Game Canvas & Footer -->
 <canvas id="gameCanvas"></canvas>
 <div id="gameOverScreen">
   <div>Game Over</div>
@@ -357,7 +426,7 @@ document.getElementById('heroPC').addEventListener('click',()=>{
   }
 });
 
-// Shooter Game Variables (Original version)
+// Shooter Game Variables
 const logo = document.getElementById('logo');
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -397,7 +466,7 @@ function triggerGameOver() {
   gameOverScreen.style.display = 'flex';
 }
 
-// Game Loop (Original)
+// Game Loop
 function gameLoop(){
   if(!gameActive) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -492,6 +561,14 @@ rgbToggle.addEventListener('click', ()=>{
     alert("RGB mode only works in dark mode!");
     return;
   }
+});
+
+// FAQ Toggle
+document.querySelectorAll('.faq-question').forEach(q=>{
+  q.addEventListener('click', ()=>{
+    const answer=q.nextElementSibling;
+    answer.style.display=answer.style.display==='block'?'none':'block';
+  });
 });
 </script>
 </body>
