@@ -21,7 +21,7 @@ header {
   background:#111;
   position:sticky;
   top:0;
-  z-index:10000;
+  z-index:1000;
 }
 header .logo { font-weight:bold; font-size:1.5rem; color:#fff; cursor:pointer; }
 nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
@@ -32,16 +32,12 @@ nav a:hover { color:#ff4ecd; }
   height: 70vh;
   display: block;
   margin: auto;
-  position: relative;
-  z-index: 1;
 }
 
-/* Controls */
+/* Dropdown CSS */
 .controls {
   text-align: center;
   margin: 1rem 0;
-  position: relative;
-  z-index: 10000; 
 }
 button, .dropbtn {
   padding: 0.7rem 1.2rem;
@@ -60,7 +56,7 @@ button:hover, .dropbtn:hover {
   box-shadow: 0 0 20px rgba(255,78,205,1);
 }
 
-/* Dropdown styling */
+/* Dropdown structure */
 .dropdown {
   display: inline-block;
   position: relative;
@@ -75,6 +71,7 @@ button:hover, .dropbtn:hover {
   overflow-y: auto;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
+  z-index: 10000;
 }
 .dropdown-content div {
   padding: 10px;
@@ -83,9 +80,6 @@ button:hover, .dropbtn:hover {
 .dropdown-content div:hover {
   background-color: #222;
 }
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 .dropdown-content::-webkit-scrollbar {
   width: 6px;
 }
@@ -93,12 +87,8 @@ button:hover, .dropbtn:hover {
   background: #ff4ecd;
   border-radius: 3px;
 }
-
-/* Price display */
-#priceDisplay {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-top: 1rem;
+.dropdown.active .dropdown-content {
+  display: block;
 }
 </style>
 </head>
@@ -116,52 +106,39 @@ button:hover, .dropbtn:hover {
 <section id="builderContainer"></section>
 
 <div class="controls">
+  <!-- CPU Dropdown -->
   <div class="dropdown">
-    <button class="dropbtn">GPU</button>
-    <div class="dropdown-content" id="gpuDropdown"></div>
-  </div>
-  <div class="dropdown">
-    <button class="dropbtn">CPU</button>
+    <button class="dropbtn">Select CPU</button>
     <div class="dropdown-content" id="cpuDropdown"></div>
   </div>
+  <!-- GPU Dropdown -->
   <div class="dropdown">
-    <button class="dropbtn">RAM</button>
+    <button class="dropbtn">Select GPU</button>
+    <div class="dropdown-content" id="gpuDropdown"></div>
+  </div>
+  <!-- RAM Dropdown -->
+  <div class="dropdown">
+    <button class="dropbtn">Select RAM</button>
     <div class="dropdown-content" id="ramDropdown"></div>
   </div>
+  <!-- Storage Dropdown -->
   <div class="dropdown">
-    <button class="dropbtn">Storage</button>
+    <button class="dropbtn">Select Storage</button>
     <div class="dropdown-content" id="storageDropdown"></div>
   </div>
+  <!-- Case Dropdown -->
   <div class="dropdown">
-    <button class="dropbtn">Motherboard</button>
-    <div class="dropdown-content" id="mbDropdown"></div>
-  </div>
-  <div class="dropdown">
-    <button class="dropbtn">Case</button>
+    <button class="dropbtn">Select Case</button>
     <div class="dropdown-content" id="caseDropdown"></div>
   </div>
-  <div class="dropdown">
-    <button class="dropbtn">PSU</button>
-    <div class="dropdown-content" id="psuDropdown"></div>
-  </div>
-  <div class="dropdown">
-    <button class="dropbtn">Cooling</button>
-    <div class="dropdown-content" id="coolingDropdown"></div>
-  </div>
 </div>
-
-<div id="priceDisplay">Estimated Price: $0</div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-let scene, camera, renderer, controls, pcModel;
-let selectedComponents = {
-  gpu: null, cpu: null, ram: null, storage: null,
-  motherboard: null, case: null, psu: null, cooling: null
-};
-let totalPrice = 0;
+// 3D Builder setup
+let scene, camera, renderer, controls, pcModel, selectedComponents = {};
 init();
 animate();
 
@@ -180,17 +157,18 @@ function init(){
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
 
+  // Lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
+
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
   directionalLight.position.set(5,5,5);
   scene.add(directionalLight);
 
-  // PC Case Base
+  // PC Case
   const geometry = new THREE.BoxGeometry(2,3,1);
   const material = new THREE.MeshStandardMaterial({color:0x222222, metalness:0.7, roughness:0.3});
   pcModel = new THREE.Mesh(geometry, material);
-  pcModel.name = "pcCase";
   scene.add(pcModel);
 
   window.addEventListener('resize', onWindowResize, false);
@@ -210,97 +188,50 @@ function animate(){
   renderer.render(scene, camera);
 }
 
-// Component data examples
-const components = {
-  gpu: [
-    {name:'GTX 1080', color:0xff4ecd, price:400},
-    {name:'RTX 3080', color:0x6c5ce7, price:800},
-    {name:'RX 7900', color:0x00ff99, price:900}
-  ],
-  cpu: [
-    {name:'Intel i5', color:0xffaa00, price:200},
-    {name:'Intel i7', color:0xff6600, price:350},
-    {name:'AMD Ryzen 9', color:0x00ffcc, price:500}
-  ],
-  ram: [
-    {name:'16GB', color:0xff44aa, price:80},
-    {name:'32GB', color:0x44ffaa, price:150},
-    {name:'64GB', color:0x4488ff, price:300}
-  ],
-  storage: [
-    {name:'1TB SSD', color:0xffcc44, price:100},
-    {name:'2TB SSD', color:0x44ffcc, price:180}
-  ],
-  motherboard: [
-    {name:'MSI B550', color:0xff8800, price:180},
-    {name:'ASUS ROG', color:0x8844ff, price:300}
-  ],
-  case: [
-    {name:'NZXT H510', color:0x333333, price:100},
-    {name:'Corsair 5000D', color:0x555555, price:150}
-  ],
-  psu: [
-    {name:'650W', color:0xff00ff, price:80},
-    {name:'850W', color:0xffaa00, price:120}
-  ],
-  cooling: [
-    {name:'Air Cooler', color:0x00ffff, price:50},
-    {name:'Liquid Cooler', color:0x0000ff, price:120}
-  ]
-};
+// Populate dropdowns with dummy "all possible" components
+const CPUs = ["Intel i3","Intel i5","Intel i7","Intel i9","AMD Ryzen 3","AMD Ryzen 5","AMD Ryzen 7","AMD Ryzen 9"];
+const GPUs = ["GTX 1050","GTX 1060","GTX 1070","GTX 1080","RTX 2060","RTX 2070","RTX 2080","RTX 3060","RTX 3070","RTX 3080","RTX 3090","RX 5600","RX 5700","RX 6800","RX 6900"];
+const RAMs = ["8GB DDR4","16GB DDR4","32GB DDR4","64GB DDR4"];
+const Storages = ["256GB SSD","512GB SSD","1TB SSD","2TB SSD","4TB HDD"];
+const Cases = ["NZXT H510","Corsair 4000D","Fractal Meshify C","Cooler Master MasterBox"];
 
-// Populate dropdowns
+function populateDropdown(dropId, arr){
+  const dropdown = document.getElementById(dropId);
+  arr.forEach(item=>{
+    const div = document.createElement('div');
+    div.textContent = item;
+    div.addEventListener('click', ()=>selectComponent(dropId,item));
+    dropdown.appendChild(div);
+  });
+}
+
 function populateAllDropdowns(){
-  Object.keys(components).forEach(type=>{
-    const dropdown = document.getElementById(type+'Dropdown');
-    components[type].forEach(item=>{
-      const div = document.createElement('div');
-      div.textContent = item.name + ' ($' + item.price + ')';
-      div.onclick = ()=>selectComponent(type, item);
-      dropdown.appendChild(div);
+  populateDropdown('cpuDropdown', CPUs);
+  populateDropdown('gpuDropdown', GPUs);
+  populateDropdown('ramDropdown', RAMs);
+  populateDropdown('storageDropdown', Storages);
+  populateDropdown('caseDropdown', Cases);
+}
+
+function selectComponent(dropId, item){
+  selectedComponents[dropId] = item;
+  alert(`${item} selected!`);
+}
+
+// Clickable dropdown logic
+document.querySelectorAll('.dropdown').forEach(drop => {
+  const btn = drop.querySelector('.dropbtn');
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    document.querySelectorAll('.dropdown').forEach(d => {
+      if(d !== drop) d.classList.remove('active');
     });
+    drop.classList.toggle('active');
   });
-}
-
-// Handle selection
-function selectComponent(type, item){
-  selectedComponents[type] = item;
-  addComponent3D(type, item);
-  updatePrice();
-}
-
-// Add/update 3D components
-function addComponent3D(type, item){
-  const oldObj = pcModel.getObjectByName(type);
-  if(oldObj) pcModel.remove(oldObj);
-
-  const geometry = new THREE.BoxGeometry(1.5, 0.3, 0.2);
-  const material = new THREE.MeshStandardMaterial({color:item.color});
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.name = type;
-
-  // Position based on component type
-  switch(type){
-    case 'gpu': mesh.position.set(0,0,0.5); break;
-    case 'cpu': mesh.position.set(0,1,0); break;
-    case 'ram': mesh.position.set(-0.5,1.5,0); break;
-    case 'storage': mesh.position.set(0.5,1.5,0); break;
-    case 'motherboard': mesh.position.set(0,1.2,0); break;
-    case 'case': mesh.position.set(0,0,0); break;
-    case 'psu': mesh.position.set(0,-1,0); break;
-    case 'cooling': mesh.position.set(0,0.8,0); break;
-  }
-  pcModel.add(mesh);
-}
-
-// Update price
-function updatePrice(){
-  totalPrice = 0;
-  Object.values(selectedComponents).forEach(comp=>{
-    if(comp) totalPrice += comp.price;
-  });
-  document.getElementById('priceDisplay').textContent = "Estimated Price: $" + totalPrice;
-}
+});
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+});
 </script>
 </body>
 </html>
