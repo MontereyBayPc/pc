@@ -4,65 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monterey Bay PCs - 3D Builder</title>
-<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
+<link rel="icon" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f0f1a;
-  color: #fff;
-  overflow-x: hidden;
-}
-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1rem 2rem;
-  background:#111;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
+body { margin:0; font-family: Arial,sans-serif; background:#0f0f1a; color:#fff; }
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#111; position:sticky; top:0; z-index:1000; }
 header .logo { font-weight:bold; font-size:1.5rem; color:#fff; cursor:pointer; }
-nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
+nav a { margin:0 1rem; color:#fff; text-decoration:none; }
 nav a:hover { color:#ff4ecd; }
 
-#builderContainer {
-  width: 100%;
-  height: 70vh;
-  display: block;
-  margin: auto;
-  border-radius:10px;
-  overflow:hidden;
-}
+#builderContainer { width:100%; height:60vh; margin:auto; }
 
-.controls {
-  text-align: center;
-  margin: 1rem 0;
-}
-.controls h3 { margin-bottom:0.5rem; }
-button {
-  padding: 0.7rem 1.2rem;
-  font-weight: bold;
-  border-radius: 5px;
-  border: none;
-  margin: 0 0.5rem 0.5rem 0.5rem;
-  cursor: pointer;
-  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
-  color: #fff;
-  box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  transition: 0.3s;
-}
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255,78,205,1);
-}
-
-#priceDisplay {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-top: 1rem;
-}
+.controls { text-align:center; margin:1rem 0; }
+select, button { padding:.7rem 1.2rem; font-weight:bold; border-radius:5px; border:none; margin:0 0.5rem; cursor:pointer; background:linear-gradient(90deg,#ff4ecd,#6c5ce7,#00f2ff); color:#fff; box-shadow:0 0 10px rgba(255,78,205,0.7); transition:0.3s; }
+select:hover, button:hover { transform:scale(1.05); box-shadow:0 0 20px rgba(255,78,205,1); }
+.price { margin-top:1rem; font-size:1.2rem; color:#ff4ecd; }
 </style>
 </head>
 <body>
@@ -71,53 +26,72 @@ button:hover {
   <div class="logo" onclick="window.location='index.html'">Monterey Bay PCs</div>
   <nav>
     <a href="index.html">Home</a>
+    <a href="#builderContainer">PC Builder</a>
+    <a href="#support">Support</a>
   </nav>
 </header>
 
 <section id="builderContainer"></section>
 
 <div class="controls">
-
-  <h3>GPU</h3>
-  <button onclick="loadComponent('gpu','models/gtx3080.glb',700)">GTX 3080 - $700</button>
-  <button onclick="loadComponent('gpu','models/rtx4080.glb',1200)">RTX 4080 - $1200</button>
-  <button onclick="loadComponent('gpu','models/rx7900.glb',900)">RX 7900 - $900</button>
-
-  <h3>CPU</h3>
-  <button onclick="loadComponent('cpu','models/intel_i9.glb',500)">Intel i9 - $500</button>
-  <button onclick="loadComponent('cpu','models/amd_ryzen9.glb',450)">AMD Ryzen 9 - $450</button>
-
-  <h3>RAM</h3>
-  <button onclick="loadComponent('ram','models/ram16.glb',100)">16GB - $100</button>
-  <button onclick="loadComponent('ram','models/ram32.glb',200)">32GB - $200</button>
-
-  <h3>Storage</h3>
-  <button onclick="loadComponent('storage','models/ssd1tb.glb',120)">1TB SSD - $120</button>
-  <button onclick="loadComponent('storage','models/hdd2tb.glb',80)">2TB HDD - $80</button>
-
-  <h3>Motherboard</h3>
-  <button onclick="loadComponent('motherboard','models/mb1.glb',200)">ATX - $200</button>
-  <button onclick="loadComponent('motherboard','models/mb2.glb',250)">Micro-ATX - $250</button>
-
-  <h3>Case</h3>
-  <button onclick="loadComponent('case','models/case1.glb',150)">Mid Tower - $150</button>
-  <button onclick="loadComponent('case','models/case2.glb',220)">Full Tower - $220</button>
-
-  <h3>Power Supply (PSU)</h3>
-  <button onclick="loadComponent('psu','models/psu750.glb',120)">750W - $120</button>
-  <button onclick="loadComponent('psu','models/psu1000.glb',180)">1000W - $180</button>
-
+  <label>CPU: 
+    <select id="cpuSelect">
+      <option value="i5">Intel i5</option>
+      <option value="i7">Intel i7</option>
+      <option value="i9">Intel i9</option>
+      <option value="ryzen5">Ryzen 5</option>
+      <option value="ryzen7">Ryzen 7</option>
+    </select>
+  </label>
+  <label>GPU:
+    <select id="gpuSelect">
+      <option value="gtx3080">GTX 3080</option>
+      <option value="rtx4080">RTX 4080</option>
+      <option value="rx7900">RX 7900 XT</option>
+      <option value="gtx1080ti">GTX 1080 Ti</option>
+      <option value="rtx3090">RTX 3090</option>
+    </select>
+  </label>
+  <label>RAM:
+    <select id="ramSelect">
+      <option value="16">16GB</option>
+      <option value="32">32GB</option>
+      <option value="64">64GB</option>
+    </select>
+  </label>
+  <label>Storage:
+    <select id="storageSelect">
+      <option value="1tbssd">1TB SSD</option>
+      <option value="2tbssd">2TB SSD</option>
+      <option value="4tbssd">4TB SSD</option>
+    </select>
+  </label>
+  <label>Case:
+    <select id="caseSelect">
+      <option value="mid">Mid Tower</option>
+      <option value="full">Full Tower</option>
+      <option value="mini">Mini Tower</option>
+    </select>
+  </label>
+  <label>PSU:
+    <select id="psuSelect">
+      <option value="650">650W</option>
+      <option value="750">750W</option>
+      <option value="1000">1000W</option>
+    </select>
+  </label>
 </div>
-
-<div id="priceDisplay">Estimated Price: $0</div>
+<div class="controls">
+  <button onclick="calculatePrice()">Estimate Price</button>
+  <div class="price" id="priceDisplay">$0</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
-
 <script>
-let scene, camera, renderer, controls, pcModel;
-let selectedParts = {gpu:null, cpu:null, ram:null, storage:null, motherboard:null, psu:null, case:null};
+let scene, camera, renderer, controls;
+let pcCase, gpu, cpu, ram, storage;
+
 init();
 animate();
 
@@ -126,63 +100,106 @@ function init(){
   scene.background = new THREE.Color(0x0f0f1a);
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-  camera.position.set(3,3,6);
+  camera.position.set(4,4,6);
 
   renderer = new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(window.innerWidth, window.innerHeight*0.7);
+  renderer.setSize(window.innerWidth, window.innerHeight*0.6);
   document.getElementById('builderContainer').appendChild(renderer.domElement);
 
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
 
   // Lights
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  directionalLight.position.set(5,5,5);
-  scene.add(directionalLight);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(5,5,5);
+  scene.add(dirLight);
 
-  // PC Base (invisible container)
-  pcModel = new THREE.Group();
-  scene.add(pcModel);
+  // PC Case
+  const caseGeo = new THREE.BoxGeometry(2,3,1);
+  const caseMat = new THREE.MeshStandardMaterial({color:0x222222, metalness:0.7, roughness:0.3});
+  pcCase = new THREE.Mesh(caseGeo, caseMat);
+  scene.add(pcCase);
 
-  window.addEventListener('resize', onWindowResize, false);
-}
+  // GPU
+  const gpuGeo = new THREE.BoxGeometry(1.5,0.3,0.2);
+  const gpuMat = new THREE.MeshStandardMaterial({color:0xff4ecd});
+  gpu = new THREE.Mesh(gpuGeo, gpuMat);
+  gpu.position.set(0,0.5,0.5);
+  pcCase.add(gpu);
 
-function onWindowResize(){
-  camera.aspect = window.innerWidth / (window.innerHeight*0.7);
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight*0.7);
+  // CPU (small cube)
+  const cpuGeo = new THREE.BoxGeometry(0.5,0.1,0.5);
+  const cpuMat = new THREE.MeshStandardMaterial({color:0xffff00});
+  cpu = new THREE.Mesh(cpuGeo, cpuMat);
+  cpu.position.set(0,1,0);
+  pcCase.add(cpu);
+
+  // RAM (two sticks)
+  const ramGeo = new THREE.BoxGeometry(0.2,0.8,0.05);
+  const ramMat = new THREE.MeshStandardMaterial({color:0x00ff00});
+  ram = new THREE.Mesh(ramGeo, ramMat);
+  ram.position.set(-0.5,0.8,0);
+  pcCase.add(ram);
+  const ram2 = ram.clone();
+  ram2.position.set(0.5,0.8,0);
+  pcCase.add(ram2);
+
+  // Storage placeholder
+  const storageGeo = new THREE.BoxGeometry(0.6,0.1,0.3);
+  const storageMat = new THREE.MeshStandardMaterial({color:0x00ffff});
+  storage = new THREE.Mesh(storageGeo, storageMat);
+  storage.position.set(0,-1,0);
+  pcCase.add(storage);
+
+  window.addEventListener('resize', ()=> {
+    camera.aspect = window.innerWidth / (window.innerHeight*0.6);
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight*0.6);
+  });
 }
 
 function animate(){
   requestAnimationFrame(animate);
   controls.update();
-  renderer.render(scene, camera);
+  renderer.render(scene,camera);
 }
 
-async function loadComponent(type, modelUrl, price){
-  const loader = new THREE.GLTFLoader();
-  const gltf = await loader.loadAsync(modelUrl);
-
-  // Remove old component if exists
-  if(selectedParts[type]) pcModel.remove(selectedParts[type].mesh);
-
-  gltf.scene.name = type;
-  pcModel.add(gltf.scene);
-  selectedParts[type] = {mesh: gltf.scene, price};
-  updatePrice();
-}
-
-function updatePrice(){
-  let total = 0;
-  for(const part in selectedParts){
-    if(selectedParts[part]) total += selectedParts[part].price;
+// Update components colors based on dropdowns
+document.getElementById('gpuSelect').addEventListener('change', (e)=>{
+  const val = e.target.value;
+  switch(val){
+    case 'gtx3080': gpu.material.color.set(0xff4ecd); break;
+    case 'rtx4080': gpu.material.color.set(0x6c5ce7); break;
+    case 'rx7900': gpu.material.color.set(0x00f2ff); break;
+    case 'gtx1080ti': gpu.material.color.set(0xffa500); break;
+    case 'rtx3090': gpu.material.color.set(0x00ff00); break;
   }
-  document.getElementById('priceDisplay').innerText = "Estimated Price: $" + total.toLocaleString();
+});
+
+// Estimate Price (simple demo)
+function calculatePrice(){
+  let price = 0;
+  const cpuVal = document.getElementById('cpuSelect').value;
+  const gpuVal = document.getElementById('gpuSelect').value;
+  const ramVal = parseInt(document.getElementById('ramSelect').value);
+  const storageVal = document.getElementById('storageSelect').value;
+
+  if(cpuVal==='i5'||cpuVal==='ryzen5') price+=200;
+  if(cpuVal==='i7'||cpuVal==='ryzen7') price+=350;
+  if(cpuVal==='i9') price+=500;
+
+  if(gpuVal.includes('gtx')) price+=600;
+  if(gpuVal.includes('rtx')) price+=1200;
+  if(gpuVal.includes('rx')) price+=1000;
+
+  price += ramVal*10;
+  if(storageVal==='1tbssd') price+=100;
+  if(storageVal==='2tbssd') price+=180;
+  if(storageVal==='4tbssd') price+=300;
+
+  document.getElementById('priceDisplay').innerText = `$${price}`;
 }
 </script>
-
 </body>
 </html>
