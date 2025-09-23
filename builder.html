@@ -29,22 +29,27 @@ nav a:hover { color:#ff4ecd; }
 
 #builderContainer {
   width: 100%;
-  height: 70vh;
+  height: 80vh;
   display: block;
   margin: auto;
+  z-index: 1;
+  position: relative;
 }
 
+/* Controls / Dropdowns */
 .controls {
   text-align: center;
   margin: 1rem 0;
+  position: relative;
+  z-index: 5000;
 }
 
-/* Dropdown Styles */
 .dropdown {
   display: inline-block;
-  position: relative;
   margin: 0.5rem;
+  position: relative;
 }
+
 .dropbtn {
   padding: 0.7rem 1.2rem;
   font-weight: bold;
@@ -55,33 +60,42 @@ nav a:hover { color:#ff4ecd; }
   color: #fff;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
   transition: 0.3s;
-  min-width: 160px;
-  text-align: left;
 }
 .dropbtn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(255,78,205,1);
 }
+
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #111;
   min-width: 200px;
-  max-height: 300px;
+  max-height: 250px;
   overflow-y: auto;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  z-index: 2000;
+  z-index: 5000;
 }
+
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
 .dropdown-content div {
   padding: 10px;
   cursor: pointer;
 }
 .dropdown-content div:hover {
-  background-color: #222;
+  background: rgba(255,78,205,0.2);
 }
-.dropdown.show .dropdown-content {
-  display: block;
+
+/* Estimate Display */
+#estimate {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -99,32 +113,48 @@ nav a:hover { color:#ff4ecd; }
 <section id="builderContainer"></section>
 
 <div class="controls">
-  <!-- CPU -->
   <div class="dropdown">
-    <button class="dropbtn">Select CPU</button>
-    <div class="dropdown-content" id="cpuDropdown"></div>
-  </div>
-  <!-- GPU -->
-  <div class="dropdown">
-    <button class="dropbtn">Select GPU</button>
+    <button class="dropbtn">GPU</button>
     <div class="dropdown-content" id="gpuDropdown"></div>
   </div>
-  <!-- Case -->
   <div class="dropdown">
-    <button class="dropbtn">Select Case</button>
+    <button class="dropbtn">CPU</button>
+    <div class="dropdown-content" id="cpuDropdown"></div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">Case</button>
     <div class="dropdown-content" id="caseDropdown"></div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">RAM</button>
+    <div class="dropdown-content" id="ramDropdown"></div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">Storage</button>
+    <div class="dropdown-content" id="storageDropdown"></div>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">Motherboard</button>
+    <div class="dropdown-content" id="motherboardDropdown"></div>
   </div>
 </div>
 
+<div id="estimate">Total Estimate: $0</div>
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
-
 <script>
 let scene, camera, renderer, controls, pcModel;
-init();
-animate();
+let selectedParts = {
+  gpu: {name:'None', price:0},
+  cpu: {name:'None', price:0},
+  case: {name:'None', price:0},
+  ram: {name:'None', price:0},
+  storage: {name:'None', price:0},
+  motherboard: {name:'None', price:0}
+};
 
-function init(){
+function init3D(){
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0f0f1a);
 
@@ -132,7 +162,7 @@ function init(){
   camera.position.set(2,2,5);
 
   renderer = new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(window.innerWidth, window.innerHeight*0.7);
+  renderer.setSize(window.innerWidth, window.innerHeight*0.8);
   document.getElementById('builderContainer').appendChild(renderer.domElement);
 
   controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -150,64 +180,74 @@ function init(){
   pcModel = new THREE.Mesh(geometry, material);
   scene.add(pcModel);
 
-  const gpuGeometry = new THREE.BoxGeometry(1.5,0.3,0.2);
-  const gpuMaterial = new THREE.MeshStandardMaterial({color:0xff4ecd});
-  const gpu = new THREE.Mesh(gpuGeometry, gpuMaterial);
-  gpu.name = 'gpu';
-  gpu.position.set(0,0,0.5);
-  pcModel.add(gpu);
-
-  window.addEventListener('resize', onWindowResize, false);
-
-  populateDropdowns();
-  enableDropdowns();
+  window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth / (window.innerHeight*0.8);
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight*0.8);
+  });
 }
 
-function onWindowResize(){
-  camera.aspect = window.innerWidth / (window.innerHeight*0.7);
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight*0.7);
-}
-
-function animate(){
-  requestAnimationFrame(animate);
+function animate3D(){
+  requestAnimationFrame(animate3D);
   controls.update();
   renderer.render(scene, camera);
 }
 
-function populateDropdowns(){
-  const cpus = ["Intel i5", "Intel i7", "Ryzen 5", "Ryzen 7"];
-  const gpus = ["GTX 3080", "RTX 4080", "RX 7900"];
-  const cases = ["NZXT H510", "Corsair 4000D", "Lian Li PC-O11"];
+// Dropdown data
+const gpus = [
+  {name:"GTX 3080", price:699},
+  {name:"RTX 4080", price:1199},
+  {name:"RX 7900", price:999},
+];
+const cpus = [
+  {name:"Intel i5-13600K", price:320},
+  {name:"Intel i9-14900K", price:700},
+  {name:"AMD Ryzen 9 7950X", price:720},
+];
+const cases = [
+  {name:"NZXT H510", price:100},
+  {name:"Corsair 4000D", price:95},
+  {name:"Lian Li PC-O11", price:130},
+];
+const rams = [
+  {name:"16GB DDR5", price:120},
+  {name:"32GB DDR5", price:220},
+  {name:"64GB DDR5", price:400},
+];
+const storages = [
+  {name:"1TB SSD", price:100},
+  {name:"2TB SSD", price:180},
+  {name:"4TB NVMe", price:400},
+];
+const motherboards = [
+  {name:"ASUS ROG", price:300},
+  {name:"MSI MPG", price:280},
+  {name:"Gigabyte Aorus", price:350},
+];
 
-  cpus.forEach(cpu => {
+function populateDropdown(id, options, key){
+  const container = document.getElementById(id);
+  options.forEach(opt=>{
     const div = document.createElement('div');
-    div.textContent = cpu;
-    div.onclick = () => selectPart("CPU", cpu);
-    document.getElementById('cpuDropdown').appendChild(div);
-  });
-
-  gpus.forEach(gpu => {
-    const div = document.createElement('div');
-    div.textContent = gpu;
-    div.onclick = () => selectPart("GPU", gpu);
-    document.getElementById('gpuDropdown').appendChild(div);
-  });
-
-  cases.forEach(c => {
-    const div = document.createElement('div');
-    div.textContent = c;
-    div.onclick = () => selectPart("Case", c);
-    document.getElementById('caseDropdown').appendChild(div);
+    div.textContent = `${opt.name} ($${opt.price})`;
+    div.addEventListener('click', ()=>{
+      selectedParts[key] = {name: opt.name, price: opt.price};
+      updateEstimate();
+      container.parentElement.classList.remove('show');
+    });
+    container.appendChild(div);
   });
 }
 
-function selectPart(type, name){
-  console.log(type + " selected: " + name);
-  alert(type + " selected: " + name);
+function updateEstimate(){
+  let total = 0;
+  for(let part in selectedParts){
+    total += selectedParts[part].price;
+  }
+  document.getElementById('estimate').textContent = `Total Estimate: $${total}`;
 }
 
-// ✅ Real working dropdowns
+// Enable dropdown toggles
 function enableDropdowns(){
   document.querySelectorAll(".dropdown .dropbtn").forEach(btn=>{
     btn.addEventListener("click", function(e){
@@ -225,6 +265,18 @@ function closeAllDropdowns(){
     d.classList.remove("show");
   });
 }
+
+// Initialize
+init3D();
+animate3D();
+populateDropdown("gpuDropdown", gpus, "gpu");
+populateDropdown("cpuDropdown", cpus, "cpu");
+populateDropdown("caseDropdown", cases, "case");
+populateDropdown("ramDropdown", rams, "ram");
+populateDropdown("storageDropdown", storages, "storage");
+populateDropdown("motherboardDropdown", motherboards, "motherboard");
+enableDropdowns();
+
 </script>
 </body>
 </html>
