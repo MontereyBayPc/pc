@@ -17,6 +17,21 @@ body {
   flex-direction: column;
 }
 
+/* Header from big HTML */
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem 2rem;
+  background:#111;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+header .logo { font-weight:bold; font-size:1.5rem; color:#fff; cursor:pointer; }
+nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
+nav a:hover { color:#ff4ecd; }
+
 /* Title */
 h1 {
   text-align: center;
@@ -86,6 +101,15 @@ h1 {
 </style>
 </head>
 <body>
+
+<header>
+  <div class="logo" onclick="window.location='index.html'">Monterey Bay PCs</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#controls">PC Builder</a>
+    <a href="#support">Support</a>
+  </nav>
+</header>
 
 <h1>PC Builder</h1>
 
