@@ -44,7 +44,6 @@ nav a:hover { color:#ff4ecd; }
   display: inline-block;
   position: relative;
   margin: 0.5rem;
-  z-index: 10000;
 }
 .dropbtn {
   padding: 0.7rem 1.2rem;
@@ -72,8 +71,6 @@ nav a:hover { color:#ff4ecd; }
   overflow-y: auto;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  top: 100%;
-  left: 0;
 }
 .dropdown-content div {
   padding: 10px;
@@ -82,15 +79,8 @@ nav a:hover { color:#ff4ecd; }
 .dropdown-content div:hover {
   background-color: #222;
 }
-.dropdown-content::-webkit-scrollbar {
-  width: 6px;
-}
-.dropdown-content::-webkit-scrollbar-thumb {
-  background: #ff4ecd;
-  border-radius: 3px;
-}
-.dropdown.active > .dropdown-content {
-  display: block !important;
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>
 </head>
@@ -217,23 +207,6 @@ function selectPart(type, name){
   console.log(type + " selected: " + name);
   alert(type + " selected: " + name);
 }
-
-// Dropdown toggle fix
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.dropdown').forEach(drop => {
-    const btn = drop.querySelector('.dropbtn');
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      document.querySelectorAll('.dropdown').forEach(d => {
-        if(d !== drop) d.classList.remove('active');
-      });
-      drop.classList.toggle('active');
-    });
-  });
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
-  });
-});
 </script>
 </body>
 </html>
