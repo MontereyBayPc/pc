@@ -34,44 +34,46 @@ nav a:hover { color:#ff4ecd; }
   margin: auto;
 }
 
-/* Dropdown CSS */
 .controls {
   text-align: center;
   margin: 1rem 0;
 }
-button, .dropbtn {
+
+/* Dropdown Styles */
+.dropdown {
+  display: inline-block;
+  position: relative;
+  margin: 0.5rem;
+  z-index: 10000;
+}
+.dropbtn {
   padding: 0.7rem 1.2rem;
   font-weight: bold;
   border-radius: 5px;
   border: none;
-  margin: 0 0.5rem;
   cursor: pointer;
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
   color: #fff;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
   transition: 0.3s;
+  min-width: 160px;
+  text-align: left;
 }
-button:hover, .dropbtn:hover {
+.dropbtn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(255,78,205,1);
-}
-
-/* Dropdown structure */
-.dropdown {
-  display: inline-block;
-  position: relative;
-  margin: 0 0.5rem;
 }
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #111;
-  min-width: 180px;
+  min-width: 200px;
   max-height: 300px;
   overflow-y: auto;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  z-index: 10000;
+  top: 100%;
+  left: 0;
 }
 .dropdown-content div {
   padding: 10px;
@@ -87,8 +89,8 @@ button:hover, .dropbtn:hover {
   background: #ff4ecd;
   border-radius: 3px;
 }
-.dropdown.active .dropdown-content {
-  display: block;
+.dropdown.active > .dropdown-content {
+  display: block !important;
 }
 </style>
 </head>
@@ -106,27 +108,17 @@ button:hover, .dropbtn:hover {
 <section id="builderContainer"></section>
 
 <div class="controls">
-  <!-- CPU Dropdown -->
+  <!-- CPU -->
   <div class="dropdown">
     <button class="dropbtn">Select CPU</button>
     <div class="dropdown-content" id="cpuDropdown"></div>
   </div>
-  <!-- GPU Dropdown -->
+  <!-- GPU -->
   <div class="dropdown">
     <button class="dropbtn">Select GPU</button>
     <div class="dropdown-content" id="gpuDropdown"></div>
   </div>
-  <!-- RAM Dropdown -->
-  <div class="dropdown">
-    <button class="dropbtn">Select RAM</button>
-    <div class="dropdown-content" id="ramDropdown"></div>
-  </div>
-  <!-- Storage Dropdown -->
-  <div class="dropdown">
-    <button class="dropbtn">Select Storage</button>
-    <div class="dropdown-content" id="storageDropdown"></div>
-  </div>
-  <!-- Case Dropdown -->
+  <!-- Case -->
   <div class="dropdown">
     <button class="dropbtn">Select Case</button>
     <div class="dropdown-content" id="caseDropdown"></div>
@@ -137,8 +129,7 @@ button:hover, .dropbtn:hover {
 <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-// 3D Builder setup
-let scene, camera, renderer, controls, pcModel, selectedComponents = {};
+let scene, camera, renderer, controls, pcModel;
 init();
 animate();
 
@@ -160,20 +151,27 @@ function init(){
   // Lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
-
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
   directionalLight.position.set(5,5,5);
   scene.add(directionalLight);
 
-  // PC Case
+  // PC Case (simple box)
   const geometry = new THREE.BoxGeometry(2,3,1);
   const material = new THREE.MeshStandardMaterial({color:0x222222, metalness:0.7, roughness:0.3});
   pcModel = new THREE.Mesh(geometry, material);
   scene.add(pcModel);
 
+  // GPU placeholder
+  const gpuGeometry = new THREE.BoxGeometry(1.5,0.3,0.2);
+  const gpuMaterial = new THREE.MeshStandardMaterial({color:0xff4ecd});
+  const gpu = new THREE.Mesh(gpuGeometry, gpuMaterial);
+  gpu.name = 'gpu';
+  gpu.position.set(0,0,0.5);
+  pcModel.add(gpu);
+
   window.addEventListener('resize', onWindowResize, false);
 
-  populateAllDropdowns();
+  populateDropdowns();
 }
 
 function onWindowResize(){
@@ -188,49 +186,53 @@ function animate(){
   renderer.render(scene, camera);
 }
 
-// Populate dropdowns with dummy "all possible" components
-const CPUs = ["Intel i3","Intel i5","Intel i7","Intel i9","AMD Ryzen 3","AMD Ryzen 5","AMD Ryzen 7","AMD Ryzen 9"];
-const GPUs = ["GTX 1050","GTX 1060","GTX 1070","GTX 1080","RTX 2060","RTX 2070","RTX 2080","RTX 3060","RTX 3070","RTX 3080","RTX 3090","RX 5600","RX 5700","RX 6800","RX 6900"];
-const RAMs = ["8GB DDR4","16GB DDR4","32GB DDR4","64GB DDR4"];
-const Storages = ["256GB SSD","512GB SSD","1TB SSD","2TB SSD","4TB HDD"];
-const Cases = ["NZXT H510","Corsair 4000D","Fractal Meshify C","Cooler Master MasterBox"];
+function populateDropdowns(){
+  const cpus = ["Intel i5", "Intel i7", "Ryzen 5", "Ryzen 7"];
+  const gpus = ["GTX 3080", "RTX 4080", "RX 7900"];
+  const cases = ["NZXT H510", "Corsair 4000D", "Lian Li PC-O11"];
 
-function populateDropdown(dropId, arr){
-  const dropdown = document.getElementById(dropId);
-  arr.forEach(item=>{
+  cpus.forEach(cpu => {
     const div = document.createElement('div');
-    div.textContent = item;
-    div.addEventListener('click', ()=>selectComponent(dropId,item));
-    dropdown.appendChild(div);
+    div.textContent = cpu;
+    div.onclick = () => selectPart("CPU", cpu);
+    document.getElementById('cpuDropdown').appendChild(div);
+  });
+
+  gpus.forEach(gpu => {
+    const div = document.createElement('div');
+    div.textContent = gpu;
+    div.onclick = () => selectPart("GPU", gpu);
+    document.getElementById('gpuDropdown').appendChild(div);
+  });
+
+  cases.forEach(c => {
+    const div = document.createElement('div');
+    div.textContent = c;
+    div.onclick = () => selectPart("Case", c);
+    document.getElementById('caseDropdown').appendChild(div);
   });
 }
 
-function populateAllDropdowns(){
-  populateDropdown('cpuDropdown', CPUs);
-  populateDropdown('gpuDropdown', GPUs);
-  populateDropdown('ramDropdown', RAMs);
-  populateDropdown('storageDropdown', Storages);
-  populateDropdown('caseDropdown', Cases);
+function selectPart(type, name){
+  console.log(type + " selected: " + name);
+  alert(type + " selected: " + name);
 }
 
-function selectComponent(dropId, item){
-  selectedComponents[dropId] = item;
-  alert(`${item} selected!`);
-}
-
-// Clickable dropdown logic
-document.querySelectorAll('.dropdown').forEach(drop => {
-  const btn = drop.querySelector('.dropbtn');
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    document.querySelectorAll('.dropdown').forEach(d => {
-      if(d !== drop) d.classList.remove('active');
+// Dropdown toggle fix
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    const btn = drop.querySelector('.dropbtn');
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if(d !== drop) d.classList.remove('active');
+      });
+      drop.classList.toggle('active');
     });
-    drop.classList.toggle('active');
   });
-});
-document.addEventListener('click', () => {
-  document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
+  });
 });
 </script>
 </body>
