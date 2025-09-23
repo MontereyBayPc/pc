@@ -3,19 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GPU Dropdown Test</title>
+<title>PC Builder</title>
 <style>
 body {
   background: #0f0f1a;
   color: #fff;
   font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 50px;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Title */
+h1 {
+  margin-top: 2rem;
+}
+
+/* Bottom controls */
+#controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: wrap;
 }
 
 /* Dropdown styles */
 .dropdown {
-  display: inline-block;
   position: relative;
 }
 
@@ -38,11 +56,13 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
+  bottom: 40px; /* show above button */
   background-color: #111;
   min-width: 150px;
   border-radius: 5px;
-  margin-top: 5px;
+  margin-bottom: 5px;
   z-index: 10;
+  flex-direction: column;
 }
 
 .dropdown-content div {
@@ -54,40 +74,112 @@ body {
 }
 
 .dropdown.show .dropdown-content {
-  display: block;
+  display: flex;
 }
 </style>
 </head>
 <body>
 
-<h1>GPU Selector</h1>
+<h1>PC Builder</h1>
 
-<div class="dropdown">
-  <button class="dropbtn">GPU</button>
-  <div class="dropdown-content" id="gpuDropdown">
-    <div>GTX 3080</div>
-    <div>RTX 4080</div>
-    <div>RX 7900</div>
+<div id="controls">
+  <div class="dropdown">
+    <button class="dropbtn">GPU</button>
+    <div class="dropdown-content">
+      <div>GTX 3080</div>
+      <div>RTX 4080</div>
+      <div>RX 7900</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">CPU</button>
+    <div class="dropdown-content">
+      <div>Intel i9-13900K</div>
+      <div>AMD Ryzen 9 7950X</div>
+      <div>Intel i7-13700K</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">Motherboard</button>
+    <div class="dropdown-content">
+      <div>ASUS ROG Strix Z790</div>
+      <div>MSI MPG B650</div>
+      <div>Gigabyte X670</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">RAM</button>
+    <div class="dropdown-content">
+      <div>16GB DDR5</div>
+      <div>32GB DDR5</div>
+      <div>64GB DDR5</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">Storage</button>
+    <div class="dropdown-content">
+      <div>1TB NVMe SSD</div>
+      <div>2TB NVMe SSD</div>
+      <div>4TB HDD</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">PSU</button>
+    <div class="dropdown-content">
+      <div>750W Gold</div>
+      <div>850W Platinum</div>
+      <div>1000W Titanium</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">Case</button>
+    <div class="dropdown-content">
+      <div>NZXT H510</div>
+      <div>Lian Li Lancool</div>
+      <div>Fractal Design Meshify</div>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button class="dropbtn">Cooler</button>
+    <div class="dropdown-content">
+      <div>Noctua NH-D15</div>
+      <div>Corsair iCUE H150i</div>
+      <div>be quiet! Dark Rock</div>
+    </div>
   </div>
 </div>
 
 <script>
-// Toggle dropdown
-document.querySelector(".dropbtn").addEventListener("click", function(e) {
-  e.stopPropagation();
-  this.parentElement.classList.toggle("show");
+// Toggle dropdowns
+document.querySelectorAll(".dropbtn").forEach(btn => {
+  btn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const parent = this.parentElement;
+    parent.classList.toggle("show");
+    // close others
+    document.querySelectorAll(".dropdown").forEach(drop => {
+      if(drop !== parent) drop.classList.remove("show");
+    });
+  });
 });
 
-// Close dropdown when clicking outside
-window.addEventListener("click", function() {
-  document.querySelector(".dropdown").classList.remove("show");
+// Close all dropdowns if clicked outside
+window.addEventListener("click", () => {
+  document.querySelectorAll(".dropdown").forEach(drop => drop.classList.remove("show"));
 });
 
-// Handle click on options
-document.querySelectorAll("#gpuDropdown div").forEach(option => {
+// Alert on option click
+document.querySelectorAll(".dropdown-content div").forEach(option => {
   option.addEventListener("click", function() {
     alert("You selected: " + this.textContent);
-    document.querySelector(".dropdown").classList.remove("show");
+    this.closest(".dropdown").classList.remove("show");
   });
 });
 </script>
