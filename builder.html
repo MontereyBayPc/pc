@@ -38,13 +38,19 @@ h1 {
   margin: 2rem 0 1rem 0;
 }
 
+/* Total Price Display */
+#totalPrice {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
 /* Bottom controls */
 #controls {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1rem;
+  justify-content: space-around;
   flex-wrap: wrap;
+  padding: 1rem;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -57,6 +63,10 @@ h1 {
 /* Dropdown styles */
 .dropdown {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
 }
 
 .dropbtn {
@@ -99,18 +109,12 @@ h1 {
   display: flex;
 }
 
-/* Total Price Display */
-#totalPrice {
-  position: fixed;
-  bottom: 75px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-size: 1.2rem;
-  box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  z-index: 1000;
+/* Selected part display */
+.selected-part {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #ff4ecd;
+  text-align: center;
 }
 </style>
 </head>
@@ -126,11 +130,10 @@ h1 {
 </header>
 
 <h1>PC Builder</h1>
-
-<!-- Total Price -->
 <div id="totalPrice">Estimated Price: $0</div>
 
 <div id="controls">
+  <!-- GPU -->
   <div class="dropdown">
     <button class="dropbtn">GPU</button>
     <div class="dropdown-content">
@@ -138,8 +141,10 @@ h1 {
       <div data-price="1200">RTX 4080 ($1200)</div>
       <div data-price="1000">RX 7900 ($1000)</div>
     </div>
+    <div class="selected-part" id="selectedGPU">None</div>
   </div>
 
+  <!-- CPU -->
   <div class="dropdown">
     <button class="dropbtn">CPU</button>
     <div class="dropdown-content">
@@ -147,17 +152,21 @@ h1 {
       <div data-price="700">AMD Ryzen 9 7950X ($700)</div>
       <div data-price="450">Intel i7-13700K ($450)</div>
     </div>
+    <div class="selected-part" id="selectedCPU">None</div>
   </div>
 
+  <!-- Motherboard -->
   <div class="dropdown">
     <button class="dropbtn">Motherboard</button>
     <div class="dropdown-content">
-      <div data-price="300">ASUS ROG Strix Z790 ($300)</div>
-      <div data-price="250">MSI MPG B650 ($250)</div>
+      <div data-price="300">ASUS ROG Z790 ($300)</div>
+      <div data-price="250">MSI B650 ($250)</div>
       <div data-price="400">Gigabyte X670 ($400)</div>
     </div>
+    <div class="selected-part" id="selectedMotherboard">None</div>
   </div>
 
+  <!-- RAM -->
   <div class="dropdown">
     <button class="dropbtn">RAM</button>
     <div class="dropdown-content">
@@ -165,16 +174,62 @@ h1 {
       <div data-price="180">32GB DDR5 ($180)</div>
       <div data-price="350">64GB DDR5 ($350)</div>
     </div>
+    <div class="selected-part" id="selectedRAM">None</div>
+  </div>
+
+  <!-- Storage -->
+  <div class="dropdown">
+    <button class="dropbtn">Storage</button>
+    <div class="dropdown-content">
+      <div data-price="80">1TB SSD ($80)</div>
+      <div data-price="150">2TB SSD ($150)</div>
+      <div data-price="60">2TB HDD ($60)</div>
+    </div>
+    <div class="selected-part" id="selectedStorage">None</div>
+  </div>
+
+  <!-- PSU -->
+  <div class="dropdown">
+    <button class="dropbtn">PSU</button>
+    <div class="dropdown-content">
+      <div data-price="120">650W Gold ($120)</div>
+      <div data-price="200">850W Platinum ($200)</div>
+    </div>
+    <div class="selected-part" id="selectedPSU">None</div>
+  </div>
+
+  <!-- Case -->
+  <div class="dropdown">
+    <button class="dropbtn">Case</button>
+    <div class="dropdown-content">
+      <div data-price="100">Mid Tower ($100)</div>
+      <div data-price="200">Full Tower ($200)</div>
+    </div>
+    <div class="selected-part" id="selectedCase">None</div>
+  </div>
+
+  <!-- Cooler -->
+  <div class="dropdown">
+    <button class="dropbtn">Cooler</button>
+    <div class="dropdown-content">
+      <div data-price="80">Air Cooler ($80)</div>
+      <div data-price="150">Liquid Cooler ($150)</div>
+    </div>
+    <div class="selected-part" id="selectedCooler">None</div>
   </div>
 </div>
 
 <script>
-// Track selected prices
+// Track selected prices and parts
 const selectedParts = {
   GPU: 0,
   CPU: 0,
   Motherboard: 0,
-  RAM: 0
+  RAM: 0,
+  Storage: 0,
+  PSU: 0,
+  Case: 0,
+  Cooler: 0
 };
 
 const totalPriceDiv = document.getElementById("totalPrice");
@@ -196,13 +251,19 @@ window.addEventListener("click", () => {
   document.querySelectorAll(".dropdown").forEach(drop => drop.classList.remove("show"));
 });
 
-// Option click updates price
+// Option click updates price and selected part
 document.querySelectorAll(".dropdown-content div").forEach(option => {
   option.addEventListener("click", function() {
-    const category = this.closest(".dropdown").querySelector(".dropbtn").textContent;
+    const dropdown = this.closest(".dropdown");
+    const category = dropdown.querySelector(".dropbtn").textContent;
     selectedParts[category] = parseInt(this.dataset.price);
+
+    // Update displayed selected part
+    const selectedDiv = dropdown.querySelector(".selected-part");
+    selectedDiv.textContent = this.textContent;
+
     updateTotalPrice();
-    this.closest(".dropdown").classList.remove("show");
+    dropdown.classList.remove("show");
   });
 });
 
@@ -211,6 +272,5 @@ function updateTotalPrice(){
   totalPriceDiv.textContent = "Estimated Price: $" + total;
 }
 </script>
-
 </body>
 </html>
