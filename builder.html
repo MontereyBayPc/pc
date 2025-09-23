@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PC Builder</title>
+<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <style>
 body {
   background: #0f0f1a;
@@ -11,25 +12,31 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
 }
 
 /* Title */
 h1 {
-  margin-top: 2rem;
+  text-align: center;
+  margin: 2rem 0 1rem 0;
 }
 
-/* Bottom controls */
+/* Bottom controls fixed */
 #controls {
   display: flex;
   justify-content: center;
   gap: 1rem;
   padding: 1rem;
   flex-wrap: wrap;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(15,15,26,0.9);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  z-index: 1000;
 }
 
 /* Dropdown styles */
@@ -56,7 +63,7 @@ h1 {
 .dropdown-content {
   display: none;
   position: absolute;
-  bottom: 40px; /* show above button */
+  bottom: 45px; /* show above button */
   background-color: #111;
   min-width: 150px;
   border-radius: 5px;
