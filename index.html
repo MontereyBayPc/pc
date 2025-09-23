@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monterey Bay PCs</title>
+<title>Monterey Bay PCs - 3D Builder</title>
+<link rel="icon" type="image/png" href="https://static.thenounproject.com/png/pixel-monitor-icon-6766178-512.png">
 <style>
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  transition: background 0.3s, color 0.3s;
+  font-family: Arial, sans-serif;
   background: #0f0f1a;
   color: #fff;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Header */
 header {
   display:flex;
   justify-content:space-between;
@@ -30,545 +31,225 @@ header .logo { font-weight:bold; font-size:1.5rem; color:#fff; cursor:pointer; }
 nav a { margin:0 1rem; text-decoration:none; color:#fff; transition: color 0.3s; }
 nav a:hover { color:#ff4ecd; }
 
-/* Buttons */
-.btn, .btn-outline {
-  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
-  background-size: 200% 200%;
-  animation: gradientShift 5s ease infinite;
-  color:#fff;
-  padding:.7rem 1.2rem;
-  border-radius:5px;
-  text-decoration:none;
-  font-weight:bold;
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s;
-  box-shadow: 0 0 10px rgba(255,78,205,0.7);
-  border:none;
-  margin-left:.5rem;
-  cursor:pointer;
-}
-.btn:hover, .btn-outline:hover {
-  box-shadow:0 0 20px rgba(255,78,205,1);
-  transform:scale(1.05);
-}
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Hero */
-.hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
-.hero-text { flex:1 1 400px; max-width:500px; }
-.hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
-.hero-text span {
-  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
-  background-size: 300% 300%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation: textGradient 6s ease infinite;
-}
-@keyframes textGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.hero-subtext { font-size:1rem; line-height:1.6; }
-.hero-img img {
-  transition: transform 0.3s;
-  border-radius:10px;
-}
-.hero-img img:hover {
-  transform: translateY(-10px) scale(1.02);
-}
-
-/* Sections */
-.products, .features { padding:4rem 2rem; }
-.products h2, .features h2 { text-align:center; margin-bottom:2rem; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
-
-/* Cards */
-.card, .feature {
-  padding:2rem;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
-  border:2px solid transparent;
-  background:#000;
-  color:#fff;
-  white-space: normal; /* allow full text display */
-  overflow: visible;   /* prevent truncation */
-}
-.card img {
+#builderContainer {
+  flex:1; /* take remaining space */
   width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-.price { display:block; margin:1rem 0; font-size:1.2rem; color:#ff4ecd; }
-.card:hover {
-  transform: scale(1.06) rotate(-1deg);
-  box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5);
-  border-image:linear-gradient(90deg,#ff4ecd,#6c5ce7) 1;
 }
 
-/* Footer */
-footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font-size:2rem; }
-
-/* Dark / Light Mode outside cards only */
-body.dark-mode { background:#0f0f1a; color:#fff; }
-body.light-mode { background:#fdfdfd; color:#000; }
-
-/* RGB mode with subtle floating glow */
-body.rgb-mode {
-  animation: rgbBackground 10s infinite alternate;
-  position: relative;
-}
-@keyframes rgbBackground {
-  0% { background:#ff4ecd; }
-  25% { background:#6c5ce7; }
-  50% { background:#00f2ff; }
-  75% { background:#00ff99; }
-  100% { background:#ff4ecd; }
+.controls {
+  text-align: center;
+  padding: 1rem;
+  background: #111;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
-/* Locked RGB icon */
-#rgbToggle.locked {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.6;
+select, button {
+  padding: 0.7rem 1.2rem;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255,78,205,0.7);
+  transition: 0.3s;
 }
-#rgbToggle.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-}
-
-/* Click sparks */
-.spark {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #ff4ecd;
-  pointer-events: none;
-  animation: sparkAnim 0.6s linear forwards;
-}
-@keyframes sparkAnim {
-  0% { transform: translate(0,0) scale(1); opacity:1; }
-  100% { transform: translate(calc(var(--dx) * 50px), calc(var(--dy) * 50px)) scale(0); opacity:0; }
-}
-
-/* Floating lights in RGB mode */
-.floating-light {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  pointer-events: none;
-  animation: floatUp 5s linear infinite;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0) translateX(0); opacity:0; }
-  10% { opacity:0.6; }
-  100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
-}
-
-/* Shooter Game Canvas */
-#gameCanvas {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:none;
-  z-index:9999;
-}
-
-/* Game Over Screen */
-#gameOverScreen {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.9);
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-size:2rem;
-  display:none;
-  z-index:10000;
-}
-#gameOverScreen button {
-  margin-top:20px;
-  padding:1rem 2rem;
-  font-size:1rem;
-  cursor:pointer;
-  border:none;
-  border-radius:5px;
-  background: #ff4ecd;
-  color:#fff;
+select:hover, button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,78,205,1);
 }
 </style>
 </head>
-<body class="dark-mode">
+<body>
 
 <header>
-  <div class="logo" id="logo">Monterey Bay PCs</div>
+  <div class="logo" onclick="window.location='index.html'">Monterey Bay PCs</div>
   <nav>
-    <a href="#products">Products</a>
-    <a href="#features">Features</a>
-    <a href="builder.html">Build Your Own PC</a>
+    <a href="index.html">Home</a>
+    <a href="#builderContainer">PC Builder</a>
+    <a href="#support">Support</a>
   </nav>
-  <div>
-    <a class="btn" href="#products">Shop Now</a>
-    <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
-    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode</button>
-  </div>
 </header>
 
-<section class="hero">
-  <div class="hero-text">
-    <h1>PCs <span>Custom-Built</span> For You</h1>
-    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
-    <div class="hero-buttons">
-      <a href="#products" class="btn">Browse PCs</a>
-    </div>
-  </div>
-  <div class="hero-img">
-    <img id="heroPC" src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
-  </div>
-</section>
+<section id="builderContainer"></section>
 
-<section class="products" id="products">
-<h2>Popular Builds</h2>
-<div class="grid">
-  <!-- 1080p -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201080p%20PC.%20Please%20send%20more%20information.', '_blank')">
-    <h3>1080p - Starter/budget PC</h3>
-    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
-    <span class="price">$600.00+</span>
-    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
-  </div>
-  <!-- 1440p -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
-    <h3>1440p - Midrange PC</h3>
-    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
-    <span class="price">$1,300.00+</span>
-    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
-  </div>
-  <!-- 4K -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
-    <h3>4k - High-end PC</h3>
-    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
-    <span class="price">$2,000.00+</span>
-    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC">
-  </div>
-</div>
-</section>
-
-<section class="features" id="features">
-<h2>Why Choose Us?</h2>
-<div class="grid">
-  <div class="feature">
-    <h4>Expert Craftmanship</h4>
-    <p>Hand-assembled PCs with full stress testing before shipping.</p>
-  </div>
-  <div class="feature">
-    <h4>Fast Delivery</h4>
-    <p>Get your system quickly and efficiently</p>
-  </div>
-  <div class="feature">
-    <h4>Discount</h4>
-    <p>Save money when you return an old part and swap it for a new one</p>
-  </div>
-</div>
-</section>
-
-<!-- 🔹 New Sections Start Here -->
-
-<!-- Comparison Table -->
-<section id="comparison" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">Build Comparison</h2>
-  <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
-    <tr style="background:#111;">
-      <th style="padding:12px;">Feature</th>
-      <th>1080p</th>
-      <th>1440p</th>
-      <th>4K</th>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Performance</td>
-      <td>High FPS, eSports Ready</td>
-      <td>Balanced, High Quality</td>
-      <td>Ultra Settings, 4K Gaming</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Best For</td>
-      <td>Competitive Gaming</td>
-      <td>Streaming & Gaming</td>
-      <td>High-End Enthusiasts</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Estimated Price</td>
-      <td>$600+</td>
-      <td>$1,300+</td>
-      <td>$2,000+</td>
-    </tr>
-  </table>
-</section>
-
-<!-- Reviews -->
-<section id="reviews" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">What Our Customers Say</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – Alex M.
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my eSports needs. Smooth performance." – Jordan R.
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Taylor L.
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">Frequently Asked Questions</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do your builds come with Windows pre-installed?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Yes, all builds include a licensed copy of Windows 11.</div>
-    </div>
-    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Can I customize a build?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Absolutely! We can swap out parts based on your preferences and budget.</div>
-    </div>
-    <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do you offer warranties?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Yes, each build comes with a 1-year limited warranty.</div>
-    </div>
-  </div>
-</section>
-
-<!-- 🔹 Shooter Game Canvas & Footer -->
-<canvas id="gameCanvas"></canvas>
-<div id="gameOverScreen">
-  <div>Game Over</div>
-  <button onclick="endGame()">Return to Website</button>
+<div class="controls">
+  <!-- GPU Dropdown -->
+  <label for="gpuSelect" style="color:#fff; margin-right:10px;">GPU:</label>
+  <select id="gpuSelect">
+    <!-- NVIDIA RTX 50 Series -->
+    <optgroup label="NVIDIA RTX 50 Series (Blackwell)">
+      <option>RTX 5090</option>
+      <option>RTX 5080</option>
+      <option>RTX 5070 Ti</option>
+      <option>RTX 5070</option>
+      <option>RTX 5060 Ti</option>
+      <option>RTX 5060</option>
+      <option>RTX 5050</option>
+    </optgroup>
+    <!-- NVIDIA RTX 40 Series -->
+    <optgroup label="NVIDIA RTX 40 Series (Ada Lovelace)">
+      <option>RTX 4090</option>
+      <option>RTX 4080</option>
+      <option>RTX 4070 Ti</option>
+      <option>RTX 4070</option>
+      <option>RTX 4060 Ti</option>
+      <option>RTX 4060</option>
+      <option>RTX 4050</option>
+    </optgroup>
+    <!-- NVIDIA RTX 30 Series -->
+    <optgroup label="NVIDIA RTX 30 Series (Ampere)">
+      <option>RTX 3090 Ti</option>
+      <option>RTX 3090</option>
+      <option>RTX 3080 Ti</option>
+      <option>RTX 3080</option>
+      <option>RTX 3070 Ti</option>
+      <option>RTX 3070</option>
+      <option>RTX 3060 Ti</option>
+      <option>RTX 3060</option>
+      <option>RTX 3050</option>
+    </optgroup>
+    <!-- NVIDIA RTX 20 Series -->
+    <optgroup label="NVIDIA RTX 20 Series (Turing)">
+      <option>RTX 2080 Ti</option>
+      <option>RTX 2080 SUPER</option>
+      <option>RTX 2080</option>
+      <option>RTX 2070 SUPER</option>
+      <option>RTX 2070</option>
+      <option>RTX 2060 SUPER</option>
+      <option>RTX 2060</option>
+    </optgroup>
+    <!-- NVIDIA GTX 16 Series -->
+    <optgroup label="NVIDIA GTX 16 Series (Turing)">
+      <option>GTX 1660 Ti</option>
+      <option>GTX 1660 SUPER</option>
+      <option>GTX 1660</option>
+      <option>GTX 1650 SUPER</option>
+      <option>GTX 1650</option>
+    </optgroup>
+    <!-- NVIDIA GTX 10 Series -->
+    <optgroup label="NVIDIA GTX 10 Series (Pascal)">
+      <option>GTX 1080 Ti</option>
+      <option>GTX 1080</option>
+      <option>GTX 1070 Ti</option>
+      <option>GTX 1070</option>
+      <option>GTX 1060</option>
+      <option>GTX 1050 Ti</option>
+      <option>GTX 1050</option>
+    </optgroup>
+    <!-- AMD RX 9000 Series -->
+    <optgroup label="AMD RX 9000 Series (RDNA 4)">
+      <option>RX 9070 XT</option>
+      <option>RX 9000 XT</option>
+      <option>RX 7900 XT</option>
+      <option>RX 7800 XT</option>
+      <option>RX 7700 XT</option>
+      <option>RX 7600 XT</option>
+      <option>RX 7500 XT</option>
+    </optgroup>
+    <!-- AMD RX 8000 Series -->
+    <optgroup label="AMD RX 8000 Series (RDNA 3)">
+      <option>RX 8900 XT</option>
+      <option>RX 8800 XT</option>
+      <option>RX 7700 XT</option>
+      <option>RX 7600 XT</option>
+      <option>RX 7500 XT</option>
+    </optgroup>
+    <!-- AMD RX 7000 Series -->
+    <optgroup label="AMD RX 7000 Series (RDNA 3)">
+      <option>RX 7900 XTX</option>
+      <option>RX 7900 XT</option>
+      <option>RX 7800 XT</option>
+      <option>RX 7700 XT</option>
+      <option>RX 7600 XT</option>
+      <option>RX 7500 XT</option>
+    </optgroup>
+    <!-- AMD RX 6000 Series -->
+    <optgroup label="AMD RX 6000 Series (RDNA 2)">
+      <option>RX 6900 XT</option>
+      <option>RX 6800 XT</option>
+      <option>RX 6700 XT</option>
+      <option>RX 6600 XT</option>
+      <option>RX 6500 XT</option>
+    </optgroup>
+    <!-- AMD RX 5000 Series -->
+    <optgroup label="AMD RX 5000 Series (RDNA)">
+      <option>RX 5700 XT</option>
+      <option>RX 5600 XT</option>
+      <option>RX 5500 XT</option>
+    </optgroup>
+  </select>
+  <span id="gpuSelected" style="margin-left:10px; color:#ff4ecd;">Selected: None</span>
 </div>
 
-<footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-// Theme & RGB toggles
-const themeToggle=document.getElementById('themeToggle');
-const rgbToggle=document.getElementById('rgbToggle');
-themeToggle.addEventListener('click',()=>{
-  document.body.classList.toggle('light-mode');
-  document.body.classList.toggle('dark-mode');
-});
+let scene, camera, renderer, controls, pcModel;
+init();
+animate();
 
-// Floating lights in RGB mode
-function spawnFloatingLight(){
-  if(!document.body.classList.contains('rgb-mode')) return;
-  const light=document.createElement('div');
-  light.classList.add('floating-light');
-  light.style.left=Math.random()*window.innerWidth+'px';
-  document.body.appendChild(light);
-  setTimeout(()=>light.remove(),5000);
-}
-setInterval(spawnFloatingLight,500);
+function init(){
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0f0f1a);
 
-// Click sparks
-function createSpark(x,y){
-  const spark=document.createElement('div');
-  spark.classList.add('spark');
-  spark.style.left=x+'px';
-  spark.style.top=y+'px';
-  spark.style.setProperty('--dx', (Math.random()*2-1).toFixed(2));
-  spark.style.setProperty('--dy', (Math.random()*2-1).toFixed(2));
-  document.body.appendChild(spark);
-  setTimeout(()=>spark.remove(),600);
-}
-document.addEventListener('click', e=>{
-  createSpark(e.clientX,e.clientY);
-});
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  camera.position.set(2,2,5);
 
-// Hover sound
-const hoverSound=new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
-document.querySelectorAll('.btn,.btn-outline,.card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>hoverSound.play());
-});
+  renderer = new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(window.innerWidth, window.innerHeight*0.8);
+  document.getElementById('builderContainer').appendChild(renderer.domElement);
 
-// Mini Easter egg: confetti on hero image click
-document.getElementById('heroPC').addEventListener('click',()=>{
-  for(let i=0;i<50;i++){
-    const c=document.createElement('div');
-    c.classList.add('spark');
-    c.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
-    c.style.left=(Math.random()*window.innerWidth)+'px';
-    c.style.top=(Math.random()*window.innerHeight)+'px';
-    c.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
-    c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1000);
-  }
-});
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
 
-// Shooter Game Variables
-const logo = document.getElementById('logo');
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-let gameActive = false;
-let player, bullets, enemies, enemySpawnTimer, keys = {};
-const gameOverScreen = document.getElementById('gameOverScreen');
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
 
-// Start game on logo click
-logo.addEventListener('click', ()=>{ if(!gameActive) startGame(); });
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(5,5,5);
+  scene.add(directionalLight);
 
-function startGame() {
-  canvas.style.display = 'block';
-  gameOverScreen.style.display = 'none';
-  gameActive = true;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  player = { x: canvas.width/2 -25, y: canvas.height-60, width:50, height:50, speed:14 };
-  bullets = [];
-  enemies = [];
-  enemySpawnTimer = 0;
-  requestAnimationFrame(gameLoop);
+  const geometry = new THREE.BoxGeometry(2,3,1);
+  const material = new THREE.MeshStandardMaterial({color:0x222222, metalness:0.7, roughness:0.3});
+  pcModel = new THREE.Mesh(geometry, material);
+  scene.add(pcModel);
+
+  const gpuGeometry = new THREE.BoxGeometry(1.5,0.3,0.2);
+  const gpuMaterial = new THREE.MeshStandardMaterial({color:0xff4ecd});
+  const gpu = new THREE.Mesh(gpuGeometry, gpuMaterial);
+  gpu.name = 'gpu';
+  gpu.position.set(0,0,0.5);
+  pcModel.add(gpu);
+
+  window.addEventListener('resize', onWindowResize, false);
 }
 
-function endGame() {
-  canvas.style.display = 'none';
-  gameOverScreen.style.display = 'none';
-  gameActive = false;
+function onWindowResize(){
+  camera.aspect = window.innerWidth / (window.innerHeight*0.8);
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight*0.8);
 }
 
-// Input
-document.addEventListener('keydown', e=>{ keys[e.key] = true; });
-document.addEventListener('keyup', e=>{ keys[e.key] = false; });
-
-// Game Over
-function triggerGameOver() {
-  gameActive = false;
-  gameOverScreen.style.display = 'flex';
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
 }
 
-// Game Loop
-function gameLoop(){
-  if(!gameActive) return;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+// GPU selection update
+const gpuSelect = document.getElementById('gpuSelect');
+const gpuSelected = document.getElementById('gpuSelected');
 
-  // Move Player
-  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
-  if(keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
-
-  // Draw Player
-  ctx.fillStyle = '#0ff';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-
-  // Bullets
-  bullets.forEach((b, i)=>{
-    b.y -= 10;
-    ctx.fillStyle = '#ff0';
-    ctx.fillRect(b.x, b.y, b.width, b.height);
-    if(b.y<0) bullets.splice(i,1);
-  });
-
-  // Fire bullets
-  if(keys[' ']) bullets.push({ x: player.x + player.width/2 -2.5, y: player.y, width:5, height:10 });
-
-  // Enemies
-  enemySpawnTimer++;
-  if(enemySpawnTimer>50){
-    enemies.push({ x: Math.random()*(canvas.width-40), y:-40, width:40, height:40, speed:3 });
-    enemySpawnTimer = 0;
-  }
-  enemies.forEach((e,i)=>{
-    e.y += e.speed;
-    ctx.fillStyle = '#f00';
-    ctx.fillRect(e.x, e.y, e.width, e.height);
-
-    // Collision with player
-    if(player.x < e.x + e.width &&
-       player.x + player.width > e.x &&
-       player.y < e.y + e.height &&
-       player.y + player.height > e.y){
-         triggerGameOver();
-    }
-
-    // Enemy reaches bottom
-    if(e.y + e.height > canvas.height){
-      triggerGameOver();
-    }
-
-    // Bullet collision
-    bullets.forEach((b,j)=>{
-      if(b.x < e.x + e.width &&
-         b.x + b.width > e.x &&
-         b.y < e.y + e.height &&
-         b.y + b.height > e.y){
-           enemies.splice(i,1);
-           bullets.splice(j,1);
-      }
-    });
-  });
-
-  if(gameActive) requestAnimationFrame(gameLoop);
-}
-
-// Konami code to unlock RGB
-const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let konamiIndex = 0;
-document.addEventListener('keydown', e=>{
-  if(e.key === konamiCode[konamiIndex]){
-    konamiIndex++;
-    if(konamiIndex === konamiCode.length){
-      konamiIndex = 0;
-      alert('RGB Mode Unlocked! 🎉');
-      rgbToggle.classList.remove('locked');
-      rgbToggle.disabled = false;
-    }
-  } else {
-    konamiIndex = 0;
-  }
-});
-
-// RGB toggle click
-rgbToggle.addEventListener('click', ()=>{
-  if(rgbToggle.classList.contains('locked')){
-    alert('Enter the Konami Code to unlock RGB Mode!');
-    return;
-  }
-  document.body.classList.toggle('rgb-mode');
-});
-
-// Prevent RGB in light mode
-rgbToggle.addEventListener('click', ()=>{
-  if(document.body.classList.contains('light-mode')){
-    alert("RGB mode only works in dark mode!");
-    return;
-  }
-});
-
-// FAQ Toggle
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click', ()=>{
-    const answer=q.nextElementSibling;
-    answer.style.display=answer.style.display==='block'?'none':'block';
-  });
+gpuSelect.addEventListener('change', () => {
+  gpuSelected.textContent = 'Selected: ' + gpuSelect.value;
+  const gpu = pcModel.getObjectByName('gpu');
+  gpu.material.color.set(Math.random() * 0xffffff); // random color for demo
 });
 </script>
 </body>
