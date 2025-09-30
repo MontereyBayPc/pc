@@ -13,20 +13,17 @@ body {
   background: #0f0f1a;
   color: #fff;
   overflow-x: hidden;
-  <!-- Background Video -->
-<video autoplay muted loop playsinline id="backgroundVideo" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-">
-  <source src="https://cdn.videvo.net/videvo_files/video/free/2019-03/small_watermarked/190222_B_012_MontereyBay_1080p_preview.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+}
 
+/* Background Video */
+#backgroundVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
 
 /* Header */
@@ -110,8 +107,8 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  white-space: normal; /* allow full text display */
-  overflow: visible;   /* prevent truncation */
+  white-space: normal;
+  overflow: visible;
 }
 .card img {
   width: 100%;
@@ -132,15 +129,6 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 /* Dark / Light Mode outside cards only */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
-  
-}
-@keyframes rgbBackground {
-  0% { background:#ff4ecd; }
-  25% { background:#6c5ce7; }
-  50% { background:#00f2ff; }
-  75% { background:#00ff99; }
-  100% { background:#ff4ecd; }
-}
 
 /* Click sparks */
 .spark {
@@ -156,55 +144,15 @@ body.light-mode { background:#fdfdfd; color:#000; }
   0% { transform: translate(0,0) scale(1); opacity:1; }
   100% { transform: translate(calc(var(--dx) * 50px), calc(var(--dy) * 50px)) scale(0); opacity:0; }
 }
-
-@keyframes floatUp {
-  0% { transform: translateY(0) translateX(0); opacity:0; }
-  10% { opacity:0.6; }
-  100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
-}
-
-/* Shooter Game Canvas */
-#gameCanvas {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:none;
-  z-index:9999;
-}
-
-/* Game Over Screen */
-#gameOverScreen {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.9);
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-size:2rem;
-  display:none;
-  z-index:10000;
-}
-#gameOverScreen button {
-  margin-top:20px;
-  padding:1rem 2rem;
-  font-size:1rem;
-  cursor:pointer;
-  border:none;
-  border-radius:5px;
-  background: #ff4ecd;
-  color:#fff;
-}
 </style>
 </head>
 <body class="dark-mode">
+
+<!-- Background Video -->
+<video autoplay muted loop playsinline id="backgroundVideo">
+  <source src="https://cdn.videvo.net/videvo_files/video/free/2019-03/small_watermarked/190222_B_012_MontereyBay_1080p_preview.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 <header>
   <div class="logo" id="logo">Monterey Bay PCs</div>
@@ -276,82 +224,6 @@ body.light-mode { background:#fdfdfd; color:#000; }
   </div>
 </div>
 </section>
-<!-- Comparison Table -->
-<section id="comparison" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">Build Comparison</h2>
-  <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
-    <tr style="background:#111;">
-      <th style="padding:12px;">Feature</th>
-      <th>1080p</th>
-      <th>1440p</th>
-      <th>4K</th>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Performance</td>
-      <td>High FPS, eSports Ready</td>
-      <td>Balanced, High Quality</td>
-      <td>Ultra Settings, 4K Gaming</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Best For</td>
-      <td>Competitive Gaming</td>
-      <td>Streaming & Gaming</td>
-      <td>High-End Enthusiasts</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Estimated Price</td>
-      <td>$600+</td>
-      <td>$1,300+</td>
-      <td>$2,000+</td>
-    </tr>
-  </table>
-</section>
-
-<!-- Customer Reviews -->
-<section id="reviews" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">What Our Customers Say</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – O.V.B 
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my needs. Smooth performance." – John. K
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Mr. P
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">Frequently Asked Questions</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do your builds come with Windows pre-installed?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Yes, all builds include a licensed copy of Windows 11.</div>
-    </div>
-    <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Can I customize a build to my needs?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Absolutely! We can swap out parts based on your preferences and budget.</div>
-    </div>
-    <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do you offer warranties?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">No, we do not offer warranties but if you have minor issues, we can help!</div>
-    </div>
-    <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Why are your PCs so much cheaper than others?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">We believe in offering high-quality builds at affordable prices, cutting out unnecessary costs.</div>
-    </div>
-  </div>
-</section>
-
-<!-- Shooter Game Canvas & Footer -->
-<canvas id="gameCanvas"></canvas>
-<div id="gameOverScreen">
-  <div>Game Over</div>
-  <button onclick="endGame()">Return to Website</button>
-</div>
 
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
@@ -362,51 +234,7 @@ themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
 });
-
-// FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q=>{
-  q.addEventListener('click', ()=>{
-    const answer=q.nextElementSibling;
-    answer.style.display=answer.style.display==='block'?'none':'block';
-  });
-});
-
-// Floating 3D blocks animation
-const floatingBlocksContainer=document.getElementById('floatingBlocks');
-for(let i=0;i<15;i++){
-  const block=document.createElement('div');
-  block.style.width=block.style.height=Math.random()*40+20+'px';
-  block.style.background=['#ff4ecd','#6c5ce7','#00f2ff','#00ff99'][Math.floor(Math.random()*4)];
-  block.style.position='absolute';
-  block.style.left=Math.random()*floatingBlocksContainer.offsetWidth+'px';
-  block.style.top=Math.random()*floatingBlocksContainer.offsetHeight+'px';
-  block.style.borderRadius='5px';
-  block.style.opacity=0.8;
-  block.style.transform=`rotateX(${Math.random()*360}deg) rotateY(${Math.random()*360}deg)`;
-  floatingBlocksContainer.appendChild(block);
-  animateBlock(block);
-}
-
-function animateBlock(block){
-  let dx=(Math.random()-0.5)*2;
-  let dy=(Math.random()-0.5)*2;
-  function move(){
-    let rect=block.getBoundingClientRect();
-    let parentRect=floatingBlocksContainer.getBoundingClientRect();
-    let left=rect.left-floatOffsetLeft(floatingBlocksContainer);
-    let top=rect.top-floatOffsetTop(floatingBlocksContainer);
-    if(left<0 || left>parentRect.width-rect.width) dx*=-1;
-    if(top<0 || top>parentRect.height-rect.height) dy*=-1;
-    block.style.left=(left+dx)+'px';
-    block.style.top=(top+dy)+'px';
-    requestAnimationFrame(move);
-  }
-  move();
-}
-
-function floatOffsetLeft(elem){return elem.getBoundingClientRect().left;}
-function floatOffsetTop(elem){return elem.getBoundingClientRect().top;}
 </script>
+
 </body>
 </html>
-
