@@ -118,11 +118,7 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 /* Dark / Light Mode outside cards only */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
-
-/* RGB mode with subtle floating glow */
-body.rgb-mode {
-  animation: rgbBackground 10s infinite alternate;
-  position: relative;
+  
 }
 @keyframes rgbBackground {
   0% { background:#ff4ecd; }
@@ -130,21 +126,6 @@ body.rgb-mode {
   50% { background:#00f2ff; }
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
-}
-
-/* Locked RGB icon */
-#rgbToggle.locked {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.6;
-}
-#rgbToggle.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
 }
 
 /* Click sparks */
@@ -162,16 +143,6 @@ body.rgb-mode {
   100% { transform: translate(calc(var(--dx) * 50px), calc(var(--dy) * 50px)) scale(0); opacity:0; }
 }
 
-/* Floating lights in RGB mode */
-.floating-light {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  pointer-events: none;
-  animation: floatUp 5s linear infinite;
-}
 @keyframes floatUp {
   0% { transform: translateY(0) translateX(0); opacity:0; }
   10% { opacity:0.6; }
@@ -230,8 +201,7 @@ body.rgb-mode {
   </nav>
   <div>
     <a class="btn" href="#products">Shop Now</a>
-    <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
-    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode</button>
+    <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>                                                              
   </div>
 </header>
 
