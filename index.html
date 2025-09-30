@@ -33,7 +33,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(17, 17, 17, 0.85);
+  background: rgba(17,17,17,0.85);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -110,23 +110,16 @@ nav a:hover { color: #ff4ecd; }
 .price { display: block; margin: 1rem 0; font-size: 1.2rem; color: #ff4ecd; }
 .card:hover { transform: scale(1.06) rotate(-1deg); box-shadow: 0 0 30px rgba(255,78,205,0.9), 0 0 60px rgba(108,92,231,0.5); }
 
+/* FAQ toggle */
+.faq-answer { display: none; padding: 15px; background: #1a1a1a; }
+.faq-question { padding: 15px; background: #111; cursor: pointer; }
+
 /* Footer */
 footer { text-align: center; padding: 1.5rem; background: #111122; color: #fff; font-size: 1rem; }
 
 /* Dark / Light Mode */
 body.dark-mode { background: #0f0f1a; color: #fff; }
 body.light-mode { background: #fdfdfd; color: #000; }
-
-/* FAQ toggle */
-.faq-answer { display: none; padding: 15px; background: #1a1a1a; }
-.faq-question { padding: 15px; background: #111; cursor: pointer; }
-
-/* Float animation */
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 0.6; }
-  100% { transform: translateY(-100vh); opacity: 0; }
-}
 </style>
 </head>
 <body class="dark-mode">
@@ -157,99 +150,131 @@ body.light-mode { background: #fdfdfd; color: #000; }
 <section class="hero">
   <div class="hero-text">
     <h1>PCs <span>Custom-Built</span> For You</h1>
-    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance.</p>
-    <a href="#products" class="btn">Browse PCs</a>
+    <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn">Browse PCs</a>
+    </div>
   </div>
   <div class="hero-img">
     <img src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
   </div>
 </section>
 
-<!-- Products -->
+<!-- Products Section -->
 <section class="products" id="products">
-  <h2>Popular Builds</h2>
-  <div class="grid">
-    <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%201080p&body=Hello', '_blank')">
-      <h3>1080p - Starter PC</h3>
-      <p>Great for esports and budget-friendly gaming.</p>
-      <span class="price">$600+</span>
-      <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
-    </div>
-    <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%201440p&body=Hello', '_blank')">
-      <h3>1440p - Midrange PC</h3>
-      <p>Balanced performance for gaming and content creation.</p>
-      <span class="price">$1,300+</span>
-      <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
-    </div>
-    <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%204K&body=Hello', '_blank')">
-      <h3>4K - High-end PC</h3>
-      <p>Ultra settings for AAA gaming and creative work.</p>
-      <span class="price">$2,000+</span>
-      <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC">
-    </div>
+<h2>Popular Builds</h2>
+<div class="grid">
+  <!-- 1080p -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%201080p&body=Hello', '_blank')">
+    <h3>1080p - Starter/budget PC</h3>
+    <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
+    <span class="price">$600.00+</span>
+    <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
   </div>
+  <!-- 1440p -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%201440p&body=Hello', '_blank')">
+    <h3>1440p - Midrange PC</h3>
+    <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
+    <span class="price">$1,300.00+</span>
+    <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
+  </div>
+  <!-- 4K -->
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%204K&body=Hello', '_blank')">
+    <h3>4K - High-end PC</h3>
+    <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
+    <span class="price">$2,000.00+</span>
+    <img src="https://cdna.pcpartpicker.com/static/forever/images/userbuild/456807.00c991fb07c2d082b780dc7cd28377f3.1600.jpg" alt="4K Gaming PC">
+  </div>
+</div>
 </section>
 
-<!-- Features -->
+<!-- Features Section -->
 <section class="features" id="features">
-  <h2>Why Choose Us?</h2>
-  <div class="grid">
-    <div class="feature"><h4>Expert Craftsmanship</h4><p>Hand-assembled PCs with stress testing.</p></div>
-    <div class="feature"><h4>Fast Delivery</h4><p>Quick and efficient system delivery.</p></div>
-    <div class="feature"><h4>Discount</h4><p>Trade old parts for savings on new ones.</p></div>
+<h2>Why Choose Us?</h2>
+<div class="grid">
+  <div class="feature">
+    <h4>Expert Craftmanship</h4>
+    <p>Hand-assembled PCs with full stress testing before shipping.</p>
   </div>
+  <div class="feature">
+    <h4>Fast Delivery</h4>
+    <p>Get your system quickly and efficiently</p>
+  </div>
+  <div class="feature">
+    <h4>Discount</h4>
+    <p>Save money when you return an old part and swap it for a new one</p>
+  </div>
+</div>
 </section>
 
 <!-- Comparison Table -->
 <section id="comparison">
-  <h2>Build Comparison</h2>
-  <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
-    <tr style="background:#111;">
-      <th style="padding:12px;">Feature</th>
-      <th>1080p</th>
-      <th>1440p</th>
-      <th>4K</th>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Performance</td>
-      <td>High FPS, eSports Ready</td>
-      <td>Balanced, High Quality</td>
-      <td>Ultra Settings, 4K Gaming</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Best For</td>
-      <td>Competitive Gaming</td>
-      <td>Streaming & Gaming</td>
-      <td>High-End Enthusiasts</td>
-    </tr>
-    <tr>
-      <td style="padding:12px;">Estimated Price</td>
-      <td>$600+</td>
-      <td>$1,300+</td>
-      <td>$2,000+</td>
-    </tr>
-  </table>
+<h2>Build Comparison</h2>
+<table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
+<tr style="background:#111;">
+  <th style="padding:12px;">Feature</th>
+  <th>1080p</th>
+  <th>1440p</th>
+  <th>4K</th>
+</tr>
+<tr>
+  <td style="padding:12px;">Performance</td>
+  <td>High FPS, eSports Ready</td>
+  <td>Balanced, High Quality</td>
+  <td>Ultra Settings, 4K Gaming</td>
+</tr>
+<tr>
+  <td style="padding:12px;">Best For</td>
+  <td>Competitive Gaming</td>
+  <td>Streaming & Gaming</td>
+  <td>High-End Enthusiasts</td>
+</tr>
+<tr>
+  <td style="padding:12px;">Estimated Price</td>
+  <td>$600+</td>
+  <td>$1,300+</td>
+  <td>$2,000+</td>
+</tr>
+</table>
 </section>
 
-<!-- Reviews -->
+<!-- Customer Reviews -->
 <section id="reviews">
-  <h2>What Our Customers Say</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it!" – O.V.B</div>
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my needs." – John K.</div>
-    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">⭐⭐⭐⭐⭐<br>"The 4K build runs Cyberpunk like butter." – Mr. P</div>
+<h2>What Our Customers Say</h2>
+<div style="max-width:900px; margin:0 auto;">
+  <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+    ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – O.V.B 
   </div>
+  <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+    ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my needs. Smooth performance." – John. K
+  </div>
+  <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+    ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Mr. P
+  </div>
+</div>
 </section>
 
-<!-- FAQ -->
+<!-- FAQ Section -->
 <section id="faq">
-  <h2>Frequently Asked Questions</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div class="faq-item"><div class="faq-question">Do your builds come with Windows pre-installed?</div><div class="faq-answer">Yes, all builds include Windows 11.</div></div>
-    <div class="faq-item"><div class="faq-question">Can I customize a build?</div><div class="faq-answer">Absolutely! Parts can be swapped based on preferences.</div></div>
-    <div class="faq-item"><div class="faq-question">Do you offer warranties?</div><div class="faq-answer">No formal warranties, but minor issues can be assisted with.</div></div>
-    <div class="faq-item"><div class="faq-question">Why are your PCs cheaper than others?</div><div class="faq-answer">We cut unnecessary costs while keeping quality high.</div></div>
+<h2>Frequently Asked Questions</h2>
+<div style="max-width:900px; margin:0 auto;">
+  <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
+    <div class="faq-question">Do your builds come with Windows pre-installed?</div>
+    <div class="faq-answer">Yes, all builds include a licensed copy of Windows 11.</div>
   </div>
+  <div class="faq-item" style="margin-bottom:10px; background:#000; border-radius:8px; overflow:hidden;">
+    <div class="faq-question">Can I customize a build to my needs?</div>
+    <div class="faq-answer">Absolutely! We can swap out parts based on your preferences and budget.</div>
+  </div>
+  <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
+    <div class="faq-question">Do you offer warranties?</div>
+    <div class="faq-answer">No, we do not offer warranties but if you have minor issues, we can help!</div>
+  </div>
+  <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
+    <div class="faq-question">Why are your PCs so much cheaper than others?</div>
+    <div class="faq-answer">We believe in offering high-quality builds at affordable prices, cutting out unnecessary costs.</div>
+  </div>
+</div>
 </section>
 
 <!-- Footer -->
@@ -257,17 +282,17 @@ body.light-mode { background: #fdfdfd; color: #000; }
 
 <script>
 // Theme toggle
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.addEventListener('click', () => {
+const themeToggle=document.getElementById('themeToggle');
+themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
 });
 
 // FAQ toggle
-document.querySelectorAll('.faq-question').forEach(q => {
-  q.addEventListener('click', () => {
-    const answer = q.nextElementSibling;
-    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+document.querySelectorAll('.faq-question').forEach(q=>{
+  q.addEventListener('click', ()=>{
+    const answer=q.nextElementSibling;
+    answer.style.display=answer.style.display==='block'?'none':'block';
   });
 });
 </script>
