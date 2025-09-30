@@ -316,6 +316,29 @@ themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('dark-mode');
 });
 
+// 4K Monterey Bay images
+const backgrounds = [
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=3840&q=80", // ocean
+  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=3840&q=80", // city + water
+  "https://images.unsplash.com/photo-1504198458649-3128b932f49b?auto=format&fit=crop&w=3840&q=80", // harbor + buildings
+  "https://images.unsplash.com/photo-1533777324565-a040eb52-f87b?auto=format&fit=crop&w=3840&q=80"  // sunset over ocean
+];
+
+let bgIndex = 0;
+
+// Function to change background
+function changeBackground() {
+  document.body.style.backgroundImage = `url(${backgrounds[bgIndex]})`;
+  document.body.style.backgroundSize = "cover";
+  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundRepeat = "no-repeat";
+  bgIndex = (bgIndex + 1) % backgrounds.length;
+}
+
+// Initialize and loop
+changeBackground();
+setInterval(changeBackground, 8000); // change every 8 seconds
+
 // Floating lights in RGB mode
 function spawnFloatingLight(){
   if(!document.body.classList.contains('rgb-mode')) return;
