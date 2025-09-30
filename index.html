@@ -119,10 +119,6 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
 
-/* RGB mode with subtle floating glow */
-body.rgb-mode {
-  animation: rgbBackground 10s infinite alternate;
-  position: relative;
 }
 @keyframes rgbBackground {
   0% { background:#ff4ecd; }
@@ -130,21 +126,6 @@ body.rgb-mode {
   50% { background:#00f2ff; }
   75% { background:#00ff99; }
   100% { background:#ff4ecd; }
-}
-
-/* Locked RGB icon */
-#rgbToggle.locked {
-  position: relative;
-  pointer-events: none;
-  opacity: 0.6;
-}
-#rgbToggle.locked::after {
-  content: "🔒";
-  position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
 }
 
 /* Click sparks */
@@ -178,45 +159,6 @@ body.rgb-mode {
   100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
 }
 
-/* Shooter Game Canvas */
-#gameCanvas {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:none;
-  z-index:9999;
-}
-
-/* Game Over Screen */
-#gameOverScreen {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.9);
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-size:2rem;
-  display:none;
-  z-index:10000;
-}
-#gameOverScreen button {
-  margin-top:20px;
-  padding:1rem 2rem;
-  font-size:1rem;
-  cursor:pointer;
-  border:none;
-  border-radius:5px;
-  background: #ff4ecd;
-  color:#fff;
-}
 </style>
 </head>
 <body class="dark-mode">
@@ -364,13 +306,6 @@ body.rgb-mode {
   </div>
 </section>
 
-<!-- 🔹 Shooter Game Canvas & Footer -->
-<canvas id="gameCanvas"></canvas>
-<div id="gameOverScreen">
-  <div>Game Over</div>
-  <button onclick="endGame()">Return to Website</button>
-</div>
-
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
 <script>
@@ -426,143 +361,6 @@ document.getElementById('heroPC').addEventListener('click',()=>{
     c.style.setProperty('--dy',(Math.random()*2-1).toFixed(2));
     document.body.appendChild(c);
     setTimeout(()=>c.remove(),1000);
-  }
-});
-
-// Shooter Game Variables
-const logo = document.getElementById('logo');
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-let gameActive = false;
-let player, bullets, enemies, enemySpawnTimer, keys = {};
-const gameOverScreen = document.getElementById('gameOverScreen');
-
-// Start game on logo click
-logo.addEventListener('click', ()=>{ if(!gameActive) startGame(); });
-
-function startGame() {
-  canvas.style.display = 'block';
-  gameOverScreen.style.display = 'none';
-  gameActive = true;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  player = { x: canvas.width/2 -25, y: canvas.height-60, width:50, height:50, speed:14 };
-  bullets = [];
-  enemies = [];
-  enemySpawnTimer = 0;
-  requestAnimationFrame(gameLoop);
-}
-
-function endGame() {
-  canvas.style.display = 'none';
-  gameOverScreen.style.display = 'none';
-  gameActive = false;
-}
-
-// Input
-document.addEventListener('keydown', e=>{ keys[e.key] = true; });
-document.addEventListener('keyup', e=>{ keys[e.key] = false; });
-
-// Game Over
-function triggerGameOver() {
-  gameActive = false;
-  gameOverScreen.style.display = 'flex';
-}
-
-// Game Loop
-function gameLoop(){
-  if(!gameActive) return;
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // Move Player
-  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
-  if(keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
-
-  // Draw Player
-  ctx.fillStyle = '#0ff';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-
-  // Bullets
-  bullets.forEach((b, i)=>{
-    b.y -= 10;
-    ctx.fillStyle = '#ff0';
-    ctx.fillRect(b.x, b.y, b.width, b.height);
-    if(b.y<0) bullets.splice(i,1);
-  });
-
-  // Fire bullets
-  if(keys[' ']) bullets.push({ x: player.x + player.width/2 -2.5, y: player.y, width:5, height:10 });
-
-  // Enemies
-  enemySpawnTimer++;
-  if(enemySpawnTimer>50){
-    enemies.push({ x: Math.random()*(canvas.width-40), y:-40, width:40, height:40, speed:3 });
-    enemySpawnTimer = 0;
-  }
-  enemies.forEach((e,i)=>{
-    e.y += e.speed;
-    ctx.fillStyle = '#f00';
-    ctx.fillRect(e.x, e.y, e.width, e.height);
-
-    // Collision with player
-    if(player.x < e.x + e.width &&
-       player.x + player.width > e.x &&
-       player.y < e.y + e.height &&
-       player.y + player.height > e.y){
-         triggerGameOver();
-    }
-
-    // Enemy reaches bottom
-    if(e.y + e.height > canvas.height){
-      triggerGameOver();
-    }
-
-    // Bullet collision
-    bullets.forEach((b,j)=>{
-      if(b.x < e.x + e.width &&
-         b.x + b.width > e.x &&
-         b.y < e.y + e.height &&
-         b.y + b.height > e.y){
-           enemies.splice(i,1);
-           bullets.splice(j,1);
-      }
-    });
-  });
-
-  if(gameActive) requestAnimationFrame(gameLoop);
-}
-
-// Konami code to unlock RGB
-const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let konamiIndex = 0;
-document.addEventListener('keydown', e=>{
-  if(e.key === konamiCode[konamiIndex]){
-    konamiIndex++;
-    if(konamiIndex === konamiCode.length){
-      konamiIndex = 0;
-      alert('RGB Mode Unlocked! 🎉');
-      rgbToggle.classList.remove('locked');
-      rgbToggle.disabled = false;
-    }
-  } else {
-    konamiIndex = 0;
-  }
-});
-
-// RGB toggle click
-rgbToggle.addEventListener('click', ()=>{
-  if(rgbToggle.classList.contains('locked')){
-    alert('Enter the Konami Code to unlock RGB Mode!');
-    return;
-  }
-  document.body.classList.toggle('rgb-mode');
-});
-
-// Prevent RGB in light mode
-rgbToggle.addEventListener('click', ()=>{
-  if(document.body.classList.contains('light-mode')){
-    alert("RGB mode only works in dark mode!");
-    return;
   }
 });
 
