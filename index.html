@@ -58,7 +58,8 @@ nav a:hover { color:#ff4ecd; }
 
 /* Hero */
 .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
-.hero-text { flex:1 1 400px; max-width:500px; }
+.hero-text { flex:1 1 400px; max-width:500px; opacity:0; transform:translateY(50px); transition: all 1s ease; }
+.hero-text.show { opacity:1; transform:translateY(0); }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
 .hero-text span {
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
@@ -73,6 +74,8 @@ nav a:hover { color:#ff4ecd; }
   100% { background-position: 0% 50%; }
 }
 .hero-subtext { font-size:1rem; line-height:1.6; }
+.hero-img { position:relative; opacity:0; transform:translateY(50px); transition: all 1s ease; }
+.hero-img.show { opacity:1; transform:translateY(0); }
 .hero-img img {
   transition: transform 0.3s;
   border-radius:10px;
@@ -80,6 +83,20 @@ nav a:hover { color:#ff4ecd; }
 .hero-img img:hover {
   transform: translateY(-10px) scale(1.02);
 }
+
+/* Monterey Images Styling */
+.monterey-img {
+  width:100%;
+  max-width:600px;
+  height:auto;
+  border-radius:12px;
+  margin:4rem auto;
+  display:block;
+  opacity:0;
+  transform:translateY(50px);
+  transition: all 1s ease;
+}
+.monterey-img.show { opacity:1; transform:translateY(0); }
 
 /* Sections */
 .products, .features { padding:4rem 2rem; }
@@ -96,8 +113,8 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  white-space: normal; /* allow full text display */
-  overflow: visible;   /* prevent truncation */
+  white-space: normal;
+  overflow: visible;
 }
 .card img {
   width: 100%;
@@ -118,14 +135,6 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 /* Dark / Light Mode outside cards only */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
-
-@keyframes rgbBackground {
-  0% { background:#ff4ecd; }
-  25% { background:#6c5ce7; }
-  50% { background:#00f2ff; }
-  75% { background:#00ff99; }
-  100% { background:#ff4ecd; }
-}
 
 /* Click sparks */
 .spark {
@@ -157,15 +166,6 @@ body.light-mode { background:#fdfdfd; color:#000; }
   10% { opacity:0.6; }
   100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
 }
-
-/* Monterey Images Styling */
-.monterey-img {
-  width:100%;
-  height:auto;
-  border-radius:12px;
-  margin:4rem 0;
-  box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
 </style>
 </head>
 <body class="dark-mode">
@@ -175,7 +175,7 @@ body.light-mode { background:#fdfdfd; color:#000; }
   <nav>
     <a href="#products">Products</a>
     <a href="#features">Features</a>
-    <a href="#support">Support</a>
+    <a href="#faq">FAQ</a>
   </nav>
   <div>
     <a class="btn" href="#products">Shop Now</a>
@@ -184,37 +184,42 @@ body.light-mode { background:#fdfdfd; color:#000; }
 </header>
 
 <section class="hero">
-  <div class="hero-text">
+  <div class="hero-text fade-in">
     <h1>PCs <span>Custom-Built</span> For You</h1>
     <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
     <div class="hero-buttons">
       <a href="#products" class="btn">Browse PCs</a>
     </div>
   </div>
-  <div class="hero-img">
+  <div class="hero-img fade-in">
     <img id="heroPC" src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
   </div>
 </section>
+
+<!-- Monterey Images -->
+<img class="monterey-img fade-in" src="https://images.unsplash.com/photo-1607440850385-1aa0b23b7ec4?auto=format&fit=crop&w=1600&q=80" alt="Monterey Bay Ocean">
+<img class="monterey-img fade-in" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80" alt="Monterey Bay Buildings">
+<img class="monterey-img fade-in" src="https://images.unsplash.com/photo-1507525428034-1aa0b23b7ec4?auto=format&fit=crop&w=1600&q=80" alt="Monterey Bay Sunset">
 
 <section class="products" id="products">
 <h2>Popular Builds</h2>
 <div class="grid">
   <!-- 1080p -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201080p%20PC.%20Please%20send%20more%20information.', '_blank')">
+  <div class="card">
     <h3>1080p - Starter/budget PC</h3>
     <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
     <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
   </div>
   <!-- 1440p -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
+  <div class="card">
     <h3>1440p - Midrange PC</h3>
     <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
     <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
   </div>
   <!-- 4K -->
-  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
+  <div class="card">
     <h3>4k - High-end PC</h3>
     <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
@@ -241,7 +246,6 @@ body.light-mode { background:#fdfdfd; color:#000; }
 </div>
 </section>
 
-<!-- Comparison Table -->
 <section id="comparison" style="padding:4rem 2rem;">
   <h2 style="text-align:center; margin-bottom:2rem;">Build Comparison</h2>
   <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
@@ -272,23 +276,6 @@ body.light-mode { background:#fdfdfd; color:#000; }
   </table>
 </section>
 
-<!-- Reviews -->
-<section id="reviews" style="padding:4rem 2rem;">
-  <h2 style="text-align:center; margin-bottom:2rem;">What Our Customers Say</h2>
-  <div style="max-width:900px; margin:0 auto;">
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – O.V.B 
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my needs. Smooth performance." – John. k
-    </div>
-    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
-      ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Mr. P
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
 <section id="faq" style="padding:4rem 2rem;">
   <h2 style="text-align:center; margin-bottom:2rem;">Frequently Asked Questions</h2>
   <div style="max-width:900px; margin:0 auto;">
@@ -302,11 +289,11 @@ body.light-mode { background:#fdfdfd; color:#000; }
     </div>
     <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
       <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do you offer warranties?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">No, we do not offer warrenties but, if you are having any minor problems, we can help!.</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">No, we do not offer warranties but we can help with minor issues!</div>
     </div>
     <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
       <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Why are your PCs so much cheaper than others?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Well we believe in the dream!</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Because we believe in the dream!</div>
     </div>
   </div>
 </section>
@@ -364,6 +351,19 @@ document.querySelectorAll('.faq-question').forEach(q=>{
     answer.style.display=answer.style.display==='block'?'none':'block';
   });
 });
+
+// Scroll animations
+function fadeInOnScroll(){
+  const elements=document.querySelectorAll('.fade-in, .monterey-img');
+  elements.forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight-100){
+      el.classList.add('show');
+    }
+  });
+}
+window.addEventListener('scroll', fadeInOnScroll);
+window.addEventListener('load', fadeInOnScroll);
 </script>
 
 </body>
