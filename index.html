@@ -58,8 +58,7 @@ nav a:hover { color:#ff4ecd; }
 
 /* Hero */
 .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:4rem 2rem; }
-.hero-text { flex:1 1 400px; max-width:500px; opacity:0; transform:translateY(50px); transition: all 1s ease; }
-.hero-text.show { opacity:1; transform:translateY(0); }
+.hero-text { flex:1 1 400px; max-width:500px; }
 .hero-text h1 { font-size:2.5rem; margin-bottom:1rem; }
 .hero-text span {
   background: linear-gradient(90deg, #ff4ecd, #6c5ce7, #00f2ff);
@@ -74,8 +73,6 @@ nav a:hover { color:#ff4ecd; }
   100% { background-position: 0% 50%; }
 }
 .hero-subtext { font-size:1rem; line-height:1.6; }
-.hero-img { position:relative; opacity:0; transform:translateY(50px); transition: all 1s ease; }
-.hero-img.show { opacity:1; transform:translateY(0); }
 .hero-img img {
   transition: transform 0.3s;
   border-radius:10px;
@@ -83,20 +80,6 @@ nav a:hover { color:#ff4ecd; }
 .hero-img img:hover {
   transform: translateY(-10px) scale(1.02);
 }
-
-/* Monterey Images Styling */
-.monterey-img {
-  width:100%;
-  max-width:600px;
-  height:auto;
-  border-radius:12px;
-  margin:4rem auto;
-  display:block;
-  opacity:0;
-  transform:translateY(50px);
-  transition: all 1s ease;
-}
-.monterey-img.show { opacity:1; transform:translateY(0); }
 
 /* Sections */
 .products, .features { padding:4rem 2rem; }
@@ -113,8 +96,8 @@ nav a:hover { color:#ff4ecd; }
   border:2px solid transparent;
   background:#000;
   color:#fff;
-  white-space: normal;
-  overflow: visible;
+  white-space: normal; /* allow full text display */
+  overflow: visible;   /* prevent truncation */
 }
 .card img {
   width: 100%;
@@ -135,6 +118,34 @@ footer { text-align:center; padding:1.5rem; background:#111122; color:#fff; font
 /* Dark / Light Mode outside cards only */
 body.dark-mode { background:#0f0f1a; color:#fff; }
 body.light-mode { background:#fdfdfd; color:#000; }
+
+/* RGB mode with subtle floating glow */
+body.rgb-mode {
+  animation: rgbBackground 10s infinite alternate;
+  position: relative;
+}
+@keyframes rgbBackground {
+  0% { background:#ff4ecd; }
+  25% { background:#6c5ce7; }
+  50% { background:#00f2ff; }
+  75% { background:#00ff99; }
+  100% { background:#ff4ecd; }
+}
+
+/* Locked RGB icon */
+#rgbToggle.locked {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+#rgbToggle.locked::after {
+  content: "🔒";
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+}
 
 /* Click sparks */
 .spark {
@@ -166,6 +177,46 @@ body.light-mode { background:#fdfdfd; color:#000; }
   10% { opacity:0.6; }
   100% { transform: translateY(-100vh) translateX(50px); opacity:0; }
 }
+
+/* Shooter Game Canvas */
+#gameCanvas {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
+  z-index:9999;
+}
+
+/* Game Over Screen */
+#gameOverScreen {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.9);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-size:2rem;
+  display:none;
+  z-index:10000;
+}
+#gameOverScreen button {
+  margin-top:20px;
+  padding:1rem 2rem;
+  font-size:1rem;
+  cursor:pointer;
+  border:none;
+  border-radius:5px;
+  background: #ff4ecd;
+  color:#fff;
+}
 </style>
 </head>
 <body class="dark-mode">
@@ -175,23 +226,24 @@ body.light-mode { background:#fdfdfd; color:#000; }
   <nav>
     <a href="#products">Products</a>
     <a href="#features">Features</a>
-    <a href="#faq">FAQ</a>
+    <a href="#support">Support</a>
   </nav>
   <div>
     <a class="btn" href="#products">Shop Now</a>
     <button class="btn-outline" id="themeToggle">🌙 Toggle Theme</button>
+    <button class="btn-outline locked" id="rgbToggle">🌈 RGB Mode</button>
   </div>
 </header>
 
 <section class="hero">
-  <div class="hero-text fade-in">
+  <div class="hero-text">
     <h1>PCs <span>Custom-Built</span> For You</h1>
     <p class="hero-subtext">We specialize in building custom gaming and content creation PCs tailored to your needs. From budget-friendly 1080p setups to high-end 4K powerhouses, every system is hand-assembled, tested, and optimized for performance. We work with you to choose the right parts, ensuring your build is powerful, reliable, and future-proof—whether you’re gaming, streaming, or editing.</p>
     <div class="hero-buttons">
       <a href="#products" class="btn">Browse PCs</a>
     </div>
   </div>
-  <div class="hero-img fade-in">
+  <div class="hero-img">
     <img id="heroPC" src="https://media.istockphoto.com/id/1441217865/photo/gaming-pc-with-rainbow-led-light-liquid-cooled-computer-powerful-pc-in-a-glass-case-with.jpg?s=612x612&w=0&k=20&c=JlpoWN7YGaWgdCEwPU6dt8UITfSI-Xs2uwRzLhzKTXk=" alt="Gaming PC">
   </div>
 </section>
@@ -200,21 +252,21 @@ body.light-mode { background:#fdfdfd; color:#000; }
 <h2>Popular Builds</h2>
 <div class="grid">
   <!-- 1080p -->
-  <div class="card">
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201080p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201080p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1080p - Starter/budget PC</h3>
     <p>A 1080p PC is a great choice if you’re just getting into gaming or want strong performance without spending a lot. These systems handle light 3D-modeling and video editing and popular esports titles, and can run most modern games smoothly at full HD, making them perfect for budget-conscious gamers who still want a reliable machine.</p>
     <span class="price">$600.00+</span>
     <img src="https://greenbeastgaming.com/cdn/shop/files/M05GreenFrontSide.png?v=1718434873&width=533">
   </div>
   <!-- 1440p -->
-  <div class="card">
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%201440p%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%201440p%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>1440p - Midrange PC</h3>
     <p>A 1440p PC strikes the balance between performance and visuals. With higher resolution than 1080p, games look sharper and more detailed while still maintaining high frame rates. This tier is excellent for gamers who want more immersive visuals, as well as creators who stream or edit videos and need extra power.</p>
     <span class="price">$1,300.00+</span>
     <img src="https://i.ebayimg.com/images/g/d7oAAeSwRDtosnQA/s-l960.webp" alt="1440p Gaming PC">
   </div>
   <!-- 4K -->
-  <div class="card">
+  <div class="card" onclick="window.open('mailto:MontereyBayPC@gmail.com?subject=Inquiry%20about%204K%20PC&body=Hello%2C%20I%20am%20interested%20in%20your%204K%20PC.%20Please%20send%20more%20information.', '_blank')">
     <h3>4k - High-end PC</h3>
     <p>A 4K PC is built for those who want the absolute best in graphics and performance. These systems deliver stunning ultra-high-definition visuals with incredible detail, perfect for AAA gaming at max settings or demanding creative workloads like 3D rendering and 4K video editing. If you want top-of-the-line power with no compromises, a 4K build is the way to go.</p>
     <span class="price">$2,000.00+</span>
@@ -241,6 +293,9 @@ body.light-mode { background:#fdfdfd; color:#000; }
 </div>
 </section>
 
+<!-- 🔹 New Sections Start Here -->
+
+<!-- Comparison Table -->
 <section id="comparison" style="padding:4rem 2rem;">
   <h2 style="text-align:center; margin-bottom:2rem;">Build Comparison</h2>
   <table style="width:90%; max-width:900px; margin:0 auto; border-collapse:collapse; background:#000; color:#fff; border-radius:10px; overflow:hidden;">
@@ -271,6 +326,23 @@ body.light-mode { background:#fdfdfd; color:#000; }
   </table>
 </section>
 
+<!-- Reviews -->
+<section id="reviews" style="padding:4rem 2rem;">
+  <h2 style="text-align:center; margin-bottom:2rem;">What Our Customers Say</h2>
+  <div style="max-width:900px; margin:0 auto;">
+    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 1440p build crushed everything I threw at it. Great deal!" – O.V.B 
+    </div>
+    <div style="background:#000; padding:20px; border-radius:10px; margin-bottom:15px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 1080p build is perfect for my needs. Smooth performance." – John. k
+    </div>
+    <div style="background:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(255,78,205,0.4);">
+      ⭐⭐⭐⭐⭐<br>"The 4K build is insane. Runs Cyberpunk at max settings like butter." – Mr. P
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
 <section id="faq" style="padding:4rem 2rem;">
   <h2 style="text-align:center; margin-bottom:2rem;">Frequently Asked Questions</h2>
   <div style="max-width:900px; margin:0 auto;">
@@ -284,24 +356,42 @@ body.light-mode { background:#fdfdfd; color:#000; }
     </div>
     <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
       <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Do you offer warranties?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">No, we do not offer warranties but we can help with minor issues!</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">No, we do not offer warrenties but, if you are having any minor problems, we can help!.</div>
     </div>
     <div class="faq-item" style="background:#000; border-radius:8px; overflow:hidden;">
-      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Why are your PCs so much cheaper than others?</div>
-      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Because we believe in the dream!</div>
-    </div>
+      <div class="faq-question" style="padding:15px; background:#111; cursor:pointer;">Why are you PCs so much cheaper then others?</div>
+      <div class="faq-answer" style="display:none; padding:15px; background:#1a1a1a;">Well we belive in the dream the, </div>
   </div>
 </section>
+
+<!-- 🔹 Shooter Game Canvas & Footer -->
+<canvas id="gameCanvas"></canvas>
+<div id="gameOverScreen">
+  <div>Game Over</div>
+  <button onclick="endGame()">Return to Website</button>
+</div>
 
 <footer>Contact: ✉ MontereyBayPC@gmail.com</footer>
 
 <script>
-// Theme toggle
+// Theme & RGB toggles
 const themeToggle=document.getElementById('themeToggle');
+const rgbToggle=document.getElementById('rgbToggle');
 themeToggle.addEventListener('click',()=>{
   document.body.classList.toggle('light-mode');
   document.body.classList.toggle('dark-mode');
 });
+
+// Floating lights in RGB mode
+function spawnFloatingLight(){
+  if(!document.body.classList.contains('rgb-mode')) return;
+  const light=document.createElement('div');
+  light.classList.add('floating-light');
+  light.style.left=Math.random()*window.innerWidth+'px';
+  document.body.appendChild(light);
+  setTimeout(()=>light.remove(),5000);
+}
+setInterval(spawnFloatingLight,500);
 
 // Click sparks
 function createSpark(x,y){
@@ -324,7 +414,7 @@ document.querySelectorAll('.btn,.btn-outline,.card').forEach(el=>{
   el.addEventListener('mouseenter',()=>hoverSound.play());
 });
 
-// Hero image confetti
+// Mini Easter egg: confetti on hero image click
 document.getElementById('heroPC').addEventListener('click',()=>{
   for(let i=0;i<50;i++){
     const c=document.createElement('div');
@@ -339,6 +429,143 @@ document.getElementById('heroPC').addEventListener('click',()=>{
   }
 });
 
+// Shooter Game Variables
+const logo = document.getElementById('logo');
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let gameActive = false;
+let player, bullets, enemies, enemySpawnTimer, keys = {};
+const gameOverScreen = document.getElementById('gameOverScreen');
+
+// Start game on logo click
+logo.addEventListener('click', ()=>{ if(!gameActive) startGame(); });
+
+function startGame() {
+  canvas.style.display = 'block';
+  gameOverScreen.style.display = 'none';
+  gameActive = true;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  player = { x: canvas.width/2 -25, y: canvas.height-60, width:50, height:50, speed:14 };
+  bullets = [];
+  enemies = [];
+  enemySpawnTimer = 0;
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  canvas.style.display = 'none';
+  gameOverScreen.style.display = 'none';
+  gameActive = false;
+}
+
+// Input
+document.addEventListener('keydown', e=>{ keys[e.key] = true; });
+document.addEventListener('keyup', e=>{ keys[e.key] = false; });
+
+// Game Over
+function triggerGameOver() {
+  gameActive = false;
+  gameOverScreen.style.display = 'flex';
+}
+
+// Game Loop
+function gameLoop(){
+  if(!gameActive) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Move Player
+  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
+  if(keys['ArrowRight'] && player.x + player.width < canvas.width) player.x += player.speed;
+
+  // Draw Player
+  ctx.fillStyle = '#0ff';
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+
+  // Bullets
+  bullets.forEach((b, i)=>{
+    b.y -= 10;
+    ctx.fillStyle = '#ff0';
+    ctx.fillRect(b.x, b.y, b.width, b.height);
+    if(b.y<0) bullets.splice(i,1);
+  });
+
+  // Fire bullets
+  if(keys[' ']) bullets.push({ x: player.x + player.width/2 -2.5, y: player.y, width:5, height:10 });
+
+  // Enemies
+  enemySpawnTimer++;
+  if(enemySpawnTimer>50){
+    enemies.push({ x: Math.random()*(canvas.width-40), y:-40, width:40, height:40, speed:3 });
+    enemySpawnTimer = 0;
+  }
+  enemies.forEach((e,i)=>{
+    e.y += e.speed;
+    ctx.fillStyle = '#f00';
+    ctx.fillRect(e.x, e.y, e.width, e.height);
+
+    // Collision with player
+    if(player.x < e.x + e.width &&
+       player.x + player.width > e.x &&
+       player.y < e.y + e.height &&
+       player.y + player.height > e.y){
+         triggerGameOver();
+    }
+
+    // Enemy reaches bottom
+    if(e.y + e.height > canvas.height){
+      triggerGameOver();
+    }
+
+    // Bullet collision
+    bullets.forEach((b,j)=>{
+      if(b.x < e.x + e.width &&
+         b.x + b.width > e.x &&
+         b.y < e.y + e.height &&
+         b.y + b.height > e.y){
+           enemies.splice(i,1);
+           bullets.splice(j,1);
+      }
+    });
+  });
+
+  if(gameActive) requestAnimationFrame(gameLoop);
+}
+
+// Konami code to unlock RGB
+const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let konamiIndex = 0;
+document.addEventListener('keydown', e=>{
+  if(e.key === konamiCode[konamiIndex]){
+    konamiIndex++;
+    if(konamiIndex === konamiCode.length){
+      konamiIndex = 0;
+      alert('RGB Mode Unlocked! 🎉');
+      rgbToggle.classList.remove('locked');
+      rgbToggle.disabled = false;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+
+// RGB toggle click
+rgbToggle.addEventListener('click', ()=>{
+  if(rgbToggle.classList.contains('locked')){
+    alert('Enter the Konami Code to unlock RGB Mode!');
+    return;
+  }
+  document.body.classList.toggle('rgb-mode');
+});
+
+// Prevent RGB in light mode
+rgbToggle.addEventListener('click', ()=>{
+  if(document.body.classList.contains('light-mode')){
+    alert("RGB mode only works in dark mode!");
+    return;
+  }
+});
+
 // FAQ Toggle
 document.querySelectorAll('.faq-question').forEach(q=>{
   q.addEventListener('click', ()=>{
@@ -346,20 +573,6 @@ document.querySelectorAll('.faq-question').forEach(q=>{
     answer.style.display=answer.style.display==='block'?'none':'block';
   });
 });
-
-// Scroll animations
-function fadeInOnScroll(){
-  const elements=document.querySelectorAll('.fade-in, .monterey-img');
-  elements.forEach(el=>{
-    const rect=el.getBoundingClientRect();
-    if(rect.top<window.innerHeight-100){
-      el.classList.add('show');
-    }
-  });
-}
-window.addEventListener('scroll', fadeInOnScroll);
-window.addEventListener('load', fadeInOnScroll);
 </script>
-
 </body>
 </html>
